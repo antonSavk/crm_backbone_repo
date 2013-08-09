@@ -26,7 +26,7 @@ define([
       },
 
       index: function(){
-          this.changeView(new IndexView());
+          new HomeView().render();
       },
 
       login: function(){
