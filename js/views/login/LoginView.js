@@ -7,7 +7,7 @@ define([
 
     var LoginView = Backbone.View.extend({
 
-        el: '#content-holder',
+        el: '#wrapper',
 
         render: function(){
             this.$el.html(LoginTemplate);

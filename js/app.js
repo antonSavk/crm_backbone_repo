@@ -8,12 +8,14 @@ define([
 ], function($, _, Backbone, Router, LocalStorage){
 
     var initialize = function(){
+
+        checkLogin(runApplication);
         var router = new Router();
         Backbone.history.start();
-        //checkLogin(runApplication);
+
     }
 
-    /*var checkLogin = function(callback){
+    var checkLogin = function(callback){
         var url = "http://" + App.Server.ip + ":" + App.Server.port + "/login";
         $.ajax({
             url: url,
@@ -39,7 +41,7 @@ define([
         }
         var app_router = new Router();
         Backbone.history.start();
-    }*/
+    }
 
     return {
         initialize: initialize
