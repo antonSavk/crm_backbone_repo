@@ -2,15 +2,15 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!templates/login/loginTemplate.html'
-], function($, _, Backbone, loginTemplate){
+    'text!templates/login/LoginTemplate.html'
+], function($, _, Backbone, LoginTemplate){
 
     var LoginView = Backbone.View.extend({
 
-        el: '#loginDiv',
+        el: '#content-holder',
 
         render: function(){
-            this.$el.html(loginTemplate);
+            this.$el.html(LoginTemplate);
             return this;
         }
     });

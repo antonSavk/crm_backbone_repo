@@ -2,19 +2,19 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/home/homeTemplate.html'
-], function($, _, Backbone, indexTemplate){
+  'text!templates/index/IndexTemplate.html'
+], function($, _, Backbone, IndexTemplate){
 
     var IndexView = Backbone.View.extend({
 
         el:'#wrapper',
-        template: _.template(indexTemplate),
+
         initialize: function(){
             this.render();
         },
 
-         render: function(){
-            this.$el.html(indexTemplate);
+        render: function(){
+            this.$el.html(IndexTemplate);
             return this;
         }});
     return IndexView;

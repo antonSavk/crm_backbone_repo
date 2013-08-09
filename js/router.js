@@ -3,11 +3,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/home/HomeView',
-  'views/projects/ProjectsView',
-  'views/login/loginView',
-  'views/products/productsView'
-], function($, _, Backbone, HomeView, ProjectsView, LoginView, ProductsView) {
+  'views/index/IndexView'
+], function($, _, Backbone, IndexView) {
   
   var AppRouter = Backbone.Router.extend({
 
@@ -29,7 +26,7 @@ define([
       },
 
       index: function(){
-          new HomeView().render();
+          this.changeView(new IndexView());
       },
 
       login: function(){

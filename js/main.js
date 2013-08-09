@@ -7,7 +7,7 @@
 var App = App ||
 {
     Server: {
-        ip: "192.168.88.45",
+        ip: "192.168.88.109",
         port: "8088"
     },
     ID: {
@@ -39,7 +39,7 @@ var App = App ||
         managerSelect: "#projectManagerDD"
     },
     URL: {
-        login: "core/html/loginTemplate.html",
+        login: "core/html/LoginTemplate.html",
         main: "core/html/main.html",
         templateFolder: "core/html/templates/"
     },
