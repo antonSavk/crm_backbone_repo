@@ -5,8 +5,8 @@ define([
   'backbone',
   'views/home/HomeView',
   'views/projects/ProjectsView',
-  'views/login/loginView',
-  'views/products/productsView'
+  'views/login/LoginView',
+  'views/products/ProductsView'
 ], function($, _, Backbone, HomeView, ProjectsView, LoginView, ProductsView) {
   
   var AppRouter = Backbone.Router.extend({
