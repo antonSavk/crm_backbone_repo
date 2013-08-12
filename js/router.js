@@ -25,8 +25,8 @@ define([
           this.currentView.render();
       },
 
-      index: function(){
-          new MainView().render();
+      main: function(){
+    	  this.changeView(new MainView());
       },
 
       login: function(){

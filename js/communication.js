@@ -1,48 +1,57 @@
-define(function(){
-	return {
-		socket: {},
-		initConnection: function(){
-			this.socket = App.Libs.IO.connect('http://'.concat(App.Server.ip,':',App.Server.port));
-			this.socket.on('connect', function(){
-				console.log('Server connected...');
-			});
-			
-			this.socket.on('disconnect', function(){
-				console.log('Server disconnected...');
-			});
-
-			this.socket.on('responseCheckHash', function(response){
-            	switch(response.result.status)
-            	{
-            		/*case "0":
-            		{
-            			console.log('checkHash OK');
-            			App.Modules.UI.initUser(response.data._id, response.data.uname);
-            			App.Modules.UI.initMainPage();
-            			break;
-            		}
-            		default:
-            		{
-            			console.log('checkHash BAD');
-            			App.Modules.UI.initLoginPage();
-            			break;
-            		}*/
-            	}
-            });
-
-		},
-
-		checkHash: function(){	
-			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
-				_id = App.Modules.LocalStorage.getFromLocalStorage("_id");
-			
-			if ((hash == false) || (_id == false)) 
-			{
-
-				return;
-			}
-			this.socket.emit('checkHash', {"hash": hash, "uid": _id});
+// Filename: communication.js
+define(["jquery", "localstorage"], function($, LocalStorage){
+	var checkHash = function(callback){
+		var url = "http://" + App.Server.ip + ":" + App.Server.port + "/checkHash",
+			uid = LocalStorage.getFromLocalStorage('uid'),
+			hash = LocalStorage.getFromLocalStorage('hash');
+		
+		if(!uid || !hash)
+		{
+			callback({result: {status: 4, description: 'No variables in local storage'}});
+			return
 		}
-
+		
+        $.ajax({
+            url: url,
+            type:"POST",
+            data:{
+                uid: uid,
+                hash: hash
+            },
+            success: function(resp){
+                callback(resp);
+            },
+            error: function(){
+                callback({result: {status: 4, description: 'Error during checkHash request'}});
+            }
+        });
+	},
+	checkLogin = function(callback){
+		var url = "http://" + App.Server.ip + ":" + App.Server.port + "/login";
+        $.ajax({
+            url: url,
+            type:"POST",
+            data:{
+                ulogin:'romashka50',
+                upass: '123456789ddd'
+            },
+            success: function(resp){
+            	if (resp.result.status == 0)
+            	{
+            		LocalStorage.saveToLocalStorage('uid', resp.data._id);
+                	LocalStorage.saveToLocalStorage('hash', resp.hash);
+            	}
+            	
+                callback(resp);
+            },
+            error: function(){
+                callback({result: {status: 4, description: 'Error during checkLogin request'}});
+            }
+        });
+	}
+	
+	return {
+		checkHash: checkHash,
+		checkLogin: checkLogin
 	}
 });

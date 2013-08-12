@@ -9,10 +9,6 @@ define([
 
         el:'#wrapper',
 
-        initialize: function(){
-            this.render();
-        },
-
         render: function(){
             this.$el.html(MainTemplate);
             return this;

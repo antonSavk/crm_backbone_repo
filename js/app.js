@@ -4,44 +4,24 @@ define([
   'underscore', 
   'backbone',
   'router',
-   'localstorage'
-], function($, _, Backbone, Router, LocalStorage){
+   'localstorage',
+   'communication'
+], function($, _, Backbone, Router, LocalStorage, Communication){
 
     var initialize = function(){
-
-        checkLogin(runApplication);
-        var router = new Router();
+    	Communication.checkHash(runApplication);
+    	var appRouter = new Router();
         Backbone.history.start();
-
-    }
-
-    var checkLogin = function(callback){
-        var url = "http://" + App.Server.ip + ":" + App.Server.port + "/login";
-        $.ajax({
-            url: url,
-            method:"POST",
-            data:{
-                ulogin:'romashka50',
-                upass: '123456789'
-            },
-            success: function(resp){
-                callback(resp);
-            },
-            error: function(resp){
-                callback(resp);
-            }
-        });
-    }
-
+    };
+    
     var runApplication = function(data){
-        if(!data.success){
+        if(data.result.status != 0){
             window.location.hash = "login";
         } else{
             window.location.hash = "";
         }
-        var app_router = new Router();
-        Backbone.history.start();
-    }
+        
+    };
 
     return {
         initialize: initialize

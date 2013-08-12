@@ -7,7 +7,7 @@
 var App = App ||
 {
     Server: {
-        ip: "192.168.88.109",
+        ip: "192.168.88.45",
         port: "8088"
     },
     ID: {
@@ -37,23 +37,6 @@ var App = App ||
         projectForm:"#createProjectForm",
         privacyDD:"#privacyDD",
         managerSelect: "#projectManagerDD"
-    },
-    URL: {
-        login: "core/html/LoginTemplate.html",
-        main: "core/html/main.html",
-        templateFolder: "core/html/templates/"
-    },
-    Classes: {},
-    Libs: {
-        IO: {},
-        KO: {}
-    },
-    Modules: {
-        UI: {},
-        LocalStorage: {},
-        Communication: {},
-        Utils: {},
-        Validation: {}
     }
 };
 
