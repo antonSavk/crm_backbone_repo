@@ -5,25 +5,18 @@ define([
   'backbone',
   'router',
    'localstorage',
-   'communication'
-], function($, _, Backbone, Router, LocalStorage, Communication){
+   'communication',
+   'custom'
+], function($, _, Backbone, Router, LocalStorage, Communication, Custom){
 
     var initialize = function(){
-    	Communication.checkHash(runApplication);
+    	debugger
+    	Communication.checkHash(Custom.runApplication);
     	var appRouter = new Router();
         Backbone.history.start();
-    };
-    
-    var runApplication = function(data){
-        if(data.result.status != 0){
-            window.location.hash = "login";
-        } else{
-            window.location.hash = "";
-        }
-        
     };
 
     return {
         initialize: initialize
-    };
+    }
 });

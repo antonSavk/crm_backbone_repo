@@ -52,6 +52,6 @@ require.config({
 
 });
 
-require(['app'], function(App){
-    App.initialize();
+require(['app'], function(app){
+    app.initialize();
 });

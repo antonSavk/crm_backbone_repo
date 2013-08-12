@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'text!templates/login/LoginTemplate.html',
-    'app'
-], function($, _, Backbone, LoginTemplate, app){
+    'custom',
+    'communication'
+], function($, _, Backbone, LoginTemplate, Custom, Communication){
 
     var LoginView = Backbone.View.extend({
 
