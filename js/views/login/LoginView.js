@@ -23,7 +23,8 @@ define([
         login: function(event){
         	event.preventDefault();
         	debugger
-        	//Communication.checkLogin(function(data){alert('okay login');});
+            //if(Custom) alert('adsfasdf');
+        	Communication.checkLogin(Custom.runApplication);
         }
     });
 

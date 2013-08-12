@@ -4,7 +4,7 @@ define(function(){
 			if (window.localStorage === "undefined" || window.localStorage.getItem(key) == null)
 			{
 				return false;
-			}else
+			} else
 			{
 				return window.localStorage.getItem(key);
 			}

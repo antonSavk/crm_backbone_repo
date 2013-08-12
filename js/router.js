@@ -9,6 +9,9 @@ define([
   
   var AppRouter = Backbone.Router.extend({
 
+      initialize : function(){
+      },
+
       currentView: null,
 
       routes: {

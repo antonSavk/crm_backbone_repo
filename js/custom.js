@@ -5,7 +5,6 @@ define(function(){
 	    } else{
 	        window.location.hash = "";
 	    }
-	        
 	};
 	
 	return {

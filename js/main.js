@@ -1,13 +1,8 @@
-// Author: Thomas Davis <thomasalwyndavis@gmail.com>
-// Filename: main.js
-
-// Require.js allows us to configure shortcut alias
-// Their usage will become more apparent futher along in the tutorial.
 
 var App = App ||
 {
     Server: {
-        ip: "192.168.88.45",
+        ip: "192.168.88.109",
         port: "8088"
     },
     ID: {

@@ -32,8 +32,8 @@ define(["jquery", "localstorage"], function($, LocalStorage){
             url: url,
             type:"POST",
             data:{
-                ulogin:'romashka50',
-                upass: '123456789ddd'
+                ulogin:'backbone',
+                upass: '123456'
             },
             success: function(resp){
             	if (resp.result.status == 0)
