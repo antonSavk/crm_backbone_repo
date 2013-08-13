@@ -22,9 +22,13 @@ define([
         
         login: function(event){
         	event.preventDefault();
-        	debugger
-            //if(Custom) alert('adsfasdf');
-        	Communication.checkLogin(Custom.runApplication);
+        	var data = {
+        			ulogin: this.$("#ulogin").val(),
+        			upass: this.$("#upass").val()
+        	};
+        	
+        	Communication.checkLogin(data, Custom.runApplication);
+        	
         }
     });
 

@@ -26,14 +26,14 @@ define(["jquery", "localstorage"], function($, LocalStorage){
             }
         });
 	},
-	checkLogin = function(callback){
+	checkLogin = function(data, callback){
 		var url = "http://" + App.Server.ip + ":" + App.Server.port + "/login";
         $.ajax({
             url: url,
             type:"POST",
             data:{
-                ulogin:'backbone',
-                upass: '123456'
+                ulogin: data.ulogin,
+                upass: data.upass
             },
             success: function(resp){
             	if (resp.result.status == 0)
