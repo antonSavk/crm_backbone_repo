@@ -4,7 +4,7 @@
             <li><a href="#">Home</a></li>
             <li class="selected"><a href="#">Manage Accounts</a></li>
             <li><a href="#">Manage Activities</a></li>
-            <li><a href="#">Sales</li>
+            <li><a href="#">Sales</a></li>
             <li><a href="#">Products</a></li>
         </ul>
     </nav>
@@ -18,27 +18,11 @@
     </div>
 </div>
 <div id="leftmenu-holder">
-    <nav>
-        <ul>
-            <li><a href="#">withSubmenu</a>
-                <ul>
-                    <li><a href="#">Submenu1</a></li>
-                    <li>Submenu2</li>
-                    <li><a href="#">Submenu3</a>
-                        <ul>
-                            <li class="selected"><a href="#">SubMenu1</a></li>
-                            <li><a href="#">SubMenu2</a></li>
-                            <li><a href="#">SubMenu3</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="#">Manage Accounts</a></li>
-            <li><a href="#">Manage Activities</a></li>
-            <li><a href="#">Sales</li>
-            <li><a href="#">Products</a></li>
-        </ul>
-    </nav>
+   <nav></nav>
 </div>
 <div id="top-bar"></div>
-<div id="content-holder"></div>
+<div id="content-holder">
+    <script type="text/template" id="menu-item-template"><a id="<%= id %>" href="#" title="<%= mname %>"><%=mname %></a></script>
+    <script type="text/template" id="menu-template"><h1>Menu</h1></script>
+</div>
+

@@ -1,0 +1,128 @@
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'localstorage'
+],
+    function($, _, Backbone, Localstorage){
+        var MyModel = Backbone.Model.extend({});
+
+        var MenuItems = Backbone.Collection.extend({
+            model: MyModel,
+            url: function(){
+                return "http://" + App.Server.ip + ":" + App.Server.port + "/getModules"
+            },
+
+            setCurrentModule: function(moduleName){
+                this.currentModule = moduleName;
+                this.trigger('change:currentModule',this.currentModule, this);
+            },
+
+            currentModule: "HR",
+
+            initialize: function(){
+                console.log("init collection");
+                var hash = Localstorage.getFromLocalStorage('hash'),
+                    uid = Localstorage.getFromLocalStorage('uid');
+
+
+
+                this.fetch({data: $.param({
+                    hash:hash,
+                    uid:uid
+                }),
+                    type: 'POST',
+                    reset:true,
+                    success: this.fetchSuccess,
+                    error: this.fetchError
+                });
+
+
+            },
+
+            parse:true,
+
+            parse: function(response){
+                console.log('parse');
+                $.each(response.data, function(index,val){
+                    response.data[index]["id"] = response.data[index]["_id"];
+                    delete response.data[index]["_id"];
+                });
+                return response.data;
+            },
+
+            fetchSuccess: function(collection, response){
+                console.log("fetchSuccess");
+                collection.relationships();
+
+
+            },
+
+            fetchError: function(collection, response){
+                throw new Error("Not collection received from fetch");
+            },
+
+            relationships: function(){
+                this.relations = _.groupBy(this.models, this.parent);
+            },
+
+            root: function(){
+                if(!this.relations) this.relationships();
+                return this.relations[0];
+            },
+
+            children: function(model){
+
+                if(!this.relations) this.relationships();
+                return (typeof this.relations[model["id"]] === 'undefined') ? [] : this.relations[model["id"]];
+            },
+
+            parent: function(model){
+                var parrent = model.get('parrent');
+                return (!parrent) ? 0 : parrent;
+            }
+        });
+
+        return MenuItems;
+    });
+        /*var MenuItems = Backbone.Collection.extend({
+            model: MyModel,
+
+
+            *//*initialize: function(){
+                var hash = Localstorage.getFromLocalStorage('hash'),
+                    uid = Localstorage.getFromLocalStorage('uid');
+
+                //this.bind('reset', this.relationships);
+                this.fetch({data: $.param({
+                    hash:hash,
+                    uid:uid
+                }),
+                    type: 'POST',
+                    success: this.fetchSuccess,
+                    error: this.fetchError
+                })
+            },
+            *//*
+
+            relationships: function(){
+                this.relations = _.groupBy(this.models, this.parent);
+            },
+
+            root: function(){
+                if(!this.relations) this.relationships();
+                return this.relations[0];
+            },
+
+            children: function(model){
+                if(!this.relations) this.relationships();
+                return (typeof this.relations[model["_id"]] === 'undefined') ? [] : this.relations[model["_id"]];
+            },
+
+            parent: function(model){
+                var parrent = model.get('parrent');
+                return (!parrent) ? 0 : parrent;
+            }
+        });*/
+
+

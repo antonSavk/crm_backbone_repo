@@ -10,7 +10,8 @@ define([
 ], function($, _, Backbone, Router, LocalStorage, Communication, Custom){
 
     var initialize = function(){
-    	Communication.checkHash(Custom.runApplication);
+
+        Communication.checkHash(Custom.runApplication);
     	var appRouter = new Router();
         Backbone.history.start();
     };

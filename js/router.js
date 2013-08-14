@@ -25,7 +25,7 @@ define([
               this.currentView.undelegateEvents();
           }
           this.currentView = view;
-          this.currentView.render();
+          //this.currentView.render();
       },
 
       main: function(){

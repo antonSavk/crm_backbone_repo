@@ -2,7 +2,7 @@
 var App = App ||
 {
     Server: {
-        ip: "192.168.88.109",
+        ip: "192.168.88.45",
         port: "8088"
     },
     ID: {
@@ -42,7 +42,8 @@ require.config({
     backbone: 'libs/backbone/backbone',
     templates: '../templates',
     text: 'libs/backbone/text',
-    socketIO: 'libs/SocketIO/socket.io'
+    socketIO: 'libs/SocketIO/socket.io',
+    localstorage: 'localstorage'
   }
 
 });
