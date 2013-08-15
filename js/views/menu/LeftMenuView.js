@@ -3,27 +3,28 @@ define([
     'underscore',
     'backbone',
     'views/menu/MenuItem',
-    'text!templates/menu/MenuTemplate.html',
     'collections/menu/MenuItems'
 ],
-    function($, _, Backbone, MenuItemView, MenuTemplate, MenuItemsCollection){
+    function($, _, Backbone, MenuItemView, MenuItemsCollection){
 
         var LeftMenuView = Backbone.View.extend({
             tagName: 'nav',
             className: 'menu',
             el: '#leftmenu-holder nav',
-            template: _.template(MenuTemplate),
+            currentSection:null,
 
-            initialize: function(){
+            setCurrentSection:function(section){
+                this.leftMenu.currentSection = section;
+                this.leftMenu.render();
+            },
+
+            initialize: function(options){
                 console.log("init MenuView");
-                //if(!options.collection) throw "No collection specified!";
-
-                this.collection = new MenuItemsCollection();
-
-                //_.bindAll(this,'render');
+                if(!options.collection) throw "No collection specified!";
+                this.collection = options.collection;
+                _.bindAll(this, 'render');
+                this.render();
                 this.collection.bind('reset', _.bind(this.render, this));
-                var self = this;
-                this.collection.bind('change:currentModule',this.render);
 
             },
 
@@ -32,23 +33,27 @@ define([
                 this.collection.unbind();
             },
 
-            render: function(event){
-                console.log("Render MenuView");
+            render: function(){
+                console.log("Render LeftMenuView");
                 var $el = $(this.el);
 
-                $el.html(MenuTemplate);
+                $el.html('');
 
-                var mname = this.collection.currentModule;
-
-                var menuSection;
+                var currentModule = null;
                 var root = this.collection.root();
+                if(this.currentSection == null)
+                    this.currentSection = root[0].get('mname');
+
                 for(var i= 0, len=root.length; i<len; i++){
-                    if(root[i].get('mname') == mname){
-                        menuSection = root[i];
+                    if(root[i].get('mname') == this.currentSection){
+                        currentModule = root[i];
                         break;
                     }
                 }
-                var elem =  $el.append(this.renderMenu([menuSection]));
+                if (currentModule == null) currentModule = root[0];
+
+
+                var elem =  $el.append(this.renderMenu(this.collection.children(currentModule)));
                 return this;
             },
 

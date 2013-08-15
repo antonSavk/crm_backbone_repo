@@ -71,6 +71,17 @@ define([
                 return this.relations[0];
             },
 
+            getRootElements: function(){
+                var model = Backbone.Model.extend({});
+                if(!this.relations) this.relationships();
+                return $.map(this.relations[0],function(current){
+                    return new model({
+                        id:current.get('id'),
+                        mname:current.get('mname')
+                    });
+                });
+            },
+
             children: function(model){
 
                 if(!this.relations) this.relationships();

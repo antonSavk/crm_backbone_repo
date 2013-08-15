@@ -10,7 +10,11 @@ define([
     var LoginView = Backbone.View.extend({
 
         el: '#wrapper',
-        
+
+        initialize: function(){
+            this.render();
+        },
+
         events: {
         	"submit #loginForm": "login"
         },

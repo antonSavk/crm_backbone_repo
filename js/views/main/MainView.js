@@ -4,23 +4,24 @@ define([
   'backbone',
   'text!templates/main/MainTemplate.html',
    'views/menu/LeftMenuView',
-   'collections/menu/MenuItems'
-], function($, _, Backbone, MainTemplate, LeftMenuView, MenuItemsCollection){
-
-    var json = [
-        {"id":1,"link":false,"mname":"Settings","parrent":null},
-        {"id":2,"link":false,"mname":"Companies","parrent":1},
-        {"id":3,"link":false,"mname":"Users","parrent":1},
-        {"id":4,"link":false,"mname":"Configuration","parrent":1}];
+   'collections/menu/MenuItems',
+    'views/menu/TopMenuView'
+], function($, _, Backbone, MainTemplate, LeftMenuView, MenuItemsCollection, TopMenuView){
 
     var MainView = Backbone.View.extend({
-
         el:'#wrapper',
-
 
         initialize: function(){
             this.render();
-            var leftMenu = new LeftMenuView();
+            this.collection = new MenuItemsCollection();
+            this.collection.bind('reset',this.createMenuViews, this);
+        },
+
+        createMenuViews: function(){
+            this.leftMenu = new LeftMenuView({collection:this.collection});
+            var root = this.collection.getRootElements();
+            this.topMenu = new TopMenuView({collection:this.collection.getRootElements()});
+            this.topMenu.bind('changeSelection', this.leftMenu.setCurrentSection, {leftMenu:this.leftMenu});
         },
 
         render: function(){
