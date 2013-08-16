@@ -53,7 +53,7 @@ define([
                 if (currentModule == null) currentModule = root[0];
 
 
-                var elem =  $el.append(this.renderMenu(this.collection.children(currentModule)));
+                var elem = $el.append(this.renderMenu(this.collection.children(currentModule)));
                 return this;
             },
 
@@ -63,9 +63,10 @@ define([
 
                 _.each(list, function(model){
                     var html =  this.renderMenuItem(model);
+                    
                     $dom.append(html);
                     var kids = this.collection.children(model);
-                    $dom.find(':last').parent().append(this.renderMenu(kids));
+                    $dom.find(':last').append(this.renderMenu(kids));
                 }, this);
                 return $dom;
             },
