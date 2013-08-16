@@ -1,4 +1,3 @@
-
 var App = App ||
 {
     Server: {
@@ -43,6 +42,7 @@ require.config({
     templates: '../templates',
     text: 'libs/backbone/text',
     socketIO: 'libs/SocketIO/socket.io',
+    less: 'libs/less/less-1.4.1.min',
     localstorage: 'localstorage'
   }
 
