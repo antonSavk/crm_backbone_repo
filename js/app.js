@@ -6,8 +6,9 @@ define([
   'router',
    'localstorage',
    'communication',
-   'custom'
-], function($, _, Backbone, Router, LocalStorage, Communication, Custom){
+   'custom',
+   'less'
+], function($, _, Backbone, Router, LocalStorage, Communication, Custom, Less){
 
     var initialize = function(){
 
