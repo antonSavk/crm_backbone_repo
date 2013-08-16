@@ -17,7 +17,9 @@ define([
       routes: {
           "": "main",
           "login":"login",
+          ":type": 'getList',
           "*actions":"defaultAction"
+           
       },
 
       changeView: function(view){
@@ -34,6 +36,9 @@ define([
 
       login: function(){
           this.changeView(new LoginView());
+      },
+      getList: function(type){
+    	  alert(type);
       }
 
   });
