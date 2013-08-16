@@ -71,6 +71,7 @@ define([
             },
 
             renderMenuItem: function(model){
+            
                 var view = new MenuItemView({model:model});
                 var elem = view.render().el;
                 return elem;
