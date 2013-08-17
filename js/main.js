@@ -31,6 +31,9 @@ var App = App ||
         projectForm:"#createProjectForm",
         privacyDD:"#privacyDD",
         managerSelect: "#projectManagerDD"
+    },
+    Views: {
+
     }
 };
 
@@ -45,7 +48,6 @@ require.config({
     less: 'libs/less/less-1.4.1.min',
     localstorage: 'localstorage'
   }
-
 });
 
 require(['app'], function(app){

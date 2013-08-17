@@ -14,12 +14,10 @@ define([
                 //_.bindAll(this, 'render');
                 //this.model.bind('change', this.render);
             },
-
             close: function(){
                 this.unbind();
                 this.model.unbind();
             },
-
             render: function(){
                 var template = this.template(this.model.toJSON());
                 $(this.el).html(template);

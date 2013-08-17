@@ -5,7 +5,7 @@ define([
     'views/menu/MenuItem',
     'collections/menu/MenuItems'
 ],
-    function($, _, Backbone, MenuItemView, MenuItemsCollection){
+    function($, _, Backbone, MenuItemView){
 
         var LeftMenuView = Backbone.View.extend({
             tagName: 'nav',
@@ -28,17 +28,10 @@ define([
 
             },
 
-            close: function(){
-                this.unbind();
-                this.collection.unbind();
-            },
-
             render: function(){
                 console.log("Render LeftMenuView");
                 var $el = $(this.el);
-
                 $el.html('');
-
                 var currentModule = null;
                 var root = this.collection.root();
                 if(this.currentSection == null)

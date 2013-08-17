@@ -8,13 +8,9 @@ define([
 
         var TopMenuView = Backbone.View.extend({
             tagName:'ul',
-
             el: '#topmenu-holder nav ul',
-
             selectedModule:null,
-
             initialize: function(options){
-
                 console.log("init MenuView");
                 if(!options.collection) throw "No collection specified!";
                 this.collection = options.collection;
@@ -48,15 +44,9 @@ define([
                     if(model.get('mname')==self.selectedModule)
                         $(item).addClass('selected');
                     self.$el.append(item);
-
                 });
-
-
-
                 return this;
             }
-
-
         });
 
         return TopMenuView;
