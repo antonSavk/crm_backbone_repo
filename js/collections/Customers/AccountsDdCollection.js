@@ -2,20 +2,16 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    'localstorage'
+    "localstorage"
 ],
     function ($, _, Backbone, Localstorage) {
-        var CustomerModel = Backbone.Model.extend({
-        });
-
-        var CustomersCollection = Backbone.Collection.extend({
-            model: CustomerModel,
+        var AccountsDdCollection = Backbone.Collection.extend({
             url: function(){
-                return "http://" + App.Server.ip + ":" + App.Server.port + "/getAllCustomers"
+                return "http://" + App.Server.ip + ":" + App.Server.port + "/getAccountsForDd"
             },
 
             initialize: function(){
-                console.log("Customer Collection Init");
+                console.log("AccountsForDd Collection Init");
                 var hash = Localstorage.getFromLocalStorage('hash'),
                     uid = Localstorage.getFromLocalStorage('uid'),
                     mid = 23;
@@ -49,9 +45,7 @@ define([
             fetchError: function(error){
 
             }
-
-
         });
 
-        return CustomersCollection;
+        return AccountsDdCollection;
     });

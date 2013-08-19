@@ -11,7 +11,10 @@ define([
   var AppRouter = Backbone.Router.extend({
 
       initialize : function(){
-
+          Backbone.View.prototype.close = function(){
+              this.remove();
+              this.unbind();
+          }
       },
 
       currentView: null,
@@ -20,6 +23,7 @@ define([
           "": "main",
           "login":"login",
           ":type" : "getList",
+          ":type/:action" : "makeAction",
           "*actions":"defaultAction"
       },
 
@@ -27,28 +31,24 @@ define([
           if(typeof type == "undefined") return window.location.hash = "";
           var View = "views/" + type + "/" + type + "View";
           var TopBarView = "views/" + type + "/" + type + "TopBarView";
-
-         /* $.ajax({
-              url:'http://localhost/crm_backbone_repo/js/views/Customers/CustomersView.js',
-              success: function(data){
-                  debugger
-                        alert('ok');
-              },
-              error: function(data){
-                  alert('not ok');
-              }
-          });*/
                //return;
           require([View, TopBarView], function(TypeView, TypeTopBarView){
-              debugger
               new TypeView();
               new TypeTopBarView();
           });
-
+      },
+      makeAction: function(type, action){
+          var View = "views/" + type + "/" + type + action + "View";
+          var self = this;
+          require([View], function(LoadedView){
+             self.changeView(new LoadedView()); //new CustomersCreateView
+          }, self);
       },
 
+
+
       changeView: function(view){
-          if(this.currentView != null){
+          if(this.currentView){
               this.currentView.undelegateEvents();
           }
           this.currentView = view;

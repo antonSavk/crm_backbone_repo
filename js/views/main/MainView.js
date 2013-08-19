@@ -28,7 +28,8 @@ define([
             console.log('Render Main View');
             this.$el.html(MainTemplate);
             return this;
-    }});
+        }
+    });
 
     return MainView;
 

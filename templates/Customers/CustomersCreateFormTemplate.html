@@ -1,0 +1,36 @@
+<div class="form-holder">
+    <form method="post" action="" id="createProjectForm" class="form">
+        <legend>Create Project</legend>
+        <fieldset>
+            <div>
+                <label for="projectNameInput">Project Name</label>
+                <input type="text" name="projectname" id="projectNameInput" required/>
+            </div>
+
+            <div>
+                <label for="withTasks"><input type="checkbox" id="withTasks"/>Tasks</label>
+            </div>
+
+            <div>
+                <label for="privacyDD">Privacy/Visibility</label>
+                <select id="privacyDD">
+                    <option>All Users</option>
+                    <option>Portal Users and Employees</option>
+                    <option>Employees Only</option>
+                    <option>Followers Only</option>
+                </select>
+            </div>
+
+
+            <div>
+                <label for="projectManagerDD">Project Manager</label>
+                <select id="projectManagerDD">
+                    <% collection.each(function(
+                </select>
+            </div>
+        </fieldset>
+
+
+        <input type="submit" class="submit" value="Submit"/>
+    </form>
+</div>
