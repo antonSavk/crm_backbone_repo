@@ -294,9 +294,17 @@ body {
 	height:24px;
 	float:left;
 	margin:0 12px;
-	padding:0;
 	border:1px solid #ababab;
 	border-radius:5px;
+	li{
+		border-right:1px solid #ababab;
+		margin:0;
+		padding:0;
+		display:block;
+		float:left;
+		height:24px;
+		width:24px;
+	}
 	.selected{
 		background: #999999;
 		-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
@@ -310,7 +318,7 @@ body {
 	&:first-child{
 	
 	}
-	&:last-child{
+	li:last-child{
 		border-right:0;
 	}
 }
@@ -354,7 +362,7 @@ body {
 			font-size: 11px;
 		}
 	}
-	&:nth-child(odd){
+	tr:nth-child(odd){
 		background-color:#f4f4fa;
 	}
 }
