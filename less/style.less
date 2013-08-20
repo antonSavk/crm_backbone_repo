@@ -419,7 +419,7 @@ input, textarea, select {
 }
 .topbarBtnHolder{
 	float:left;
-	margin-top:36px;
+	margin-top:26px;
 	paddin-left:10px;
 }
 #createBtnHolder{
@@ -480,7 +480,7 @@ input, textarea, select {
 		-box-shadow: 0 0 4px #7c7bad;	
 	}
 }
-button{
+.btn{
 	display: inline-block;
 	border: 1px solid rgba(0, 0, 0, 0.4);
 	color: #4c4c4c;
@@ -488,14 +488,8 @@ button{
 	padding: 3px 12px;
 	font-size: 13px;
 	text-align: center;
+	text-decoration:none;
 	.gradient(#d7d7d7);
-	/*background-color: #e3e3e3;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#efefef), to(#d8d8d8));
-	background-image: -webkit-linear-gradient(top, #efefef, #d8d8d8);
-	background-image: -moz-linear-gradient(top, #efefef, #d8d8d8);
-	background-image: -ms-linear-gradient(top, #efefef, #d8d8d8);
-	background-image: -o-linear-gradient(top, #efefef, #d8d8d8);
-	background-image: linear-gradient(to bottom, #efefef, #d8d8d8);*/
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
@@ -505,16 +499,13 @@ button{
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 	-webkit-font-smoothing: antialiased;
 	outline: none;
-	&:hover{
-		/*background-color: #ececec;
-		background-image: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#e3e3e3));
-		background-image: -webkit-linear-gradient(top, #f6f6f6, #e3e3e3);
-		background-image: -moz-linear-gradient(top, #f6f6f6, #e3e3e3);
-		background-image: -ms-linear-gradient(top, #f6f6f6, #e3e3e3);
-		background-image: -o-linear-gradient(top, #f6f6f6, #e3e3e3);
-		background-image: linear-gradient(to bottom, #f6f6f6, #e3e3e3);*/
+	&:hoover{
+		.gradient(#d2d2d2);
 		cursor: pointer;
 		background-position: 0;
 	}
+}
+button{
+	.btn;
 }
 //Less Styles Up to date 20.08.2013
