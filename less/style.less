@@ -24,6 +24,7 @@
 /*--------------------------Styles------------------------------*/
 body {
 	font-family:@body-font;
+	height:100%;
 }
 .gradient(@color){
 	@startcolor: @color + #111;
@@ -85,7 +86,7 @@ body {
 #topmenu-holder{
 	display:block;
 	float:none;
-	position:fixed;
+	position:relative;
 	top:0;
 	left:0;
 	width:100%;
@@ -126,9 +127,9 @@ body {
 	}
 }
 #leftmenu-holder{
-	margin-top:10;
+	padding-top:10px;
 	display:block;
-	position:fixed;
+	position:absolute;
 	top:30px;
 	left:0;
 	width:170px;
@@ -176,28 +177,31 @@ body {
 	}
 }
 #content-holder{
+	position:relative;
 	display:block;
 	width:auto;
 	margin-left:170px; 
 }
 #top-bar{
+	positon:relative;
 	display:block;
 	width:auto;
-	margin-top:30px;
+	margin-top:0px;
 	margin-left:170px; 
 	height:70px;
 	border-bottom: 1px solid #cacaca;
 	.gradient(#ededed);
-	/*background-color: #ededed;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fcfcfc), to(#dedede));
-	background-image: -webkit-linear-gradient(top, #fcfcfc, #dedede);
-	background-image: -moz-linear-gradient(top, #fcfcfc, #dedede);
-	background-image: -ms-linear-gradient(top, #fcfcfc, #dedede);
-	background-image: -o-linear-gradient(top, #fcfcfc, #dedede);
-	background-image: linear-gradient(to bottom, #fcfcfc, #dedede);/*/
 	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
 	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
 	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
+	h3{
+		padding:10px;
+		color:@blue;
+		font-size: 18px;
+		max-width: 7em;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
 }
 #loginForm{
 	display:block;
@@ -419,7 +423,7 @@ input, textarea, select {
 }
 .topbarBtnHolder{
 	float:left;
-	margin-top:26px;
+	margin-top:5px;
 	margin-left:10px;
 }
 #createBtnHolder{
