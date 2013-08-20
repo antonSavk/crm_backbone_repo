@@ -11,7 +11,7 @@ define([
         var CustomersCollection = Backbone.Collection.extend({
             model: CustomerModel,
             url: function(){
-                return "http://" + App.Server.ip + ":" + App.Server.port + "/getAllCustomers"
+                return "http://" + App.Server.ip + ":" + App.Server.port + "/getAllForCustomers"
             },
 
             initialize: function(){

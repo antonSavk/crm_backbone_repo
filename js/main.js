@@ -32,9 +32,7 @@ var App = App ||
         privacyDD:"#privacyDD",
         managerSelect: "#projectManagerDD"
     },
-    Views: {
-
-    }
+    requestedURL: null
 };
 
 require.config({

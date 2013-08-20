@@ -7,7 +7,7 @@ define(["jquery", "localstorage"], function($, LocalStorage){
 		
 		if(!uid || !hash)
 		{
-			callback({result: {status: 4, description: 'No variables in local storage'}});
+			callback(false);
 			return
 		}
 		
@@ -19,10 +19,14 @@ define(["jquery", "localstorage"], function($, LocalStorage){
                 hash: hash
             },
             success: function(resp){
-                callback(resp);
+            	if(resp.result.status == 0){
+            		callback(true);
+        	    }else
+        	    	callback(false, resp.result.description);
+                
             },
             error: function(){
-                callback({result: {status: 4, description: 'Error during checkHash request'}});
+                callback(false, "Server is unavailable...");
             }
         });
 	},
@@ -40,12 +44,12 @@ define(["jquery", "localstorage"], function($, LocalStorage){
             	{
             		LocalStorage.saveToLocalStorage('uid', resp.data._id);
                 	LocalStorage.saveToLocalStorage('hash', resp.hash);
-            	}
-            	
-                callback(resp);
+                	callback(true);
+            	}else
+            		callback(false, resp.result.description);
             },
             error: function(){
-                callback({result: {status: 4, description: 'Error during checkLogin request'}});
+                callback(false, "Server is unavailable...");
             }
         });
 	}

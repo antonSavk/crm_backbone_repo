@@ -2,7 +2,7 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "text!templates/Customers/CustomersItemTemplate.html"
+    "text!templates/Customers/list/CustomersItemTemplate.html"
 ],
     function ($, _, Backbone, CustomersItemTemplate) {
         var CustomersItemView = Backbone.View.extend({
