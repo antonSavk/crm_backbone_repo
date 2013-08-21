@@ -4,7 +4,7 @@ define([
     "backbone",
     'text!templates/Customers/list/CustomersTemplate.html',
     'text!templates/Customers/form/CustomersTemplate.html',
-    'collections/CustomersCollection',
+    'collections/Customers/CustomersCollection',
     'views/Customers/list/CustomersItemView',
     'views/Customers/thumbnails/CustomersItemView'
 ],
