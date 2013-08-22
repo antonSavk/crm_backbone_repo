@@ -1,33 +1,73 @@
 <div class="form-holder">
+
+    ,
+
     <form method="post" action="" id="createProjectForm" class="form">
-        <legend>Create Project</legend>
         <fieldset>
-            <div>
-                <label for="projectNameInput">Project Name</label>
-                <input type="text" name="projectname" id="projectNameInput" required/>
-            </div>
+            <p>
+                <label for="customerName">Name (<label><input type="checkbox" id="isCompanyCB" name="companyCB"/> Is a Company?</label> ) </label><br/>
+                <input type="text" name="customerName" id="customerName" required/>
 
-            <div>
-                <label for="withTasks"><input type="checkbox" id="withTasks"/>Tasks</label>
-            </div>
+            </p>
 
-            <div>
-                <label for="privacyDD">Privacy/Visibility</label>
-                <select id="privacyDD">
-                    <option>All Users</option>
-                    <option>Portal Users and Employees</option>
-                    <option>Employees Only</option>
-                    <option>Followers Only</option>
+            <p>
+                <label for="companyDd">Project Manager</label>
+                <select id="companyDd">
+                    <option selected="selected">Select...</option>
+                    <% collection.each(function(option){ %>
+                        <option value="<%= option.get('id') %>"><%= option.get('uname') %></option>
+                    <% }); %>
                 </select>
-            </div>
+            </p>
 
-
-            <div>
-                <label for="projectManagerDD">Project Manager</label>
-                <select id="projectManagerDD">
-                    <% collection.each(function(
+            <p>
+                <label for="addressType">Address Type</label>
+                <select id="addressType" name="addressType">
+                    <option>Default</option>
+                    <option>Invoice</option>
+                    <option>Shipping</option>
+                    <option>Other</option>
                 </select>
-            </div>
+            </p>
+
+            <p>
+                <label for="addressCB">Address</label>
+                <input type="checkbox" name="address" id="addressCB" required/>
+            </p>
+
+            <p>
+                <label for="websiteInput">Website</label>
+                <input type="text" name="websiteInput" id="websiteInput" required/>
+            </p>
+            <p>
+                <label for="jobPositionInput">Job Position</label>
+                <input type="text" name="jobPositionInput" id="jobPositionInput" required/>
+            </p>
+
+            <p>
+                <label for="phoneInput">Phone</label>
+                <input type="text" name="phoneInput" id="phoneInput" required/>
+            </p>
+            <p>
+                <label for="mobileInput">Mobile</label>
+                <input type="text" name="mobileInput" id="mobileInput" required/>
+            </p>
+
+            <p>
+                <label for="faxInput">Fax</label>
+                <input type="text" name="faxInput" id="faxInput" required/>
+            </p>
+
+            <p>
+                <label for="emailInput">Email</label>
+                <input type="text" name="emailInput" id="emailInput" required/>
+            </p>
+
+            <p>
+                <label for="titleInput">Title</label>
+                <input type="text" name="titleInput" id="titleInput" required/>
+            </p>
+
         </fieldset>
 
 

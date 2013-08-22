@@ -14,6 +14,7 @@ define([
                 return "http://" + App.Server.ip + ":" + App.Server.port + "/getAllForCustomers"
             },
 
+
             initialize: function(){
                 console.log("Customer Collection Init");
                 var hash = Localstorage.getFromLocalStorage('hash'),
@@ -45,6 +46,9 @@ define([
 
             fetchSuccess: function(collection, response){
                 console.log("Customers fetchSuccess");
+                if (options.success) {
+                    options.success(result);
+                }
             },
             fetchError: function(error){
 

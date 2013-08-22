@@ -5,7 +5,8 @@ define([
   'underscore',
   'backbone',
   'views/main/MainView',
-  'views/login/LoginView'
+  'views/login/LoginView',
+  'views/Customers/CustomersCreateView'
 ], function(require, $, _, Backbone, MainView, LoginView) {
   
   var AppRouter = Backbone.Router.extend({
@@ -59,12 +60,11 @@ define([
       makeAction: function(type, action){
           var View = "views/" + type + "/" + type + action + "View";
           var self = this;
+          //this.changeView(new View());
           require([View], function(LoadedView){
              self.changeView(new LoadedView()); 
           }, self);
       },
-
-
 
       changeView: function(view){
           if(this.currentView){
