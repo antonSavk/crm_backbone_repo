@@ -22,6 +22,7 @@ function ($, _, Backbone, CustomersListTemplate, CustomersFormTemplate, Customer
             this.collection.bind('reset', _.bind(this.render, this));
         },
 
+        
         render: function(){
             console.log('Render Customers View');
             

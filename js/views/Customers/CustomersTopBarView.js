@@ -11,6 +11,7 @@ define([
             contentType: "Customers",
             viewtype: null,
             currentItem: 5,
+            collectionLength: 0,
             template: _.template(CustomersTopBarTemplate),
             
             events:{
@@ -24,7 +25,7 @@ define([
             
             initialize: function(options){
             	this.currentItem = options.currentItem;
-            	this.viewtype = options.viewtype; 
+            	this.viewtype = options.viewtype;
                 this.render();
             },
 

@@ -24,11 +24,15 @@ define(['backbone'],function(Backbone){
     	switch(shift){
     		case "left": {
     			this.currentItem = parseInt(this.currentItem) - 1;
-    			if (this.currentItem == 0) this.currentItem = 1;
+    			if (this.currentItem <= 0) this.currentItem = 1;
     			break;
     		}
     		case "right": {
     			this.currentItem = parseInt(this.currentItem) + 1;
+    			debugger
+    			//var length = this.getCollectionLength();
+    			debugger
+    			
     			break;
     		}
     	}

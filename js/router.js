@@ -49,8 +49,11 @@ define([
           var TopBarView = "views/" + type + "/" + type + "TopBarView";
           var self = this;
           require([View, TopBarView], function(TypeView, TypeTopBarView){
-              self.changeContentView(new TypeView({viewtype:viewtype, currentItem:curitem}));
-              self.changeTopBarView(new TypeTopBarView({viewtype:viewtype, currentItem:curitem}));
+        	  var typeView = new TypeView({viewtype:viewtype, currentItem:curitem}); 
+        	  var typeTopBarView = new TypeTopBarView({viewtype:viewtype, currentItem:curitem});
+        	  
+              self.changeContentView(typeView);
+              self.changeTopBarView(typeTopBarView);
           });
       },
       makeAction: function(type, action){
