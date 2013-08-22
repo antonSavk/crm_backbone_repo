@@ -2,21 +2,21 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "text!templates/Customers/CustomersCreateFormTemplate.html",
+    "text!templates/Projects/ProjectsCreateFormTemplate.html",
     "collections/Customers/AccountsDdCollection",
-    "collections/Customers/CustomersCollection"
+    "collections/Projects/ProjectsCollection"
 ],
-    function ($, _, Backbone, CustomersCreateFormTemplate, AccountsDdCollection, CustomersCollection) {
+    function ($, _, Backbone, ProjectsCreateFormTemplate, AccountsDdCollection, ProjectsCollection) {
 
-        var CustomersCreateView = Backbone.View.extend({
+        var ProjectsCreateView = Backbone.View.extend({
             el: "#content-holder",
             _modelBinder: undefined,
-            template: _.template(CustomersCreateFormTemplate),
+            template: _.template(ProjectsCreateFormTemplate),
 
             initialize: function () {
                this.accountDdCollection = new AccountsDdCollection();
                this.bind('reset', _.bind(this.render, this));
-               this.customersCollection = new CustomersCollection();
+               this.projectsCollection = new ProjectsCollection();
                this.render();
             },
 
@@ -60,5 +60,5 @@ define([
 
         });
 
-        return CustomersCreateView;
+        return ProjectsCreateView;
     });
