@@ -4,7 +4,7 @@ define(['backbone'],function(Backbone){
 		if(success)
 	    {
 			var url = (App.requestedURL == null) ? Backbone.history.fragment : App.requestedURL;
-			if (url == "") url = 'home';
+			if ((url == "") || (url == "login")) url = 'home';
 			Backbone.history.navigate(url, {trigger: true});
 	    }else
 	    {

@@ -11,22 +11,19 @@ define([
         var CustomersCollection = Backbone.Collection.extend({
             model: CustomerModel,
             url: function(){
-                return "http://" + App.Server.ip + ":" + App.Server.port + "/getAllForCustomers"
+            	var hash = Localstorage.getFromLocalStorage('hash'),
+                	uid = Localstorage.getFromLocalStorage('uid'),
+                	mid = 39,
+                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/getAllForCustomers?uid="+uid+"&hash="+hash+"&mid="+mid;
+                return url;
             },
 
 
             initialize: function(){
                 console.log("Customer Collection Init");
-                var hash = Localstorage.getFromLocalStorage('hash'),
-                    uid = Localstorage.getFromLocalStorage('uid'),
-                    mid = 23;
-
-                this.fetch({data: $.param({
-                    hash:hash,
-                    uid:uid,
-                    mid:mid
-                }),
-                    type: 'POST',
+                
+                this.fetch({
+                    type: 'GET',
                     reset:true,
                     success: this.fetchSuccess,
                     error: this.fetchError
@@ -36,6 +33,7 @@ define([
             parse:true,
 
             parse: function(response){
+            	debugger
                 console.log('parse Customers');
                 $.each(response.data, function(index,val){
                     response.data[index]["id"] = response.data[index]["_id"];

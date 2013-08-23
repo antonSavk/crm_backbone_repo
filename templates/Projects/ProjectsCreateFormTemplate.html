@@ -11,63 +11,44 @@
             </p>
 
             <p>
-                <label for="companyDd">Project Manager</label>
-                <select id="companyDd">
-                    <option selected="selected">Select...</option>
-                    <% collection.each(function(option){ %>
+                <label for="managerDd">Project Manager</label>
+                <select id="managerDd">
+                    <option selected="selected" value="0">Select...</option>
+                    <% accountDdCollection.each(function(option){ %>
                         <option value="<%= option.get('id') %>"><%= option.get('uname') %></option>
                     <% }); %>
                 </select>
             </p>
-
+            
             <p>
-                <label for="addressType">Address Type</label>
-                <select id="addressType" name="addressType">
-                    <option>Default</option>
-                    <option>Invoice</option>
-                    <option>Shipping</option>
-                    <option>Other</option>
+                <label for="customerDd">Project Customer</label>
+                <select id="customerDd">
+                    <option selected="selected" value="0">Select...</option>
+                    <% customersDdCollection.each(function(option){ %>
+                        <option value="<%= option.get('id') %>"><%= option.get('name') %> (<%= option.get('type') %>)</option>
+                    <% }); %>
                 </select>
             </p>
-
+            
             <p>
-                <label for="addressCB">Address</label>
-                <input type="checkbox" name="address" id="addressCB" required/>
+                <label for="workflowDd">Project Workflow</label>
+                <select id="workflowDd">
+                    <option selected="selected" value="0">Select...</option>
+                    <% workflowsDdCollection.each(function(option){ %>
+                        <option value="<%= option.get('id') %>"><%= option.get('name') %> (<%= option.get('status') %>)</option>
+                    <% }); %>
+                </select>
             </p>
-
+            
             <p>
-                <label for="websiteInput">Website</label>
-                <input type="text" name="websiteInput" id="websiteInput" required/>
+                <label for="usereditDd">Users Can Edit Project</label></br>
+                <select id="usereditDd" size="3" multiple>
+                    <option selected="selected" value="0">No one...</option>
+                    <% accountDdCollection.each(function(option){ %>
+                        <option value="<%= option.get('id') %>"><%= option.get('uname') %></option>
+                    <% }); %>
+                </select>
             </p>
-            <p>
-                <label for="jobPositionInput">Job Position</label>
-                <input type="text" name="jobPositionInput" id="jobPositionInput" required/>
-            </p>
-
-            <p>
-                <label for="phoneInput">Phone</label>
-                <input type="text" name="phoneInput" id="phoneInput" required/>
-            </p>
-            <p>
-                <label for="mobileInput">Mobile</label>
-                <input type="text" name="mobileInput" id="mobileInput" required/>
-            </p>
-
-            <p>
-                <label for="faxInput">Fax</label>
-                <input type="text" name="faxInput" id="faxInput" required/>
-            </p>
-
-            <p>
-                <label for="emailInput">Email</label>
-                <input type="text" name="emailInput" id="emailInput" required/>
-            </p>
-
-            <p>
-                <label for="titleInput">Title</label>
-                <input type="text" name="titleInput" id="titleInput" required/>
-            </p>
-
         </fieldset>
 
 

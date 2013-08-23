@@ -45,7 +45,6 @@ define([
     	  if (testCuritem.test(curitem) == false)
     		  curitem = 1;
     	  
-          if(typeof type == "undefined") return window.location.hash = "";
           var View = "views/" + type + "/" + type + "View";
           var TopBarView = "views/" + type + "/" + type + "TopBarView";
           var self = this;
@@ -58,11 +57,18 @@ define([
           });
       },
       makeAction: function(type, action){
+    	  if (this.mainView == null) this.main();
+    	  var actionVariants = ["Create", "Edit"];
+    	  
+    	  if ($.inArray(action, actionVariants) == -1)
+    	  {
+    		  action = "create";
+    	  }
           var View = "views/" + type + "/" + type + action + "View";
+          
           var self = this;
-          //this.changeView(new View());
-          require([View], function(LoadedView){
-             self.changeView(new LoadedView()); 
+          require([View], function(ActionView){
+             self.changeContentView(new ActionView()); 
           }, self);
       },
 
