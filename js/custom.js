@@ -15,9 +15,11 @@ define(['backbone'],function(Backbone){
 	    	Backbone.history.navigate('login', {trigger: true});
 	    }
 		
+		
 	};
 	
 	var changeContentIndex = function(event){
+		debugger
 		event.preventDefault();
     	var shift = $(event.target).attr('data-shift');
     	

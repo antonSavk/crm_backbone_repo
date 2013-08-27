@@ -10,7 +10,7 @@ define([
             el:'#top-bar',
             contentType: "Projects",
             viewtype: null,
-            currentItem: 5,
+            currentItem: null,
             collectionLength: 0,
             template: _.template(ProjectsTopBarTemplate),
             

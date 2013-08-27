@@ -38,22 +38,56 @@ define([
             submit: function(event){
                 event.preventDefault();
                 
-                var idCustomer = $(this.el).find("#customerDd option:selected").val();
-                var customer = this.customersDdCollection.where({id: idCustomer})[0];
-                
-                var idManager = $(this.el).find("#managerDd option:selected").val();
-                var projectmanager = this.accountDdCollection.where({id: idManager})[0];
-                
-                var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
-                var workflow = this.workflowsDdCollection.where({id: idWorkflow})[0];
+                var projectname = $("#projectName").val();
+                if ($.trim(projectname) == "")
+                {
+                	projectname = "New Project";
+                }
                 debugger
+                var idCustomer = $(this.el).find("#customerDd option:selected").val();
+                var customer = this.customersDdCollection.where({id: idCustomer});
+                
+                if (customer.length == 0)
+                {
+                	customer = null;
+                }else
+                {
+                	customer = customer[0].toJSON(); 
+                }
+                var idManager = $(this.el).find("#managerDd option:selected").val();
+                var projectmanager = this.accountDdCollection.where({id: idManager});
+                if (projectmanager.length == 0)
+                {
+                	projectmanager = null;
+                }else
+                {
+                	projectmanager = projectmanager[0].toJSON(); 
+                }
+                var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
+                var workflow = this.workflowsDdCollection.where({id: idWorkflow});
+                if (workflow.length == 0)
+                {
+                	workflow = null;
+                }else
+                {
+                	workflow = workflow[0].toJSON(); 
+                }
+                var $userNodes = $("#usereditDd option:selected"), users = [];
+                $userNodes.each(function(key, val){
+                	users.push({
+                		uid: val.value,
+                		uname: val.innerHTML
+                	});
+                });
+                
+                
                 this.projectsCollection.create({
-                	projectname: $("#projectName").val(),
-                	customer: customer.toJSON(),
-                	projectmanager: projectmanager.toJSON(),
-                	workflow: workflow.toJSON(),
+                	projectname: projectname,
+                	customer: customer,
+                	projectmanager: projectmanager,
+                	workflow: workflow,
                 	teams: {
-                		users:[]
+                		users: users
                 	}
                 });
             },
