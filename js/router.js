@@ -6,8 +6,8 @@ define([
   'backbone',
   'views/main/MainView',
   'views/login/LoginView',
-  'views/Customers/CustomersCreateView'
-], function(require, $, _, Backbone, MainView, LoginView) {
+  'custom'
+], function(require, $, _, Backbone, MainView, LoginView, Custom) {
   
   var AppRouter = Backbone.Router.extend({
 
@@ -26,35 +26,39 @@ define([
       routes: {
           "home": "main",
           "login":"login",
-          "home/:type/:viewtype/:curitem" : "getList",
-          "home/:type/:action" : "makeAction",
+          "home/content-:type(/:viewtype)(/:curitem)" : "getList",
+          //"home/:type/:action" : "makeAction",
           "*actions":"main"
       },
 
-      getList: function(type, viewtype, curitem){
+      getList: function(contentType, viewType, itemIndex){
+    	  console.log('GetList: '+contentType+" "+viewType+" "+itemIndex);
+    	  
     	  if (this.mainView == null) this.main();
-    	  var viewVariants = ["list", "form", "thumbnails", "gantt"];
     	  
-    	  if ($.inArray(viewtype, viewVariants) == -1)
-    	  {
-    		  viewtype = "list";
-    	  }
-    	    
-    	  var testCuritem = new RegExp(/^[1-9]{1}[0-9]*$/);
+    	  if (viewType)
+    		  Custom.setCurrentVT(viewType);
+    	  if (itemIndex)
+    		  Custom.setCurrentII(itemIndex);
     	  
-    	  if (testCuritem.test(curitem) == false)
-    		  curitem = 1;
     	  
-          var View = "views/" + type + "/" + type + "View";
-          var TopBarView = "views/" + type + "/" + type + "TopBarView";
+          var ContentViewUrl = "views/" + contentType + "/ContentView";
+          var TopBarViewUrl = "views/" + contentType + "/TopBarView";
           var self = this;
-          require([View, TopBarView], function(TypeView, TypeTopBarView){
-        	  var typeView = new TypeView({viewtype:viewtype, currentItem:curitem}); 
-        	  var typeTopBarView = new TypeTopBarView({viewtype:viewtype, currentItem:curitem});
-        	  
-              self.changeContentView(typeView);
-              self.changeTopBarView(typeTopBarView);
+          require([ContentViewUrl, TopBarViewUrl], function(ContentView, TopBarView){
+              self.changeContentView(new ContentView());
+              self.changeTopBarView(new TopBarView());
           });
+          
+          viewType = Custom.getCurrentVT();
+          var url = "#home/content-"+ contentType + "/" + viewType;
+          
+          if (viewType === "form")
+          {
+        	  url += "/" + Custom.getCurrentII(); 
+          }
+          
+          Backbone.history.navigate(url);
       },
       makeAction: function(type, action){
     	  if (this.mainView == null) this.main();
