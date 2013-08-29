@@ -27,38 +27,52 @@ define([
           "home": "main",
           "login":"login",
           "home/content-:type(/:viewtype)(/:curitem)" : "getList",
-          //"home/:type/:action" : "makeAction",
+          "home/action-:type/:action" : "makeAction",
           "*actions":"main"
       },
 
       getList: function(contentType, viewType, itemIndex){
+    	  if (this.mainView == null) this.main();
     	  console.log('GetList: '+contentType+" "+viewType+" "+itemIndex);
     	  
-    	  if (this.mainView == null) this.main();
+    	  var ContentViewUrl = "views/" + contentType + "/ContentView",
+              TopBarViewUrl = "views/" + contentType + "/TopBarView",
+              CollectionUrl = "collections/" + contentType + "/" + contentType + "Collection",
+              self = this;
     	  
-    	  if (viewType)
-    		  Custom.setCurrentVT(viewType);
-    	  if (itemIndex)
-    		  Custom.setCurrentII(itemIndex);
+    	  self.Custom = Custom;
     	  
-    	  
-          var ContentViewUrl = "views/" + contentType + "/ContentView";
-          var TopBarViewUrl = "views/" + contentType + "/TopBarView";
-          var self = this;
-          require([ContentViewUrl, TopBarViewUrl], function(ContentView, TopBarView){
-              self.changeContentView(new ContentView());
-              self.changeTopBarView(new TopBarView());
+          require([ContentViewUrl, TopBarViewUrl, CollectionUrl], function(ContentView, TopBarView, ContentCollection){
+        	  var contentCollection = new ContentCollection();
+        	  contentCollection.bind('reset', _.bind(createViews, self));
+        	  function createViews()
+        	  {
+        		  
+        		  contentCollection.unbind('reset');
+        		  Custom.setCurrentCL(contentCollection.models.length);
+        		  
+        		  if (viewType)
+        			  this.Custom.setCurrentVT(viewType);
+            	  if (itemIndex)
+            		  this.Custom.setCurrentII(itemIndex);
+            	  
+            	  viewType = this.Custom.getCurrentVT();
+            	  itemIndex = this.Custom.getCurrentII();
+        		  
+                  var url = "#home/content-"+ contentType + "/" + viewType;
+                  
+                  if (viewType === "form")
+                  {
+                	  url += "/" + itemIndex; 
+                  }
+                  
+                  Backbone.history.navigate(url);
+        		  this.changeContentView(new ContentView({collection: contentCollection}));
+                  this.changeTopBarView(new TopBarView());
+        	  }
+              
           });
           
-          viewType = Custom.getCurrentVT();
-          var url = "#home/content-"+ contentType + "/" + viewType;
-          
-          if (viewType === "form")
-          {
-        	  url += "/" + Custom.getCurrentII(); 
-          }
-          
-          Backbone.history.navigate(url);
       },
       makeAction: function(type, action){
     	  if (this.mainView == null) this.main();

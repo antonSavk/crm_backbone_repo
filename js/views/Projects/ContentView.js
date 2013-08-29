@@ -12,11 +12,11 @@ define([
 function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCollection, ProjectsListItemView, ProjectsThumbnailsItemView, Custom) {
     var ProjectsView = Backbone.View.extend({
         el: '#content-holder',
-        initialize: function(){
+        initialize: function(options){
             console.log('Init Projects View');
-            this.collection = new ProjectsCollection();
-            //this.collection.bind('reset',this.render, this);
+            this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
+            this.render();
         },
 
         render: function(){
@@ -52,9 +52,16 @@ function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCo
             			itemIndex = this.collection.models.length - 1;
             			Custom.setCurrentII(this.collection.models.length);
             		}
-            		var currentModel = this.collection.models[itemIndex];
-            		this.$el.html(_.template(ProjectsFormTemplate, currentModel.toJSON()));
             		
+            		if (itemIndex == -1) 
+            		{
+            			this.$el.html();
+            		}else
+            		{
+            			var currentModel = this.collection.models[itemIndex];
+            			this.$el.html(_.template(ProjectsFormTemplate, currentModel.toJSON()));
+            		}
+            			
             		break;
             	}
             	case "gantt":

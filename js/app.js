@@ -13,7 +13,7 @@ define([
     var initialize = function(){
     	
     	var appRouter = new Router();
-    	Backbone.history.start();
+    	
     	Communication.checkHash(Custom.runApplication);
     };
 

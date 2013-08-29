@@ -5,17 +5,21 @@ define(['backbone'],function(Backbone){
 	    {
 			var url = (App.requestedURL == null) ? Backbone.history.fragment : App.requestedURL;
 			if ((url == "") || (url == "login")) url = 'home';
-			Backbone.history.navigate(url, {trigger: true});
+			
+			window.location.hash = url;
+			
+			//Backbone.history.navigate(url, {trigger: true});
 	    }else
 	    {
-	    	
 	    	console.log(description);
-	    	if (App.requestedURL == null)
+	    	//if (App.requestedURL == null)
 	    		App.requestedURL = Backbone.history.fragment; 
-	    	Backbone.history.navigate('login', {trigger: true});
+	    	
+	    	window.location.hash = "login";
+	    	//Backbone.history.navigate('login', {trigger: true});
 	    }
 		
-		
+		Backbone.history.start();
 	};
 	
 	var changeItemIndex = function(event){
