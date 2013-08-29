@@ -1,9 +1,8 @@
 define(['backbone'],function(Backbone){
 	var runApplication = function(success, description){
-		
 		if(success)
 	    {
-			var url = (App.requestedURL == null) ? Backbone.history.fragment : App.requestedURL;
+			var url = (App.requestedURL == null) ? "" : App.requestedURL;
 			if ((url == "") || (url == "login")) url = 'home';
 			
 			window.location.hash = url;
@@ -12,8 +11,8 @@ define(['backbone'],function(Backbone){
 	    }else
 	    {
 	    	console.log(description);
-	    	//if (App.requestedURL == null)
-	    		App.requestedURL = Backbone.history.fragment; 
+	    	if (App.requestedURL == null)
+	    		App.requestedURL = window.location.hash; 
 	    	
 	    	window.location.hash = "login";
 	    	//Backbone.history.navigate('login', {trigger: true});
