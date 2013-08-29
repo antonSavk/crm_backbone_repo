@@ -6,8 +6,6 @@ define(['backbone'],function(Backbone){
 			if ((url == "") || (url == "login")) url = 'home';
 			
 			window.location.hash = url;
-			
-			//Backbone.history.navigate(url, {trigger: true});
 	    }else
 	    {
 	    	console.log(description);
@@ -15,7 +13,6 @@ define(['backbone'],function(Backbone){
 	    		App.requestedURL = window.location.hash; 
 	    	
 	    	window.location.hash = "login";
-	    	//Backbone.history.navigate('login', {trigger: true});
 	    }
 		
 		Backbone.history.start();
