@@ -14,8 +14,8 @@ define(['backbone'],function(Backbone){
 	    	
 	    	window.location.hash = "login";
 	    }
-		
-		Backbone.history.start();
+		if (!Backbone.history.fragment)
+			Backbone.history.start();
 	};
 	
 	var changeItemIndex = function(event){

@@ -6,6 +6,7 @@ define([
 ],
     function ($, _, Backbone, Localstorage) {
         var ProjectModel = Backbone.Model.extend({
+        	
         });
 
         var ProjectsCollection = Backbone.Collection.extend({
@@ -23,6 +24,7 @@ define([
 
             initialize: function(){
                 console.log("Project Collection Init");
+             
                 this.fetch({
                     type: 'GET',
                     reset:true,

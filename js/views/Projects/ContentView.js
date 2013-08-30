@@ -19,6 +19,10 @@ function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCo
             this.render();
         },
 
+        events: {
+        	"click .checkbox": "checked"
+        },
+        
         render: function(){
         	Custom.setCurrentCL(this.collection.models.length);
             console.log('Render Projects View');
@@ -73,6 +77,26 @@ function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCo
             
             return this;
 
+        },
+        
+        checked: function(event)
+        {
+        	if ($("input:checked").length > 0)
+        		$("#top-bar-deleteBtn").show();
+        	else
+        		$("#top-bar-deleteBtn").hide();
+        },
+        
+        deleteItems: function()
+        {
+        	var self = this;
+        	$.each($("input:checked"), function(index, checkbox){
+        		var project = self.collection.where({id: checkbox.value})[0];
+        		debugger
+        		project.destroy({data: $.param({param1: 34}), emulateHTTP: true});
+        	});
+        	
+        	//window.location.reload();
         }
     });
 

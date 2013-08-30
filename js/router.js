@@ -67,8 +67,13 @@ define([
                   }
                   
                   Backbone.history.navigate(url);
-        		  this.changeContentView(new ContentView({collection: contentCollection}));
-                  this.changeTopBarView(new TopBarView());
+                  var contentView = new ContentView({collection: contentCollection});
+                  var topBarView = new TopBarView();
+                  
+                  topBarView.bind('deleteEvent', contentView.deleteItems, contentView);
+                  
+        		  this.changeContentView(contentView);
+                  this.changeTopBarView(topBarView);
         	  }
               
           });
