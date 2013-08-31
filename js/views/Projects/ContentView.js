@@ -2,15 +2,16 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    'text!templates/Projects/list/ProjectsTemplate.html',
-    'text!templates/Projects/form/ProjectsTemplate.html',
+    'text!templates/Projects/list/ListTemplate.html',
+    'text!templates/Projects/form/FormTemplate.html',
     'collections/Projects/ProjectsCollection',
-    'views/Projects/list/ProjectsItemView',
-    'views/Projects/thumbnails/ProjectsItemView',
-    'custom'
+    'views/Projects/list/ListItemView',
+    'views/Projects/thumbnails/ThumbnailsItemView',
+    'custom',
+    'localstorage'
 ],
-function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCollection, ProjectsListItemView, ProjectsThumbnailsItemView, Custom) {
-    var ProjectsView = Backbone.View.extend({
+function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
+    var ContentView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function(options){
             console.log('Init Projects View');
@@ -31,11 +32,11 @@ function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCo
             {
             	case "list":
             	{
-	        		this.$el.html(_.template(ProjectsListTemplate));
+	        		this.$el.html(_.template(ListTemplate));
 	                var table = this.$el.find('table > tbody');
 	
 	                this.collection.each(function(model){
-	                    table.append(new ProjectsListItemView({model:model}).render().el);
+	                    table.append(new ListItemView({model:model}).render().el);
 	                });
 					break;
             	}
@@ -44,7 +45,7 @@ function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCo
             		this.$el.html('');
             		var holder = this.$el;
 	                this.collection.each(function(model){
-	                	$(holder).append(new ProjectsThumbnailsItemView({model:model}).render().el);
+	                	$(holder).append(new ThumbnailsItemView({model:model}).render().el);
 	                });
 	                break;
             	}
@@ -63,7 +64,7 @@ function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCo
             		}else
             		{
             			var currentModel = this.collection.models[itemIndex];
-            			this.$el.html(_.template(ProjectsFormTemplate, currentModel.toJSON()));
+            			this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
             		}
             			
             		break;
@@ -89,16 +90,41 @@ function ($, _, Backbone, ProjectsListTemplate, ProjectsFormTemplate, ProjectsCo
         
         deleteItems: function()
         {
-        	var self = this;
+        	var self = this,
+        		hash = LocalStorage.getFromLocalStorage('hash'),
+        		uid = LocalStorage.getFromLocalStorage('uid'),
+        		mid = 39;
+        	
         	$.each($("input:checked"), function(index, checkbox){
         		var project = self.collection.where({id: checkbox.value})[0];
-        		debugger
-        		project.destroy({data: $.param({param1: 34}), emulateHTTP: true});
+        		
+        		/*project.set("projectname", 'testEDIT');
+        		
+        		project.save({},{
+        			headers: {
+        				uid: uid,
+        				hash: hash,
+        				mid: mid
+        			}
+        		});*/
+        		
+        		
+        		
+        		
+        		project.destroy({headers: {
+        			uid: uid,
+        			hash: hash,
+        			mid: mid
+        		}
+        		});
+        		
+        		
+        		
         	});
         	
-        	//window.location.reload();
+        	this.collection.trigger('reset');
         }
     });
 
-    return ProjectsView;
+    return ContentView;
 });

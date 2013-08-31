@@ -437,7 +437,6 @@
         model.trigger('sync', model, resp, options);
       };
       wrapError(this, options);
-      debugger
       return this.sync('read', this, options);
     },
 
@@ -519,7 +518,6 @@
         return false;
       }
       wrapError(this, options);
-      debugger
       var xhr = this.sync('delete', this, options);
       if (!options.wait) destroy();
       return xhr;

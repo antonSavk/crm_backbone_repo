@@ -2,14 +2,14 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    'text!templates/Projects/TopBarTemplate.html',
+    'text!templates/Projects/ContentTopBarTemplate.html',
     'custom'
 ],
-    function ($, _, Backbone, TopBarTemplate, Custom) {
-        var ProjectsTopBarView = Backbone.View.extend({
+    function ($, _, Backbone, ContentTopBarTemplate, Custom) {
+        var ContentTopBarView = Backbone.View.extend({
             el:'#top-bar',
             contentType: "Projects",
-            template: _.template(TopBarTemplate),
+            template: _.template(ContentTopBarTemplate),
             
             events:{
             	"click a.changeContentView": 'changeContentViewType',
@@ -46,5 +46,5 @@ define([
 
 
 
-        return ProjectsTopBarView;
+        return ContentTopBarView;
     });

@@ -15,17 +15,25 @@ define([
             	var hash = Localstorage.getFromLocalStorage('hash'),
                 	uid = Localstorage.getFromLocalStorage('uid'),
                 	mid = 39,
-                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Projects?uid="+uid+"&hash="+hash+"&mid="+mid; 
+                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Projects"; 
             	
             	
                 return url;
             },
 
-
             initialize: function(){
                 console.log("Project Collection Init");
-             
+                
+                var hash = Localstorage.getFromLocalStorage('hash'),
+            		uid = Localstorage.getFromLocalStorage('uid'),
+            		mid = 39;
+                
                 this.fetch({
+                	data: $.param({
+                		uid: uid,
+                		hash: hash,
+                		mid: mid
+                	}),
                     type: 'GET',
                     reset:true,
                     success: this.fetchSuccess,

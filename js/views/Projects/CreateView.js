@@ -2,18 +2,18 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "text!templates/Projects/ProjectsCreateFormTemplate.html",
+    "text!templates/Projects/CreateTemplate.html",
     "collections/Customers/AccountsDdCollection",
     "collections/Projects/ProjectsCollection",
     "collections/Customers/CustomersCollection",
     "collections/Workflows/WorkflowsCollection"
 ],
-    function ($, _, Backbone, ProjectsCreateFormTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection) {
+    function ($, _, Backbone, CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection) {
 
-        var ProjectsCreateView = Backbone.View.extend({
+        var CreateView = Backbone.View.extend({
             el: "#content-holder",
             _modelBinder: undefined,
-            template: _.template(ProjectsCreateFormTemplate),
+            template: _.template(CreateTemplate),
 
             initialize: function () {
                this.accountDdCollection = new AccountsDdCollection();
@@ -116,5 +116,5 @@ define([
 
         });
 
-        return ProjectsCreateView;
+        return CreateView;
     });

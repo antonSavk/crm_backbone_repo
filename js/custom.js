@@ -1,21 +1,24 @@
 define(['backbone'],function(Backbone){
 	var runApplication = function(success, description){
+		if (!Backbone.history.fragment)
+			Backbone.history.start({silent: true});
 		if(success)
 	    {
-			var url = (App.requestedURL == null) ? "" : App.requestedURL;
+			var url = (App.requestedURL == null) ? Backbone.history.fragment : App.requestedURL;
 			if ((url == "") || (url == "login")) url = 'home';
 			
-			window.location.hash = url;
+			Backbone.history.fragment = "";
+			Backbone.history.navigate(url, {trigger:true});
 	    }else
 	    {
 	    	console.log(description);
 	    	if (App.requestedURL == null)
-	    		App.requestedURL = window.location.hash; 
+	    		App.requestedURL = Backbone.history.fragment; 
 	    	
-	    	window.location.hash = "login";
+	    	Backbone.history.fragment = "";
+	    	Backbone.history.navigate("login", {trigger:true});
 	    }
-		if (!Backbone.history.fragment)
-			Backbone.history.start();
+		
 	};
 	
 	var changeItemIndex = function(event){
@@ -71,7 +74,6 @@ define(['backbone'],function(Backbone){
     };
     
     var setCurrentII = function(index){
-    	//collection length!!!!
     	var testIndex = new RegExp(/^[1-9]{1}[0-9]*$/),
     		contentLength = getCurrentCL();
   	  debugger

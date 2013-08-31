@@ -18,10 +18,10 @@ define([
           }
       },
 
-      currentView: null,
+      wrapperView: null,
       mainView: null,
       topBarView: null,
-      contentView: null,
+      view: null,
 
       routes: {
           "home": "main",
@@ -36,13 +36,13 @@ define([
     	  console.log('GetList: '+contentType+" "+viewType+" "+itemIndex);
     	  
     	  var ContentViewUrl = "views/" + contentType + "/ContentView",
-              TopBarViewUrl = "views/" + contentType + "/TopBarView",
+    	  	  ContentTopBarViewUrl = "views/" + contentType + "/ContentTopBarView",
               CollectionUrl = "collections/" + contentType + "/" + contentType + "Collection",
               self = this;
     	  
     	  self.Custom = Custom;
     	  
-          require([ContentViewUrl, TopBarViewUrl, CollectionUrl], function(ContentView, TopBarView, ContentCollection){
+          require([ContentViewUrl, ContentTopBarViewUrl, CollectionUrl], function(ContentView, ContentTopBarView, ContentCollection){
         	  var contentCollection = new ContentCollection();
         	  contentCollection.bind('reset', _.bind(createViews, self));
         	  function createViews()
@@ -68,12 +68,12 @@ define([
                   
                   Backbone.history.navigate(url);
                   var contentView = new ContentView({collection: contentCollection});
-                  var topBarView = new TopBarView();
+                  var contentTopBarView = new ContentTopBarView();
                   
-                  topBarView.bind('deleteEvent', contentView.deleteItems, contentView);
+                  contentTopBarView.bind('deleteEvent', contentView.deleteItems, contentView);
                   
-        		  this.changeContentView(contentView);
-                  this.changeTopBarView(topBarView);
+        		  this.changeView(contentView);
+                  this.changeTopBarView(contentTopBarView);
         	  }
               
           });
@@ -85,21 +85,21 @@ define([
     	  
     	  if ($.inArray(action, actionVariants) == -1)
     	  {
-    		  action = "create";
+    		  action = "Create";
     	  }
-          var View = "views/" + type + "/" + type + action + "View";
+          var ActionViewUrl = "views/" + type + "/" + action + "View";
           
           var self = this;
-          require([View], function(ActionView){
-             self.changeContentView(new ActionView()); 
+          require([ActionViewUrl], function(ActionView){
+             self.changeView(new ActionView()); 
           }, self);
       },
 
-      changeView: function(view){
-          if(this.currentView){
-              this.currentView.undelegateEvents();
+      changeWrapperView: function(wrapperView){
+          if(this.wrapperView){
+              this.wrapperView.undelegateEvents();
           }
-          this.currentView = view;
+          this.wrapperView = wrapperView;
       },
       
       changeTopBarView: function(topBarView){
@@ -109,21 +109,21 @@ define([
           this.topBarView = topBarView;
       },
       
-      changeContentView: function(contentView){
-          if(this.contentView){
-              this.contentView.undelegateEvents();
+      changeView: function(view){
+          if(this.view){
+              this.view.undelegateEvents();
           }
-          this.contentView = contentView;
+          this.view = view;
       },
 
       main: function(){
     	  this.mainView = new MainView();
-    	  this.changeView(this.mainView);
+    	  this.changeWrapperView(this.mainView);
       },
 
       login: function(){
     	  this.mainView = null;
-          this.changeView(new LoginView());
+          this.changeWrapperView(new LoginView());
       }
 
   });
