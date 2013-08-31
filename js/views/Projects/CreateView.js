@@ -89,6 +89,12 @@ define([
                 	teams: {
                 		users: users
                 	}
+                }, {
+                	headers: {
+            			uid: uid,
+            			hash: hash,
+            			mid: mid
+            		}
                 });
             },
 
