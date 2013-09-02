@@ -1,4 +1,4 @@
-define(['backbone'],function(Backbone){
+define(['backbone', 'libs/date.format'],function(Backbone, dateformat){
 	var runApplication = function(success, description){
 		if (!Backbone.history.fragment)
 			Backbone.history.start({silent: true});
@@ -157,8 +157,128 @@ define(['backbone'],function(Backbone){
     	
     	return length;
     };
+
+    var convertProjectsForGantt = function (data){
+        var projects = [];
+        data.forEach(function(project){
+            projects.push({
+                'id':project.id,
+                'projectname':project.projectname,
+                'projectmanager':project.projectmanager.uname || 'No name',
+                'customer':project.customer || 'Unknown',
+                'StartDate': new Date(project.info.StartDate),
+                'EndDate': new Date(),
+                'plannedtime':  calculateHours(new Date(project.info.StartDate), new Date()),
+                'timespent':  calculateHours(new Date(project.info.StartDate), new Date()),
+                'progress': '%',
+                'status': 'In Progress',
+                'taskCount': project.task.tasks.length
+            });
+        });
+        return projects;
+    };
+
+    var calculateHours = function (startDate, endDate){
+        var hours = 0;
+        if(!startDate || !endDate){
+            throw new Error("CalculateTaskHours: Start or end date is undefined");
+        }
+        if(startDate > endDate){
+            throw new Error("CalculateTaskHours: Start date can not be greater that end date");
+        }
+        try {
+            var delta = new Date(endDate) - new Date(startDate);
+            hours = Math.floor(((delta/1000)/60)/60);
+        } catch(error){
+            alert(error.message);
+        }
+        return hours;
+    };
+
+    var convertTasksForGantt = function (data){
+        var tasks = [];
+        data.forEach(function(project){
+            if(project.task.tasks.length > 0){
+                project.task.tasks.forEach(function(task){
+                    tasks.push({
+                        'summary':task.summary,
+                        'projectname':project.projectname  || 'Unknown project',
+                        'assignedto':task.assignedto.uname || 'Unknown name',
+                        'stage':'Unknown Stage',
+                        'StartDate': dateFormat(new Date(task.extrainfo.StartDate), "dd/mm/yy hh:mm:ss"),
+                        'EndDate': dateFormat(new Date(task.extrainfo.EndDate), "dd/mm/yy hh:mm:ss"),
+                        'progress':'Unknown progress'
+                    });
+                });
+            }
+
+        });
+        return tasks;
+    };
+
+
+    function createGanttChart(data, withTasks){
+        var ganttChartControl = new GanttChart();
+        //chart settings
+        var projectArray = [];
+        ganttChartControl.setImagePath("/crm_backbone_repo/images/");
+        ganttChartControl.setEditable(false);
+        ganttChartControl.showTreePanel(true);
+        ganttChartControl.showContextMenu(false);
+        ganttChartControl.showDescTask(true,'d,s-f');
+        ganttChartControl.showDescProject(true,'n,d');
+        if(withTasks){
+            projectArray = convertTasksForGantt(data);
+            projectArray.forEach(function(project){
+                if(project.task.tasks.length > 0){
+                    //get the 'Date' portion of a Date object(without time)
+                    var startDate = new Date(project.info.StartDate);
+                    var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
+                    project.task.tasks.forEach(function(task){
+                        var hourCount = calculateHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
+                        var percentCompleted = Math.floor(Math.random()*100+1);
+                        var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
+                        newProject.addTask(parentTask);
+                    });
+                    ganttChartControl.addProject(newProject);
+                }
+
+            });
+        } else {
+            projectArray = convertProjectsForGantt(data);
+            ganttChartControl.showDescProject(false,'n,d');
+            var arr = $.map(projectArray,function(val){
+                return val.StartDate;
+            });
+            var date = findMinDate(arr);
+            var newProject = new GanttProjectInfo(1, 'Guntt View', date);
+            projectArray.forEach(function(project){
+                var hourCount = calculateHours(project.StartDate,project.EndDate);
+                var percentCompleted = Math.floor(Math.random()*100+1);
+                var parentTask = new GanttTaskInfo(project.id, project.projectname, project.StartDate, hourCount,percentCompleted,"");
+                newProject.addTask(parentTask);
+            });
+            ganttChartControl.addProject(newProject);
+        }
+
+        return ganttChartControl;
+    };
+
+    function findMinDate(dateArray){
+        var minDate = dateArray[0];
+        dateArray.forEach(function(date){
+            if(minDate>date){
+                minDate = date;
+            }
+        });
+        return new Date(minDate);
+    }
     
 	return {
+        createGanttChart : createGanttChart,
+        calculateHours : calculateHours,
+        convertTasksForGantt: convertTasksForGantt,
+        convertProjectsForGantt:convertProjectsForGantt,
 		runApplication: runApplication,
 		changeItemIndex: changeItemIndex,
 		changeContentViewType: changeContentViewType,
@@ -168,5 +288,5 @@ define(['backbone'],function(Backbone){
 		setCurrentVT: setCurrentVT,
 		getCurrentCL: getCurrentCL,
 		setCurrentCL: setCurrentCL
-	}
+	};
 });

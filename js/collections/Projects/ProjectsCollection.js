@@ -44,7 +44,6 @@ define([
             parse:true,
 
             parse: function(response){
-            	debugger
                 console.log('parse Projects');
                 $.each(response.data, function(index,val){
                     response.data[index]["id"] = response.data[index]["_id"];
@@ -55,9 +54,6 @@ define([
 
             fetchSuccess: function(collection, response){
                 console.log("Projects fetchSuccess");
-                /*if (options.success) {
-                    options.success(result);
-                }*/
             },
             fetchError: function(error){
 

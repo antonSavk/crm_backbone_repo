@@ -9,6 +9,7 @@ define([
     'views/Projects/thumbnails/ThumbnailsItemView',
     'custom',
     'localstorage'
+
 ],
 function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
     var ContentView = Backbone.View.extend({
@@ -61,7 +62,8 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
             		if (itemIndex == -1) 
             		{
             			this.$el.html();
-            		}else
+            		}
+                    else
             		{
             			var currentModel = this.collection.models[itemIndex];
             			this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
@@ -70,10 +72,16 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
             		break;
             	}
             	case "gantt":
-            	{
-            		console.log('render gantt');
-            		break;
-            	}
+                {
+                    console.log('render gantt');
+                    if(this.collection){
+                        var collection = this.collection.toJSON();
+                        var ganttChart =  Custom.createGanttChart(collection, false);
+                        this.$el.html('<div style="width:1180px; height:550px; position:relative;" id="GanttDiv"></div>');
+                        ganttChart.create("GanttDiv");
+                    }
+                    break;
+                }
             }
             
             return this;

@@ -36,18 +36,44 @@ var App = App ||
 };
 
 require.config({
-  paths: {
-    jquery: 'libs/jquery/jquery-min',
-    underscore: 'libs/underscore/underscore',
-    backbone: 'libs/backbone/backbone',
-    templates: '../templates',
-    text: 'libs/backbone/text',
-    socketIO: 'libs/SocketIO/socket.io',
-    less: 'libs/less/less-1.4.1.min',
-    modelBinder: 'libs/Backbone.ModelBinder.min'
-  }
+    paths: {
+        jquery: 'libs/jquery/jquery-min',
+        underscore: 'libs/underscore/underscore',
+        backbone: 'libs/backbone/backbone',
+        templates: '../templates',
+        text: 'libs/backbone/text',
+        socketIO: 'libs/SocketIO/socket.io',
+        less: 'libs/less/less-1.4.1.min',
+        modelBinder: 'libs/Backbone.ModelBinder.min',
+        dhtmlxcommon: 'libs/dhtmlxcommon',
+        dhtmlxgantt: 'libs/dhtmlxgantt'
+    },
+    shim:{
+        'dhtmlxcommon': {
+            exports: 'dhtmlxcommon'
+        },
+        'dhtmlxgantt': {
+            exports: 'dhtmlxgantt'
+        }
+    }
 });
 
 require(['app'], function(app){
     app.initialize();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
