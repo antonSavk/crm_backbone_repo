@@ -37,9 +37,17 @@ define(['backbone'],function(Backbone){
     			break;
     		}
     	}
-    	
+
     	itemIndex = getCurrentII();
-    	window.location.hash = "#home/content-" + this.contentType + "/"+viewType+"/"+itemIndex;
+    	
+    	if (this.actionType == 'Content')
+    	{
+    		window.location.hash = "#home/content-" + this.contentType + "/"+viewType+"/"+itemIndex;
+    	}else
+    	if (this.actionType == 'Edit')
+    	{
+    		window.location.hash = "#home/action-" + this.contentType + "/"+this.actionType+"/"+itemIndex;
+    	}
 	};
 	
 	var changeContentViewType = function(event){
@@ -76,7 +84,7 @@ define(['backbone'],function(Backbone){
     var setCurrentII = function(index){
     	var testIndex = new RegExp(/^[1-9]{1}[0-9]*$/),
     		contentLength = getCurrentCL();
-  	  debugger
+  	  
   	  	if (testIndex.test(index) == false)
   	  		index = 1;
   	  	if (index > contentLength) index = contentLength; 
