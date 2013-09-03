@@ -33,7 +33,7 @@ define([
             parse:true,
 
             parse: function(response){
-            	debugger
+            	//debugger
                 $.each(response.data, function(index){
                     if(response.data[index].hasOwnProperty('_id')){
                         response.data[index]["id"] = response.data[index]["_id"];

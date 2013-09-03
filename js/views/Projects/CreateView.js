@@ -6,21 +6,23 @@ define([
     "collections/Customers/AccountsDdCollection",
     "collections/Projects/ProjectsCollection",
     "collections/Customers/CustomersCollection",
-    "collections/Workflows/WorkflowsCollection"
+    "collections/Workflows/WorkflowsCollection",
+    "localstorage"
 ],
-    function ($, _, Backbone, CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection) {
-
+    function ($, _, Backbone, CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage) {
+        var hash = LocalStorage.getFromLocalStorage('hash'),
+            uid = LocalStorage.getFromLocalStorage('uid');
+        var mid = 39;
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
             _modelBinder: undefined,
             template: _.template(CreateTemplate),
-
             initialize: function () {
                this.accountDdCollection = new AccountsDdCollection();
                this.accountDdCollection.bind('reset', _.bind(this.render, this));
                this.customersDdCollection = new CustomersCollection();
                this.customersDdCollection.bind('reset', _.bind(this.render, this));
-               this.workflowsDdCollection = new WorkflowsCollection();
+               this.workflowsDdCollection = new WorkflowsCollection({id:'project'});
                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
                this.bind('reset', _.bind(this.render, this));
                this.projectsCollection = new ProjectsCollection();
@@ -73,14 +75,15 @@ define([
                 	workflow = workflow[0].toJSON(); 
                 }
                 var $userNodes = $("#usereditDd option:selected"), users = [];
-                $userNodes.each(function(key, val){
+                $userNodes.each(function (key, val) {
+                    
                 	users.push({
                 		uid: val.value,
                 		uname: val.innerHTML
                 	});
                 });
                 
-                
+                //debugger
                 this.projectsCollection.create({
                 	projectname: projectname,
                 	customer: customer,
@@ -90,7 +93,9 @@ define([
                 		users: users
                 	}
                 }, {
-                	headers: {
+                    
+                    headers: {
+                        
             			uid: uid,
             			hash: hash,
             			mid: mid

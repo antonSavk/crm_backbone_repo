@@ -18,11 +18,11 @@ define([
                 return url;
             },
             
-            type: "project",
+            //type: "project",
 
-            initialize: function(){
+            initialize: function(options){
                 console.log("Workflow Collection Init");
-                
+                this.type = options.id;
                 this.fetch({
                     type: 'GET',
                     reset:true,
@@ -34,7 +34,7 @@ define([
             parse:true,
 
             parse: function(response){
-            	debugger
+            	//debugger
                 console.log('parse Workflows');
                 $.each(response.data.value, function(index,val){
                     response.data.value[index]["id"] = response.data.value[index]["_id"];

@@ -107,19 +107,14 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
         				mid: mid
         			}
         		});*/
-        		
-        		
-        		
-        		
+        		debugger 
         		project.destroy({headers: {
         			uid: uid,
         			hash: hash,
         			mid: mid
-        		}
-        		});
-        		
-        		
-        		
+        		}},
+        		{ wait: true }
+        		);
         	});
         	
         	this.collection.trigger('reset');

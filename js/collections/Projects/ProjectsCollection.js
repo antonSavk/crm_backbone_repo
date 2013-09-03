@@ -27,7 +27,7 @@ define([
                 var hash = Localstorage.getFromLocalStorage('hash'),
             		uid = Localstorage.getFromLocalStorage('uid'),
             		mid = 39;
-                
+               // debugger
                 this.fetch({
                 	data: $.param({
                 		uid: uid,
@@ -44,7 +44,6 @@ define([
             parse:true,
 
             parse: function(response){
-            	debugger
                 console.log('parse Projects');
                 $.each(response.data, function(index,val){
                     response.data[index]["id"] = response.data[index]["_id"];
