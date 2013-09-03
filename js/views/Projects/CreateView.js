@@ -22,7 +22,7 @@ define([
                this.accountDdCollection.bind('reset', _.bind(this.render, this));
                this.customersDdCollection = new CustomersCollection();
                this.customersDdCollection.bind('reset', _.bind(this.render, this));
-               this.workflowsDdCollection = new WorkflowsCollection();
+               this.workflowsDdCollection = new WorkflowsCollection({id: 'project'});
                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
                this.bind('reset', _.bind(this.render, this));
                this.projectsCollection = options.collection;
