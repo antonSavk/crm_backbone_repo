@@ -52,7 +52,8 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
             	}
             	case "form":
             	{
-            		var itemIndex = Custom.getCurrentII()-1;
+            	    debugger
+            	    var itemIndex = Custom.getCurrentII() - 1;
             		if (itemIndex > this.collection.models.length - 1)
             		{
             			itemIndex = this.collection.models.length - 1;
@@ -115,7 +116,7 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
         				mid: mid
         			}
         		});*/
-        		debugger 
+        		
         		project.destroy({headers: {
         			uid: uid,
         			hash: hash,

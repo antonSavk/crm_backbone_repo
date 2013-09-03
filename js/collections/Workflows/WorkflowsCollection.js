@@ -19,10 +19,11 @@ define([
             },
             
             //type: "project",
-
-            initialize: function(options){
+          
+            initialize: function (options) {
+                debugger 
                 console.log("Workflow Collection Init");
-                this.type = options.id;
+                this.type = (options) ? options.id: 'project';
                 this.fetch({
                     type: 'GET',
                     reset:true,
