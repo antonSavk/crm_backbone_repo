@@ -7,25 +7,25 @@ define([
     "collections/Projects/ProjectsCollection",
     "collections/Customers/CustomersCollection",
     "collections/Workflows/WorkflowsCollection",
-    "localstorage"
+    "localstorage",
+    "custom"
 ],
-    function ($, _, Backbone, CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage) {
-        var hash = LocalStorage.getFromLocalStorage('hash'),
-            uid = LocalStorage.getFromLocalStorage('uid');
-        var mid = 39;
+    function ($, _, Backbone, CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
-            _modelBinder: undefined,
+            contentType: "Projects",
             template: _.template(CreateTemplate),
-            initialize: function () {
+
+            initialize: function (options) {
                this.accountDdCollection = new AccountsDdCollection();
                this.accountDdCollection.bind('reset', _.bind(this.render, this));
                this.customersDdCollection = new CustomersCollection();
                this.customersDdCollection.bind('reset', _.bind(this.render, this));
-               this.workflowsDdCollection = new WorkflowsCollection({id:'project'});
+               this.workflowsDdCollection = new WorkflowsCollection();
                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
                this.bind('reset', _.bind(this.render, this));
-               this.projectsCollection = new ProjectsCollection();
+               this.projectsCollection = options.collection;
                this.render();
             },
 
@@ -33,19 +33,17 @@ define([
                 this._modelBinder.unbind();
             },
 
-            events:{
-                "submit form": "submit"
-            },
-
-            submit: function(event){
-                event.preventDefault();
-                
+            saveItem: function(){
+            	var hash = LocalStorage.getFromLocalStorage('hash'),
+        			uid = LocalStorage.getFromLocalStorage('uid'),
+        			mid = 39;
+            	
                 var projectname = $("#projectName").val();
                 if ($.trim(projectname) == "")
                 {
                 	projectname = "New Project";
                 }
-                debugger
+                
                 var idCustomer = $(this.el).find("#customerDd option:selected").val();
                 var customer = this.customersDdCollection.where({id: idCustomer});
                 
@@ -75,15 +73,14 @@ define([
                 	workflow = workflow[0].toJSON(); 
                 }
                 var $userNodes = $("#usereditDd option:selected"), users = [];
-                $userNodes.each(function (key, val) {
-                    
+                $userNodes.each(function(key, val){
                 	users.push({
                 		uid: val.value,
                 		uname: val.innerHTML
                 	});
                 });
                 
-                //debugger
+                
                 this.projectsCollection.create({
                 	projectname: projectname,
                 	customer: customer,
@@ -93,35 +90,20 @@ define([
                 		users: users
                 	}
                 }, {
-                    
-                    headers: {
-                        
+                	headers: {
             			uid: uid,
             			hash: hash,
             			mid: mid
             		}
                 });
+                                
+                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
+                
             },
 
             render: function () {
                 this.$el.html(this.template({accountDdCollection:this.accountDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection}));
 
-                /*var bindings = {
-                    testCB : '[name=testCB]',
-                    companyCB : [{
-                        selector: '[name=companyCB]'
-                        },
-                        {
-                            selector: '[name=testCB]', elAttribute: 'enabled',
-                            converter:function(direction, value){
-                                return value === 'checked';
-                            }
-                        }
-                    ]
-
-
-                }
-                this._modelBinder.bind(this.model,this.el, bindings);*/
                 return this;
             }
 

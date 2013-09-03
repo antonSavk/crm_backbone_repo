@@ -27,7 +27,7 @@ define([
                 var hash = Localstorage.getFromLocalStorage('hash'),
             		uid = Localstorage.getFromLocalStorage('uid'),
             		mid = 39;
-               // debugger
+                
                 this.fetch({
                 	data: $.param({
                 		uid: uid,
@@ -54,9 +54,6 @@ define([
 
             fetchSuccess: function(collection, response){
                 console.log("Projects fetchSuccess");
-                /*if (options.success) {
-                    options.success(result);
-                }*/
             },
             fetchError: function(error){
 
