@@ -52,7 +52,6 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
             	}
             	case "form":
             	{
-            	    debugger
             	    var itemIndex = Custom.getCurrentII() - 1;
             		if (itemIndex > this.collection.models.length - 1)
             		{

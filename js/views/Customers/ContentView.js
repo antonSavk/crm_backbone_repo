@@ -43,16 +43,18 @@ function ($, _, Backbone, PersonsCollection, ListTemplate, ListItemView, Custom,
             	}
             	case "thumbnails":
             	{
-            		this.$el.html('');
+                    this.$el.html("Customers Thumbnail View");
+            		/*this.$el.html('');
             		var holder = this.$el;
 	                this.collection.each(function(model){
 	                	$(holder).append(new ThumbnailsItemView({model:model}).render().el);
-	                });
+	                });*/
 	                break;
             	}
             	case "form":
             	{
-            	    var itemIndex = Custom.getCurrentII() - 1;
+                    this.$el.html("Customers Form View");
+            	    /*var itemIndex = Custom.getCurrentII() - 1;
             		if (itemIndex > this.collection.length - 1)
             		{
             			itemIndex = this.collection.length - 1;
@@ -67,19 +69,20 @@ function ($, _, Backbone, PersonsCollection, ListTemplate, ListItemView, Custom,
             		{
             			var currentModel = this.collection.models[itemIndex];
             			this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
-            		}
+            		}*/
             			
             		break;
             	}
             	case "gantt":
                 {
-                    console.log('render gantt');
+                    this.$el.html("CustomersGantView");
+                    /*console.log('render gantt');
                     if(this.collection){
                         var collection = this.collection.toJSON();
                         var ganttChart =  Custom.createGanttChart(collection, false);
                         this.$el.html('<div style="width:1180px; height:550px; position:relative;" id="GanttDiv"></div>');
                         ganttChart.create("GanttDiv");
-                    }
+                    }*/
                     break;
                 }
             }
