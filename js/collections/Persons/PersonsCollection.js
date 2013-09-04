@@ -41,7 +41,7 @@ define([
             },
 
             fetchSuccess: function(collection, response){
-                console.log("Projects fetchSuccess");
+                console.log("Persons fetchSuccess");
             },
             fetchError: function(error){
 
