@@ -20,9 +20,8 @@ define([
             },
             
             //type: "project",
-          
-            initialize: function (options) {
-                //debugger 
+
+            initialize: function(options){
                 console.log("Workflow Collection Init");
                 this.type = options.id;
                 this.fetch({

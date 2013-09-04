@@ -2,24 +2,22 @@ define([
     "jquery",
     "underscore",
     "backbone",
+    "collections/Persons/PersonsCollection",
     'text!templates/Customers/list/ListTemplate.html',
-    'text!templates/Customers/form/FormTemplate.html',
-    'collections/Companies/CompaniesCollection',
     'views/Customers/list/ListItemView',
-    'views/Customers/thumbnails/ThumbnailsItemView',
     'custom',
     'localstorage'
 
 ],
-function ($, _, Backbone, ListTemplate, FormTemplate, CompaniesCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
+function ($, _, Backbone, PersonsCollection, ListTemplate, ListItemView, Custom, LocalStorage) {
     var ContentView = Backbone.View.extend({
         el: '#content-holder',
-        template: _.template(ListTemplate),
-        //initialize: function (options) {
-        initialize: function(){
-            console.log('Init Customer View');
-            this.companiesCollection = new CompaniesCollection();
-            this.companiesCollection.bind('reset', _.bind(this.render, this));
+        initialize: function(options){
+            //console.log('Init Customers View');
+            //this.collection = options.collection;
+
+            this.collection = new PersonsCollection();
+            this.collection.bind('reset', _.bind(this.render, this));
             this.render();
         },
 
@@ -28,14 +26,14 @@ function ($, _, Backbone, ListTemplate, FormTemplate, CompaniesCollection, ListI
         },
         
         render: function(){
-        	Custom.setCurrentCL(this.collection.models.length);
-            console.log('Render Customer View');
+        	Custom.setCurrentCL(this.collection.length);
+            console.log('Render Projects View');
             var viewType = Custom.getCurrentVT();
             switch(viewType)
             {
             	case "list":
             	{
-	        		this.$el.html(this.template(ListTemplate));
+	        		this.$el.html(_.template(ListTemplate));
 	                var table = this.$el.find('table > tbody');
 	
 	                this.collection.each(function(model){
@@ -43,48 +41,47 @@ function ($, _, Backbone, ListTemplate, FormTemplate, CompaniesCollection, ListI
 	                });
 					break;
             	}
-            	//case "thumbnails":
-            	//{
-            	//	this.$el.html('');
-            	//	var holder = this.$el;
-	            //    this.collection.each(function(model){
-	            //    	$(holder).append(new ThumbnailsItemView({model:model}).render().el);
-	            //    });
-	            //    break;
-            	//}
-            	//case "form":
-            	//{
-            	//    debugger
-            	//    var itemIndex = Custom.getCurrentII() - 1;
-            	//	if (itemIndex > this.collection.models.length - 1)
-            	//	{
-            	//		itemIndex = this.collection.models.length - 1;
-            	//		Custom.setCurrentII(this.collection.models.length);
-            	//	}
+            	case "thumbnails":
+            	{
+            		this.$el.html('');
+            		var holder = this.$el;
+	                this.collection.each(function(model){
+	                	$(holder).append(new ThumbnailsItemView({model:model}).render().el);
+	                });
+	                break;
+            	}
+            	case "form":
+            	{
+            	    var itemIndex = Custom.getCurrentII() - 1;
+            		if (itemIndex > this.collection.length - 1)
+            		{
+            			itemIndex = this.collection.length - 1;
+            			Custom.setCurrentII(this.collection.length);
+            		}
             		
-            	//	if (itemIndex == -1) 
-            	//	{
-            	//		this.$el.html();
-            	//	}
-                //    else
-            	//	{
-            	//		var currentModel = this.collection.models[itemIndex];
-            	//		this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
-            	//	}
+            		if (itemIndex == -1) 
+            		{
+            			this.$el.html();
+            		}
+                    else
+            		{
+            			var currentModel = this.collection.models[itemIndex];
+            			this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
+            		}
             			
-            	//	break;
-            	//}
-            	//case "gantt":
-                //{
-                //    console.log('render gantt');
-                //    if(this.collection){
-                //        var collection = this.collection.toJSON();
-                //        var ganttChart =  Custom.createGanttChart(collection, false);
-                //        this.$el.html('<div style="width:1180px; height:550px; position:relative;" id="GanttDiv"></div>');
-                //        ganttChart.create("GanttDiv");
-                //    }
-                //    break;
-                //}
+            		break;
+            	}
+            	case "gantt":
+                {
+                    console.log('render gantt');
+                    if(this.collection){
+                        var collection = this.collection.toJSON();
+                        var ganttChart =  Custom.createGanttChart(collection, false);
+                        this.$el.html('<div style="width:1180px; height:550px; position:relative;" id="GanttDiv"></div>');
+                        ganttChart.create("GanttDiv");
+                    }
+                    break;
+                }
             }
             
             return this;
