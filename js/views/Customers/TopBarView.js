@@ -8,7 +8,7 @@ define([
     function ($, _, Backbone, ContentTopBarTemplate, Custom) {
         var TopBarView = Backbone.View.extend({
             el:'#top-bar',
-            contentType: "Customers",
+            contentType: "Projects",
             actionType: null, //Content, Edit, Create
             template: _.template(ContentTopBarTemplate),
             
