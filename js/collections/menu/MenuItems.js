@@ -4,8 +4,10 @@ define([
     'backbone',
     'localstorage'
 ],
-    function($, _, Backbone, Localstorage){
-        var MyModel = Backbone.Model.extend({});
+    function ($, _, Backbone, Localstorage) {
+        var MyModel = Backbone.Model.extend({
+            //idAttribute: '_id'
+        });
 
         var MenuItems = Backbone.Collection.extend({
             model: MyModel,

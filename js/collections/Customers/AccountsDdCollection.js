@@ -5,7 +5,8 @@ define([
     "localstorage"
 ],
     function ($, _, Backbone, Localstorage) {
-		var AccountModel = Backbone.Model.extend({
+        var AccountModel = Backbone.Model.extend({
+            idAttribute: '_id'
 		});
 	
         var AccountsDdCollection = Backbone.Collection.extend({
@@ -34,13 +35,13 @@ define([
 
             parse: function(response){
             	//debugger
-                $.each(response.data, function(index){
-                    if(response.data[index].hasOwnProperty('_id')){
-                        response.data[index]["id"] = response.data[index]["_id"];
-                        delete response.data[index]["_id"];
-                    }
+                //$.each(response.data, function(index){
+                //    if(response.data[index].hasOwnProperty('_id')){
+                //        response.data[index]["id"] = response.data[index]["_id"];
+                //        delete response.data[index]["_id"];
+                //    }
 
-                });
+                //});
                 return response.data;
             },
 

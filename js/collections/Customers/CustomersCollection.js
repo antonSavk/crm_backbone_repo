@@ -6,7 +6,7 @@ define([
 ],
     function ($, _, Backbone, Localstorage) {
         var CustomerModel = Backbone.Model.extend({
-            
+            idAttribute: '_id'
         });
 
         var CustomersCollection = Backbone.Collection.extend({
@@ -35,11 +35,11 @@ define([
 
             parse: function(response){
             	//debugger
-                console.log('parse Customers');
-                $.each(response.data, function(index,val){
-                    response.data[index]["id"] = response.data[index]["_id"];
-                    delete response.data[index]["_id"];
-                });
+                //console.log('parse Customers');
+                //$.each(response.data, function(index,val){
+                //    response.data[index]["id"] = response.data[index]["_id"];
+                //    delete response.data[index]["_id"];
+                //});
                 return response.data;
             },
 

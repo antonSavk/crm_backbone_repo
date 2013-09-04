@@ -19,7 +19,7 @@ define([
             initialize: function (options) {
                this.accountsDdCollection = new AccountsDdCollection();
                this.customersDdCollection = new CustomersCollection();
-               this.workflowsDdCollection = new WorkflowsCollection();
+               this.workflowsDdCollection = new WorkflowsCollection({id:'project'});
                this.projectsCollection = options.collection;
                
                this.projectsCollection.bind('reset', _.bind(this.render, this));

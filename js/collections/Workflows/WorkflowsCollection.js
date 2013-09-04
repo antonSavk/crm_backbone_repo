@@ -6,6 +6,7 @@ define([
 ],
     function ($, _, Backbone, Localstorage) {
         var WorkflowModel = Backbone.Model.extend({
+            idAttribute: '_id'
         });
 
         var WorkflowsCollection = Backbone.Collection.extend({
@@ -21,9 +22,9 @@ define([
             //type: "project",
           
             initialize: function (options) {
-                debugger 
+                //debugger 
                 console.log("Workflow Collection Init");
-                this.type = (options) ? options.id: 'project';
+                this.type = options.id;
                 this.fetch({
                     type: 'GET',
                     reset:true,
@@ -36,11 +37,11 @@ define([
 
             parse: function(response){
             	//debugger
-                console.log('parse Workflows');
-                $.each(response.data.value, function(index,val){
-                    response.data.value[index]["id"] = response.data.value[index]["_id"];
-                    delete response.data.value[index]["_id"];
-                });
+                //console.log('parse Workflows');
+                //$.each(response.data.value, function(index,val){
+                //    response.data.value[index]["id"] = response.data.value[index]["_id"];
+                //    delete response.data.value[index]["_id"];
+                //});
                 return response.data.value;
             },
 

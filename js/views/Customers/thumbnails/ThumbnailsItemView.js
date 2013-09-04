@@ -2,17 +2,17 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "text!templates/Customers/list/CustomersItemTemplate.html"
+    "text!templates/Projects/thumbnails/ThumbnailsItemTemplate.html"
 ],
-    function ($, _, Backbone, CustomersItemTemplate) {
-        var CustomersItemView = Backbone.View.extend({
+    function ($, _, Backbone, ThumbnailsItemTemplate) {
+        var ThumbnailsItemView = Backbone.View.extend({
             tagName:"tr",
 
             initialize: function(){
                 this.render();
             },
 
-            template: _.template(CustomersItemTemplate),
+            template: _.template(ThumbnailsItemTemplate),
 
             render: function(){
                 this.$el.html(this.template(this.model.toJSON()));
@@ -20,5 +20,5 @@ define([
             }
         });
 
-        return CustomersItemView;
+        return ThumbnailsItemView;
     });

@@ -15,7 +15,7 @@
                 <select id="managerDd">
                     <option selected="selected" value="0">Select...</option>
                     <% accountsDdCollection.each(function(option){ %>
-                        <option value="<%= option.get('id') %>" <%= (option.get('id') == model.projectmanager.uid) ? 'selected' : ''%>><%= option.get('uname') %></option>
+                    <option value="<%= option.get('id') %>" <%= (option.get('id') == model.projectmanager.uid) ? 'selected' : ''%>><%= option.get('name').first %> <%= option.get('name').last %></option>
                     <% }); %>
                 </select>
             </p>
@@ -25,7 +25,7 @@
                 <select id="customerDd">
                     <option selected="selected" value="0">Select...</option>
                     <% customersDdCollection.each(function(option){ %>
-                        <option value="<%= option.get('id') %>"  <%= (option.get('id') == model.customer.uid) ? 'selected' : ''%> ><%= option.get('name') %> (<%= option.get('type') %>)</option>
+                        <option value="<%= option.get('id') %>"  <%= (option.get('id') == model.customer.uid) ? 'selected' : ''%> ><%= option.get('name').first %> <%= option.get('name').last %>(<%= option.get('type') %>)</option>
                     <% }); %>
                 </select>
             </p>
