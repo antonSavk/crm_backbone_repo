@@ -5,16 +5,17 @@ define([
     "collections/Persons/PersonsCollection",
     "collections/Companies/CompaniesCollection",
     'text!templates/Customers/list/ListTemplate.html',
-    'views/Customers/list/ListItemView',
+    'views/Persons/list/ListItemView',
+    'views/Companies/list/ListItemView',
     'custom',
     'localstorage'
 
 ],
-function ($, _, Backbone, PersonsCollection, CompaniesCollection, ListTemplate, ListItemView, Custom, LocalStorage) {
+function ($, _, Backbone, PersonsCollection, CompaniesCollection, ListTemplate, PersonsItemView, CompaniesItemView, Custom, LocalStorage) {
     var ContentView = Backbone.View.extend({
         el: '#content-holder',
         
-        //template: _.template(CreateTemplate),
+        //template: _.template(ListTemplate),
 
         initialize: function(options){
             //console.log('Init Customers View');
@@ -42,8 +43,12 @@ function ($, _, Backbone, PersonsCollection, CompaniesCollection, ListTemplate, 
 	        		this.$el.html(_.template(ListTemplate));
 	                var table = this.$el.find('table > tbody');
 	
+	                this.companiesCollection.each(function (model) {
+	                    table.append(new CompaniesItemView({ model: model }).render().el);
+	                });
+            	    
 	                this.personCollection.each(function (model) {
-	                    table.append(new ListItemView({model:model}).render().el);
+	                    table.append(new PersonsItemView({ model: model }).render().el);
 	                });
 					break;
             	}
