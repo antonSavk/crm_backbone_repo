@@ -34,20 +34,11 @@ define([
             parse:true,
 
             parse: function(response){
-            	//debugger
-                //console.log('parse Customers');
-                //$.each(response.data, function(index,val){
-                //    response.data[index]["id"] = response.data[index]["_id"];
-                //    delete response.data[index]["_id"];
-                //});
                 return response.data;
             },
 
             fetchSuccess: function(collection, response){
                 console.log("Customers fetchSuccess");
-                /*if (options.success) {
-                    options.success(result);
-                }*/
             },
             fetchError: function(error){
 

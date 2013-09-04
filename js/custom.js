@@ -190,7 +190,7 @@ define(['backbone', 'libs/date.format'],function(Backbone, dateformat){
             var delta = new Date(endDate) - new Date(startDate);
             hours = Math.floor(((delta/1000)/60)/60);
         } catch(error){
-            alert(error.message);
+            throw new Error(error.message);
         }
         return hours;
     };
@@ -216,17 +216,20 @@ define(['backbone', 'libs/date.format'],function(Backbone, dateformat){
         return tasks;
     };
 
+    function applyDefaultSettings(chartControl){
+        chartControl.setImagePath("/crm_backbone_repo/images/");
+        chartControl.setEditable(false);
+        chartControl.showTreePanel(true);
+        chartControl.showContextMenu(false);
+        chartControl.showDescTask(true,'d,s-f');
+        chartControl.showDescProject(true,'n,d');
+    }
 
     function createGanttChart(data, withTasks){
         var ganttChartControl = new GanttChart();
-        //chart settings
+        applyDefaultSettings(ganttChartControl);
         var projectArray = [];
-        ganttChartControl.setImagePath("/crm_backbone_repo/images/");
-        ganttChartControl.setEditable(false);
-        ganttChartControl.showTreePanel(true);
-        ganttChartControl.showContextMenu(false);
-        ganttChartControl.showDescTask(true,'d,s-f');
-        ganttChartControl.showDescProject(true,'n,d');
+        //create gantt chart from projects and descending tasks
         if(withTasks){
             projectArray = convertTasksForGantt(data);
             projectArray.forEach(function(project){
@@ -244,34 +247,46 @@ define(['backbone', 'libs/date.format'],function(Backbone, dateformat){
                 }
 
             });
-        } else {
-            projectArray = convertProjectsForGantt(data);
+        }
+        //create gantt chart from only projects
+        else {
+            var newProject = createProjectForGantt(data);
             ganttChartControl.showDescProject(false,'n,d');
-            var arr = $.map(projectArray,function(val){
-                return val.StartDate;
-            });
-            var date = findMinDate(arr);
-            var newProject = new GanttProjectInfo(1, 'Guntt View', date);
-            projectArray.forEach(function(project){
-                var hourCount = calculateHours(project.StartDate,project.EndDate);
-                var percentCompleted = Math.floor(Math.random()*100+1);
-                var parentTask = new GanttTaskInfo(project.id, project.projectname, project.StartDate, hourCount,percentCompleted,"");
-                newProject.addTask(parentTask);
-            });
             ganttChartControl.addProject(newProject);
         }
 
         return ganttChartControl;
     };
 
+
+    function createProjectForGantt(data){
+        var projectArray = convertProjectsForGantt(data);
+        //get date array
+        var arr = $.map(projectArray,function(val){
+            return val.StartDate;
+        });
+        // and find the minimum date
+        var date = findMinDate(arr);
+
+        var newProject = new GanttProjectInfo(1, 'Guntt View', date);
+        projectArray.forEach(function(project){
+            var hourCount = calculateHours(project.StartDate,project.EndDate);
+            var percentCompleted = Math.floor(Math.random()*100+1);
+            var parentTask = new GanttTaskInfo(project.id, project.projectname, project.StartDate, hourCount, percentCompleted,"");
+            newProject.addTask(parentTask);
+        });
+        return newProject;
+    }
+
     function findMinDate(dateArray){
-        var minDate = dateArray[0];
+        return _.min(dateArray);
+        /*var minDate = dateArray[0];
         dateArray.forEach(function(date){
             if(minDate>date){
                 minDate = date;
             }
         });
-        return new Date(minDate);
+        return new Date(minDate);*/
     }
     
 	return {

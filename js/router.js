@@ -6,12 +6,14 @@ define([
   'backbone',
   'views/main/MainView',
   'views/login/LoginView',
-  'custom'
-], function(require, $, _, Backbone, MainView, LoginView, Custom) {
+  'custom',
+  'collections/Persons/PersonsCollection'
+], function(require, $, _, Backbone, MainView, LoginView, Custom, PersonsCollection) {
   
   var AppRouter = Backbone.Router.extend({
 
       initialize : function(){
+          new PersonsCollection();
           Backbone.View.prototype.close = function(){
               this.remove();
               this.unbind();
@@ -41,7 +43,7 @@ define([
               self = this;
     	  
     	  self.Custom = Custom;
-    	  
+
           require([ContentViewUrl, TopBarViewUrl, CollectionUrl], function(ContentView, TopBarView, ContentCollection){
         	  var contentCollection = new ContentCollection();
         	  contentCollection.bind('reset', _.bind(createViews, self));
