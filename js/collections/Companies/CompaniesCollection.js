@@ -19,16 +19,17 @@ define([
                 
                 return url;
             },
-
+           
             initialize: function(){
                 console.log("Companies Collection Init");
-                
+                //debugger 
                 var hash = Localstorage.getFromLocalStorage('hash'),
             		uid = Localstorage.getFromLocalStorage('uid'),
             		mid = 39;
                 
                 this.fetch({
-                	data: $.param({
+                    data: $.param({
+                       
                 		uid: uid,
                 		hash: hash,
                 		mid: mid
@@ -42,7 +43,8 @@ define([
 
             parse:true,
 
-            parse: function(response){
+            parse: function (response) {
+                debugger 
                 console.log('parse Companies');
                 //$.each(response.data, function(index,val){
                 //    response.data[index]["id"] = response.data[index]["_id"];
