@@ -10,12 +10,17 @@
 	font-family: 'Icons2';
 	src:url("../font/mnmliconsv21-webfont.ttf") format('truetype');
 }
+@font-face {
+	font-family: 'Icons3';
+	src:url("../font/zurmogamificationsymblyregular-regular-webfont.woff") format('woff');
+}
 /*------------------------Constants-----------------------------*/
 @imagesfolder:'../images';
 @body-font:"Segoe UI";
 @lucida-font: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
 @icon-font:Icons;
 @icon2-font:Icons2;
+@icon3-font:Icons3;
 @blue:#4d5a75;
 @dark-blue:#444f67;
 @bold-border:3px solid;
@@ -283,6 +288,13 @@ body {
 .icon2{
 	font-size: 21px;
 	font-family: @icon2-font;
+	text-decoration:none;
+	font-weight:300 !important;
+	line-height:24px;
+}
+.icon3{
+	font-size: 26px;
+	font-family: @icon3-font;
 	text-decoration:none;
 	font-weight:300 !important;
 	line-height:24px;
