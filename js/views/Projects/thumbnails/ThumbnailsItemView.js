@@ -6,7 +6,7 @@ define([
 ],
     function ($, _, Backbone, ThumbnailsItemTemplate) {
         var ThumbnailsItemView = Backbone.View.extend({
-            tagName:"tr",
+            tagName:"div",
 
             initialize: function(){
                 this.render();
