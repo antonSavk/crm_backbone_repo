@@ -10,12 +10,17 @@
 	font-family: 'Icons2';
 	src:url("../font/mnmliconsv21-webfont.ttf") format('truetype');
 }
+@font-face {
+	font-family: 'Icons3';
+	src:url("../font/zurmogamificationsymblyregular-regular-webfont.woff") format('woff');
+}
 /*------------------------Constants-----------------------------*/
 @imagesfolder:'../images';
 @body-font:"Segoe UI";
 @lucida-font: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
 @icon-font:Icons;
 @icon2-font:Icons2;
+@icon3-font:Icons3;
 @blue:#4d5a75;
 @dark-blue:#444f67;
 @bold-border:3px solid;
@@ -287,6 +292,13 @@ body {
 	font-weight:300 !important;
 	line-height:24px;
 }
+.icon3{
+	font-size: 26px;
+	font-family: @icon3-font;
+	text-decoration:none;
+	font-weight:300 !important;
+	line-height:24px;
+}
 .icon-btn{
 	padding:0;
 	display:block;
@@ -397,10 +409,34 @@ body {
 		color: #4c4c4c;
 		font-size: 13px;
 		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+		lable{
+			margin-bottom:2px;
+		}
+		input{
+			margin-bottom:2px;
+		}
+		select{
+			margin-bottom:2px;
+		}
 	}
 	span{
 		padding:3px 8px;
 	}
+	label{
+		display:block;
+		float:left;
+		font-weight:bold;
+		min-width:160px;
+		height:23px;
+		line-height:23px;
+	}
+	input{
+		margin:2px 2px 2px 0px;
+	}
+}
+.title-input{
+	font-size:20px;
+	padding:4px;
 }
 .form-holder{
 	background:url("@{imagesfolder}/form_sheetbg.png");
@@ -421,6 +457,14 @@ input, textarea, select {
 	select{
 		margin-left:10px;
 	}
+}
+.half-block{
+	display:block;
+	width:50%;
+	label{
+	margin-right:10px;
+	border-right:1px solid #dddddd;
+	} 
 }
 .topbarBtnHolder{
 	float:left;
@@ -509,6 +553,10 @@ input, textarea, select {
 		cursor: pointer;
 		background-position: 0;
 	}
+}
+
+.blueback{
+background-color:#d8e2ee;
 }
 button{
 	.btn;
