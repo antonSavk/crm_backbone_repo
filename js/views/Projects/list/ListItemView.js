@@ -1,10 +1,7 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     "text!templates/Projects/list/ListItemTemplate.html"
 ],
-    function ($, _, Backbone, ListItemTemplate) {
+    function (ListItemTemplate) {
         var ListItemView = Backbone.View.extend({
             tagName:"tr",
 

@@ -1,11 +1,8 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
     'text!templates/login/LoginTemplate.html',
     'custom',
     'communication'
-], function($, _, Backbone, LoginTemplate, Custom, Communication){
+], function(LoginTemplate, Custom, Communication){
 
     var LoginView = Backbone.View.extend({
         el: '#wrapper',

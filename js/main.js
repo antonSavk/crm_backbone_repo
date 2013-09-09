@@ -37,24 +37,16 @@ var App = App ||
 
 require.config({
     paths: {
-        jquery: 'libs/jquery/jquery-min',
-        underscore: 'libs/underscore/underscore',
-        backbone: 'libs/backbone/backbone',
+        jQuery: './libs/jquery',
+        Underscore: './libs/underscore',
+        Backbone: './libs/backbone',
+        less: './libs/less-1.4.1.min',
         templates: '../templates',
-        text: 'libs/backbone/text',
-        socketIO: 'libs/SocketIO/socket.io',
-        less: 'libs/less/less-1.4.1.min',
-        modelBinder: 'libs/Backbone.ModelBinder.min',
-        dhtmlxcommon: 'libs/dhtmlxcommon',
-        dhtmlxgantt: 'libs/dhtmlxgantt'
+        text: './libs/text'
     },
     shim:{
-        'dhtmlxcommon': {
-            exports: 'dhtmlxcommon'
-        },
-        'dhtmlxgantt': {
-            exports: 'dhtmlxgantt'
-        }
+        'Backbone': ['Underscore', 'jQuery'],
+        'app': ['Backbone', 'less']
     }
 });
 

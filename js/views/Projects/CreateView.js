@@ -1,7 +1,4 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     "text!templates/Projects/CreateTemplate.html",
     "collections/Customers/AccountsDdCollection",
     "collections/Projects/ProjectsCollection",
@@ -10,7 +7,7 @@ define([
     "localstorage",
     "custom"
 ],
-    function ($, _, Backbone, CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -33,7 +30,8 @@ define([
                 this._modelBinder.unbind();
             },
 
-            saveItem: function(){
+            saveItem: function () {
+                //debugger 
             	var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
@@ -45,32 +43,33 @@ define([
                 }
                 
                 var idCustomer = $(this.el).find("#customerDd option:selected").val();
-                var customer = this.customersDdCollection.where({id: idCustomer});
+                var customer = this.customersDdCollection.get(idCustomer);
                 
-                if (customer.length == 0)
+                if (!customer)
                 {
                 	customer = null;
-                }else
+                }
+                else
                 {
-                	customer = customer[0].toJSON(); 
+                	customer = customer.toJSON(); 
                 }
                 var idManager = $(this.el).find("#managerDd option:selected").val();
-                var projectmanager = this.accountDdCollection.where({id: idManager});
-                if (projectmanager.length == 0)
+                var projectmanager = this.accountDdCollection.get(idManager);
+                if (!projectmanager)
                 {
                 	projectmanager = null;
                 }else
                 {
-                	projectmanager = projectmanager[0].toJSON(); 
+                	projectmanager = projectmanager.toJSON(); 
                 }
                 var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
-                var workflow = this.workflowsDdCollection.where({id: idWorkflow});
-                if (workflow.length == 0)
+                var workflow = this.workflowsDdCollection.get(idWorkflow);
+                if (!workflow)
                 {
                 	workflow = null;
                 }else
                 {
-                	workflow = workflow[0].toJSON(); 
+                	workflow = workflow.toJSON(); 
                 }
                 var $userNodes = $("#usereditDd option:selected"), users = [];
                 $userNodes.each(function(key, val){
@@ -83,9 +82,19 @@ define([
                 
                 this.projectsCollection.create({
                 	projectname: projectname,
-                	customer: customer,
-                	projectmanager: projectmanager,
-                	workflow: workflow,
+                	customer: {
+                	    id: customer._id,
+                	    type: customer.type,
+                	    name: customer.name.last + ' ' + customer.name.first
+                	},
+                	projectmanager: {
+                	    uid: projectmanager._id,
+                	    uname: projectmanager.name.last + ' ' + projectmanager.name.first
+                	},
+                	workflow: {
+                	    name: workflow.name,
+                	    status: workflow.status
+                	},
                 	teams: {
                 		users: users
                 	}

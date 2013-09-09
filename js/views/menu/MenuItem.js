@@ -1,10 +1,7 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
     'text!templates/menu/MenuItemTemplate.html'
 ],
-    function($, _, Backbonem, MenuItemTemplate){
+    function(MenuItemTemplate){
 
         var MenuItem = Backbone.View.extend({
             tagName: 'li',

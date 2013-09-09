@@ -1,25 +1,12 @@
 // Filename: router.js
 define([
-  'require',
-  'jquery',
-  'underscore',
-  'backbone',
   'views/main/MainView',
   'views/login/LoginView',
-  'custom',
-  'collections/Persons/PersonsCollection'
-], function(require, $, _, Backbone, MainView, LoginView, Custom, PersonsCollection) {
+  'custom'
+], function(MainView, LoginView, Custom) {
   
-  var AppRouter = Backbone.Router.extend({
-
-      initialize : function(){
-          new PersonsCollection();
-          Backbone.View.prototype.close = function(){
-              this.remove();
-              this.unbind();
-          }
-      },
-
+    var AppRouter = Backbone.Router.extend({
+        
       wrapperView: null,
       mainView: null,
       topBarView: null,
@@ -96,38 +83,37 @@ define([
           var self = this;
           
           self.Custom = Custom;
-          
-          require([ActionViewUrl, TopBarViewUrl, CollectionUrl], function(ActionView, TopBarView, ContentCollection){
-        	  var contentCollection = new ContentCollection();
-        	  contentCollection.bind('reset', _.bind(createViews, self));
-        	  function createViews()
-        	  {
-        		  contentCollection.unbind('reset');
-        		  this.Custom.setCurrentCL(contentCollection.models.length);
-        		 
-        		  if (itemIndex)
-            		  this.Custom.setCurrentII(itemIndex);
-        		  
-        		  itemIndex = this.Custom.getCurrentII();
-        		  
-        		  var url = "#home/action-"+ contentType + "/" + action;
-                  
-                  if (action === "Edit")
-                  {
-                	  url += "/" + itemIndex; 
+
+          require([ActionViewUrl, TopBarViewUrl, CollectionUrl], function(ActionView, TopBarView, ContentCollection) {
+              var contentCollection = new ContentCollection();
+              contentCollection.bind('reset', _.bind(createViews, self));
+
+              function createViews() {
+                  contentCollection.unbind('reset');
+                  this.Custom.setCurrentCL(contentCollection.models.length);
+
+                  if (itemIndex)
+                      this.Custom.setCurrentII(itemIndex);
+
+                  itemIndex = this.Custom.getCurrentII();
+
+                  var url = "#home/action-" + contentType + "/" + action;
+
+                  if (action === "Edit") {
+                      url += "/" + itemIndex;
                   }
-                  
+
                   Backbone.history.navigate(url);
-        		  
-        		  
-        		  var topBarView = new TopBarView({actionType: action}),
-         	 	  actionView = new ActionView({collection: contentCollection});
-         	 
-        		  topBarView.bind('saveEvent', actionView.saveItem, actionView);
-         	 
-        		  this.changeView(actionView);
-        		  this.changeTopBarView(topBarView);
-        	  }
+
+
+                  var topBarView = new TopBarView({ actionType: action }),
+                      actionView = new ActionView({ collection: contentCollection });
+
+                  topBarView.bind('saveEvent', actionView.saveItem, actionView);
+
+                  this.changeView(actionView);
+                  this.changeTopBarView(topBarView);
+              }
           }, self);
       },
 

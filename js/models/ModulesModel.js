@@ -1,9 +1,5 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone'
-], function($, _, Backbone){
-
+define(function(){
+ 
     var ModulesModel = Backbone.Model.extend({
 
         urlRoot: 'http://192.168.88.109:8088/getModules',

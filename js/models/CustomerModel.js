@@ -1,9 +1,4 @@
-define([
-    "jquery",
-    "underscore",
-    "backbone"
-],
-    function ($, _, Backbone) {
+define(function ($, _, Backbone) {
         var CustomerModel = Backbone.Model().extend({
             url: function(){
                 if(this.get('isCompany')){

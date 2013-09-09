@@ -1,11 +1,8 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
     'views/menu/MenuItem',
     'collections/menu/MenuItems'
 ],
-    function($, _, Backbone, MenuItemView){
+    function(MenuItemView){
 
         var LeftMenuView = Backbone.View.extend({
             tagName: 'nav',

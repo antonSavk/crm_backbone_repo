@@ -1,14 +1,11 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
-    'text!templates/Customers/TopBarTemplate.html',
+    'text!templates/Projects/TopBarTemplate.html',
     'custom'
 ],
-    function ($, _, Backbone, ContentTopBarTemplate, Custom) {
+    function (ContentTopBarTemplate, Custom) {
         var TopBarView = Backbone.View.extend({
             el:'#top-bar',
-            contentType: "Customers",
+            contentType: "Companies",
             actionType: null, //Content, Edit, Create
             template: _.template(ContentTopBarTemplate),
             

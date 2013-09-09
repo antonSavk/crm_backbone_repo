@@ -1,7 +1,4 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     'text!templates/Projects/list/ListTemplate.html',
     'text!templates/Projects/form/FormTemplate.html',
     'collections/Projects/ProjectsCollection',
@@ -11,7 +8,7 @@ define([
     'localstorage'
 
 ],
-function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
+function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
     var ContentView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function(options){
@@ -38,6 +35,12 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
 	
 	                this.collection.each(function(model){
 	                    table.append(new ListItemView({model:model}).render().el);
+	                });
+            	    
+	                $('#check_all').click(function () {
+	                    //debugger
+	                    var c = this.checked;
+	                    $(':checkbox').prop('checked', c);
 	                });
 					break;
             	}
@@ -89,12 +92,11 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
 
         },
         
-        checked: function(event)
-        {
-        	if ($("input:checked").length > 0)
-        		$("#top-bar-deleteBtn").show();
-        	else
-        		$("#top-bar-deleteBtn").hide();
+        checked: function(event) {
+            if ($("input:checked").length > 0)
+                $("#top-bar-deleteBtn").show();
+            else
+                $("#top-bar-deleteBtn").hide();
         },
         
         deleteItems: function()
@@ -105,7 +107,7 @@ function ($, _, Backbone, ListTemplate, FormTemplate, ProjectsCollection, ListIt
         		mid = 39;
         	
         	$.each($("input:checked"), function(index, checkbox){
-        		var project = self.collection.where({id: checkbox.value})[0];
+        		var project = self.collection.get(checkbox.value);
         		
         		/*project.set("projectname", 'testEDIT');
         		

@@ -1,12 +1,9 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     'localstorage'
 ],
-    function ($, _, Backbone, Localstorage) {
+    function (Localstorage) {
         var CompanyModel = Backbone.Model.extend({
-        	idAttribute: '_id'
+            idAttribute: '_id'
         });
 
         var CompaniesCollection = Backbone.Collection.extend({
@@ -40,7 +37,7 @@ define([
                     error: this.fetchError
                 });
             },
-
+            
             parse:true,
 
             parse: function (response) {

@@ -1,8 +1,4 @@
-define([
-  'jQuery',
-  'Underscore',
-  'Backbone'
-], function($, _, Backbone){
+define(function($, _, Backbone){
 
   return {};
 });
