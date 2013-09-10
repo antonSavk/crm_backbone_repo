@@ -36,6 +36,7 @@ define([
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
             	
+            	
                 var projectname = $("#projectName").val();
                 if ($.trim(projectname) == "")
                 {
@@ -98,7 +99,8 @@ define([
                 	teams: {
                 		users: users
                 	}
-                }, {
+                },
+                {
                 	headers: {
             			uid: uid,
             			hash: hash,

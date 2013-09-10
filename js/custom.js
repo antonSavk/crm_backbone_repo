@@ -100,7 +100,7 @@ define(['libs/date.format'],function(dateformat){
     		return App.currentViewType;
     	}	
     	
-    	var viewVariants = ["list", "form", "thumbnails", "gantt"], viewType;
+    	var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"], viewType;
   	  
   	  	if ($.inArray(App.currentViewType, viewVariants) == -1) 
   	  	{
@@ -115,7 +115,7 @@ define(['libs/date.format'],function(dateformat){
     };
     
     var setCurrentVT = function(viewType){
-    	var viewVariants = ["list", "form", "thumbnails", "gantt"];
+        var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"];
     	  
   	  	if ($.inArray(viewType, viewVariants) != -1) 
   	  	{

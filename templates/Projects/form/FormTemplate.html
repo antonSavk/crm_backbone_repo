@@ -1,9 +1,19 @@
 <div class="form-holder">
-    <div class="form">
-        <td><%=projectname%></td>
-        <td><%=projectmanager.uname%></td>
-        <td><%=workflow.status%></td>
+    <h2>FORM VIEW</h2>
+    <form class="form">
+        <h1><%=projectname%></h1>
+        <p>
+            <label for="projectmanager">Project Manager</label>
+            <%=projectmanager.uname%>
+        </p>
+        <p>
+            <label for="workflow">Workflow Status</label>
+            <%=workflow.status%>
+        </p>
+        <p>
+            <label for="privacy">Privacy / Visibility </label>
+            <%=privacy%>
+        </p>
 
-    </div>
-
+    </form>
 </div>

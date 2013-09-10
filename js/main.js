@@ -9,7 +9,7 @@ var App = App ||
         leftMenu: "leftmenu-holder",
         pageHolder: "body",
         wrapper: "#wrapper",
-        content:"content",
+        content: "content",
         loginForm: "loginForm",
         contentHolder: "#content-holder",
         viewPanel: "top-bar",
@@ -23,13 +23,13 @@ var App = App ||
         userPanel: "loginPanel",
         changeCVClass: "changeContentView",
         changeCIClass: "changeContentIndex",
-        createBtn:"#top-bar-createBtn",
-        discardBtn:"#top-bar-discardBtn",
-        saveBtn:"#top-bar-saveBtn",
-        saveDiscardHolder:"#saveDiscardHolder",
-        createBtnHolder:"#createBtnHolder",
-        projectForm:"#createProjectForm",
-        privacyDD:"#privacyDD",
+        createBtn: "#top-bar-createBtn",
+        discardBtn: "#top-bar-discardBtn",
+        saveBtn: "#top-bar-saveBtn",
+        saveDiscardHolder: "#saveDiscardHolder",
+        createBtnHolder: "#createBtnHolder",
+        projectForm: "#createProjectForm",
+        privacyDD: "#privacyDD",
         managerSelect: "#projectManagerDD"
     },
     requestedURL: null
@@ -38,6 +38,7 @@ var App = App ||
 require.config({
     paths: {
         jQuery: './libs/jquery',
+        jqueryui: './libs/jquery-ui-1.10.3.custom.min',
         Underscore: './libs/underscore',
         Backbone: './libs/backbone',
         less: './libs/less-1.4.1.min',
@@ -50,7 +51,7 @@ require.config({
     }
 });
 
-require(['app'], function(app){
+require(['app'], function (app) {
     app.initialize();
 });
 

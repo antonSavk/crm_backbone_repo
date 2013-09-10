@@ -15,6 +15,7 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
             console.log('Init Projects View');
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
+            debugger
             this.render();
         },
 
@@ -63,12 +64,12 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
             		
             		if (itemIndex == -1) 
             		{
-            			this.$el.html();
-            		}
-                    else
+
+            		    this.$el.html();
+            		}else
             		{
-            			var currentModel = this.collection.models[itemIndex];
-            			this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
+            		    var currentModel = this.collection.models[itemIndex];
+            		    this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
             		}
             			
             		break;
