@@ -1,7 +1,4 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     'localstorage'
 ],
     function ($, _, Backbone, Localstorage) {
@@ -15,7 +12,7 @@ define([
             	var hash = Localstorage.getFromLocalStorage('hash'),
                 	uid = Localstorage.getFromLocalStorage('uid'),
                 	mid = 39,
-                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/workflows?uid="+uid+"&hash="+hash+"&mid="+mid+"&id="+this.type;
+                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Workflows?uid="+uid+"&hash="+hash+"&mid="+mid+"&id="+this.type;
                 return url;
             },
             

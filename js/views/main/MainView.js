@@ -1,12 +1,9 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'text!templates/main/MainTemplate.html',
    'views/menu/LeftMenuView',
    'collections/menu/MenuItems',
     'views/menu/TopMenuView'
-], function($, _, Backbone, MainTemplate, LeftMenuView, MenuItemsCollection, TopMenuView){
+], function(MainTemplate, LeftMenuView, MenuItemsCollection, TopMenuView){
 
     var MainView = Backbone.View.extend({
         el:'#wrapper',

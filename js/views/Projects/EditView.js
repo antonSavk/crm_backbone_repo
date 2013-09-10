@@ -1,7 +1,4 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     "text!templates/Projects/EditTemplate.html",
     "collections/Customers/AccountsDdCollection",
     "collections/Projects/ProjectsCollection",
@@ -10,7 +7,7 @@ define([
     "localstorage",
     "custom"
 ],
-    function ($, _, Backbone, EditTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (EditTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
@@ -40,60 +37,64 @@ define([
             		var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
-            	
-	                var projectname = $("#projectName").val();
-	                if ($.trim(projectname) == "")
-	                {
-	                	projectname = "New Project";
-	                }
-	                
-	                var idCustomer = $(this.el).find("#customerDd option:selected").val();
-	                var customer = this.customersDdCollection.where({id: idCustomer});
-	                
-	                if (customer.length == 0)
-	                {
-	                	customer = null;
-	                }else
-	                {
-	                	customer = customer[0].toJSON(); 
-	                }
-	                var idManager = $(this.el).find("#managerDd option:selected").val();
-	                var projectmanager = this.accountsDdCollection.where({id: idManager});
-	                if (projectmanager.length == 0)
-	                {
-	                	projectmanager = null;
-	                }else
-	                {
-	                	projectmanager = projectmanager[0].toJSON(); 
-	                }
-	                var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
-	                var workflow = this.workflowsDdCollection.where({id: idWorkflow});
-	                if (workflow.length == 0)
-	                {
-	                	workflow = null;
-	                }else
-	                {
-	                	workflow = workflow[0].toJSON(); 
-	                }
-	                var $userNodes = $("#usereditDd option:selected"), users = [];
-	                $userNodes.each(function(key, val){
-	                	users.push({
-	                		uid: val.value,
-	                		uname: val.innerHTML
-	                	});
-	                });
+            	    debugger 
+            		var projectname = $("#projectName").val();
+            		if ($.trim(projectname) == "") {
+            		    projectname = "New Project";
+            		}
+
+            		var idCustomer = $(this.el).find("#customerDd option:selected").val();
+            		var customer = this.customersDdCollection.get(idCustomer);
+
+            		if (!customer) {
+            		    customer = null;
+            		}
+            		else {
+            		    customer = customer.toJSON();
+            		}
+            		var idManager = $(this.el).find("#managerDd option:selected").val();
+            		var projectmanager = this.accountsDdCollection.get(idManager);
+            		if (!projectmanager) {
+            		    projectmanager = null;
+            		} else {
+            		    projectmanager = projectmanager.toJSON();
+            		}
+            		var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
+            		var workflow = this.workflowsDdCollection.get(idWorkflow);
+            		if (!workflow) {
+            		    workflow = null;
+            		} else {
+            		    workflow = workflow.toJSON();
+            		}
+            		var $userNodes = $("#usereditDd option:selected"), users = [];
+            		$userNodes.each(function (key, val) {
+            		    users.push({
+            		        uid: val.value,
+            		        uname: val.innerHTML
+            		    });
+            		});
 	                
 	                
 	                currentModel.set({
-	                	projectname: projectname,
-	                	customer: customer,
-	                	projectmanager: projectmanager,
-	                	workflow: workflow,
-	                	teams: {
-	                		users: users
-	                	}
+	                    projectname: projectname,
+	                    customer: {
+	                        id: customer._id,
+	                        type: customer.type,
+	                        name: customer.name.last + ' ' + customer.name.first
+	                    },
+	                    projectmanager: {
+	                        uid: projectmanager._id,
+	                        uname: projectmanager.name.last + ' ' + projectmanager.name.first
+	                    },
+	                    workflow: {
+	                        name: workflow.name,
+	                        status: workflow.status
+	                    },
+	                    teams: {
+	                        users: users
+	                    }
 	                });
-	                debugger
+	                //debugger
 	                currentModel.save({}, {
 	                	headers: {
 	            			uid: uid,
@@ -116,7 +117,7 @@ define([
         		}else
         		{
         			var currentModel = this.projectsCollection.models[itemIndex];
-        			debugger
+        			//debugger
         			this.$el.html(_.template(EditTemplate, {model: currentModel.toJSON(), accountsDdCollection: this.accountsDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection}));
         		}
             	

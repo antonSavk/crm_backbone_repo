@@ -1,5 +1,5 @@
 // Filename: communication.js
-define(["jquery", "localstorage"], function($, LocalStorage){
+define(["localstorage"], function(LocalStorage){
 	var checkHash = function(callback){
 		var url = "http://" + App.Server.ip + ":" + App.Server.port + "/checkHash",
 			uid = LocalStorage.getFromLocalStorage('uid'),

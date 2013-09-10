@@ -1,15 +1,10 @@
 // Filename: app.js
 define([
-  'jquery', 
-  'underscore', 
-  'backbone',
   'router',
    'localstorage',
    'communication',
-   'custom',
-   'less'
-], function($, _, Backbone, Router, LocalStorage, Communication, Custom, Less){
-
+   'custom'
+], function(Router, LocalStorage, Communication, Custom){
     var initialize = function(){
     	
     	var appRouter = new Router();

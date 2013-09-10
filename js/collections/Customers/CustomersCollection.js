@@ -1,10 +1,7 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     'localstorage'
 ],
-    function ($, _, Backbone, Localstorage) {
+    function (Localstorage) {
         var CustomerModel = Backbone.Model.extend({
             idAttribute: '_id'
         });

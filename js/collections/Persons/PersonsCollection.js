@@ -1,10 +1,7 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     "localstorage"
 ],
-    function ($, _, Backbone, Localstorage) {
+    function (Localstorage) {
         var PersonModel = Backbone.Model.extend({
             idAttribute:"_id"
         });
@@ -15,6 +12,8 @@ define([
             url: function () {
                 return "http://" + App.Server.ip + ":" + App.Server.port + "/Persons";
             },
+
+
 
             initialize: function(){
                 var hash = Localstorage.getFromLocalStorage('hash'),
@@ -33,7 +32,8 @@ define([
                     error: this.fetchError
                 });
             },
-
+            
+            
             parse:true,
 
             parse: function(response){
@@ -48,6 +48,7 @@ define([
             }
 
         });
+        
 
         return PersonsCollection;
     });

@@ -1,12 +1,9 @@
 define([
-    "jquery",
-    "underscore",
-    "backbone",
     "text!templates/Projects/thumbnails/ThumbnailsItemTemplate.html"
 ],
-    function ($, _, Backbone, ThumbnailsItemTemplate) {
+    function (ThumbnailsItemTemplate) {
         var ThumbnailsItemView = Backbone.View.extend({
-            tagName:"tr",
+            tagName:"div",
 
             initialize: function(){
                 this.render();

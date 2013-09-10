@@ -1,4 +1,4 @@
-define(['backbone', 'libs/date.format'],function(Backbone, dateformat){
+define(['libs/date.format'],function(dateformat){
 	var runApplication = function(success, description){
 		if (!Backbone.history.fragment)
 			Backbone.history.start({silent: true});
@@ -11,7 +11,7 @@ define(['backbone', 'libs/date.format'],function(Backbone, dateformat){
 			Backbone.history.navigate(url, {trigger:true});
 	    }else
 	    {
-	    	console.log(description);
+	    	//console.log(description);
 	    	if (App.requestedURL == null)
 	    		App.requestedURL = Backbone.history.fragment; 
 	    	
