@@ -1,5 +1,6 @@
-define(['libs/date.format'],function(dateformat){
-	var runApplication = function(success, description){
+define(['libs/date.format'], function (dateformat) {
+    var runApplication = function (success, description) {
+        debugger 
 		if (!Backbone.history.fragment)
 			Backbone.history.start({silent: true});
 		if(success)

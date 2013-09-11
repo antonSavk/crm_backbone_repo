@@ -138,7 +138,8 @@ define([
           this.view = view;
       },
 
-      main: function(){
+      main: function () {
+          debugger 
     	  this.mainView = new MainView();
     	  this.changeWrapperView(this.mainView);
       },

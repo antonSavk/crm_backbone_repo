@@ -10,6 +10,7 @@ define([
     	var appRouter = new Router();
     	
     	Communication.checkHash(Custom.runApplication);
+    	//Communication.checkLogin(Custom.runApplication);
     };
 
     return {

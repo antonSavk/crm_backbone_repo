@@ -8,7 +8,8 @@ define([
          
         var MenuItems = Backbone.Collection.extend({
             model: MyModel,
-            url: function(){
+            url: function () {
+                debugger 
                 return "http://" + App.Server.ip + ":" + App.Server.port + "/getModules"
             },
 
@@ -23,8 +24,6 @@ define([
                 console.log("init collection");
                 var hash = Localstorage.getFromLocalStorage('hash'),
                     uid = Localstorage.getFromLocalStorage('uid');
-
-
 
                 this.fetch({data: $.param({
                     hash:hash,

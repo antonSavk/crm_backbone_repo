@@ -39,7 +39,8 @@ define(["localstorage"], function(LocalStorage){
                 ulogin: data.ulogin,
                 upass: data.upass
             },
-            success: function(resp){
+            success: function (resp) {
+                debugger 
             	if (resp.result.status == 0)
             	{
             		LocalStorage.saveToLocalStorage('uid', resp.data._id);
@@ -52,7 +53,19 @@ define(["localstorage"], function(LocalStorage){
                 callback(false, "Server is unavailable...");
             }
         });
-	}
+    }
+    //checkLogin = function(callback) {
+    //    $.ajax({
+    //        url: "http://" + App.Server.ip + ":" + App.Server.port + "/account/authenticated",
+    //        method: "GET",
+    //        success: function() {
+    //            return callback(true);
+    //        },
+    //        error: function(data) {
+    //            return callback(false);
+    //        }
+    //    });
+    //};
 	
 	return {
 		checkHash: checkHash,
