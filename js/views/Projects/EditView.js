@@ -117,7 +117,6 @@ define([
         		}else
         		{
         			var currentModel = this.projectsCollection.models[itemIndex];
-        			//debugger
         			this.$el.html(_.template(EditTemplate, {model: currentModel.toJSON(), accountsDdCollection: this.accountsDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection}));
         		}
             	

@@ -12,8 +12,7 @@ define([
             	var hash = Localstorage.getFromLocalStorage('hash'),
                 	uid = Localstorage.getFromLocalStorage('uid'),
                 	mid = 39,
-                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Projects"; 
-            	
+                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Projects";
             	
                 return url;
             },

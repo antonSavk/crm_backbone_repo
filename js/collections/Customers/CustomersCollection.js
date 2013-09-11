@@ -13,6 +13,7 @@ define([
                 	uid = Localstorage.getFromLocalStorage('uid'),
                 	mid = 39,
                 	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Customer?uid=" + uid + "&hash=" + hash + "&mid=" + mid;
+
                 return url;
             },
 
@@ -30,7 +31,7 @@ define([
 
             parse:true,
 
-            parse: function(response){
+            parse: function (response) {
                 return response.data;
             },
 
@@ -38,7 +39,7 @@ define([
                 console.log("Customers fetchSuccess");
             },
             fetchError: function(error){
-
+                console.log("Customers fetchError");
             }
 
 

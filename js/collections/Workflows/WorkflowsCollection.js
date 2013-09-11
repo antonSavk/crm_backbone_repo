@@ -1,7 +1,7 @@
 define([
     'localstorage'
 ],
-    function ($, _, Backbone, Localstorage) {
+    function (Localstorage) {
         var WorkflowModel = Backbone.Model.extend({
             idAttribute: '_id'
         });

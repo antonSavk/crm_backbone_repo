@@ -79,10 +79,7 @@ define([
             	event.preventDefault();
             	Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
             }
-            
         });
-
-
 
         return TopBarView;
     });
