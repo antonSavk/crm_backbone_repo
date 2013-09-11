@@ -181,15 +181,15 @@ body {
             font-size: 12px;
             font-weight: bold;
             color: @blue;
-
             a {
                 color: @blue;
                 text-decoration: none;
                 font-size: 12px;
                 line-height: 23px;
                 font-weight: bold;
+                
             }
-
+			
             &.selected {
                 background: #4d5a75;
                 border-top: 1px solid lightgrey;
@@ -211,6 +211,7 @@ body {
                         font-weight: normal;
                         text-shadow: none;
                     }
+                    
                 }
             }
         }
@@ -490,12 +491,13 @@ body {
     -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
-    h1 {
+    h2 {
         font-family: @lucida-font;
         color: #4c4c4c;
+        .bold;
         font-size: 24px !important;
         text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
-        margin-bottom: 24px;
+        margin-bottom: 12px;
     }
 
     p {
@@ -503,7 +505,7 @@ body {
         color: #4c4c4c;
         font-size: 13px;
         text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
-		line-height:inherit;
+		line-height:24px;
         lable {
             margin-bottom: 2px;
         }
@@ -525,7 +527,7 @@ body {
         display: block;
         float: left;
         font-weight: bold;
-        min-width: 160px;
+        width:90%;
         height: 23px;
         line-height: 23px;
     }
