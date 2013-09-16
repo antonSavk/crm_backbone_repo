@@ -96,7 +96,7 @@ body {
 
 .clearfix {
     zoom: 1;
-
+	clear: both;
     &:before {
         .clear;
     }
@@ -505,11 +505,10 @@ body {
         color: #4c4c4c;
         font-size: 13px;
         text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
-		line-height:24px;
+		line-height:30px;
         lable {
             margin-bottom: 2px;
         }
-
         input {
             margin-bottom: 2px;
         }
@@ -528,12 +527,16 @@ body {
         float: left;
         font-weight: bold;
         width:90%;
-        height: 23px;
+        height: 30px;
         line-height: 23px;
     }
 
     input {
         margin: 2px 2px 2px 0px;
+    }
+    textarea{
+    width:99%;
+    min-height:160px;
     }
 }
 
@@ -591,7 +594,7 @@ input, textarea, select {
     font-size: 26px;
     background: #CEDAE7;
     display: block;
-    width: 100%;
+    width: 300px;
     padding: 0 7px;
 
     label {
