@@ -1,9 +1,6 @@
 <div class="form-holder">
     <form class="form">
 		<h2>	<%=summary%></h2>
-			
-			
-			
 			 <div class="half-block left">
         	<div class="half-block left">
 	        	<p><label for="projectmanager">Project</label></p>
@@ -11,10 +8,11 @@
 	        	<p><label for="privacy">Workflow</label></p>
 	        </div>
         	<div class="half-block left">
-	        	<p><%=project.projectName%></p>
+	        	<p><a id="<%=project.pId%>" href="#"><%=project.projectName%></a></p>
 		        <p><%=assignedto.uname%></p>
 		        <p><%=workflow.name%></p>
 			</div>
      	</div>
 	</form>
 </div>
+

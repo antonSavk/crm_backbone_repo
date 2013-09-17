@@ -80,11 +80,12 @@
 
 
                     var deadlineSt = $.trim($("#deadline").val());
+                    var deadline = "";
                     if (!deadlineSt) {
                         deadline = null;
                     }
                     else {
-                        var deadline = new Date(Date.parse(deadlineSt)).toISOString();
+                        deadline = new Date(Date.parse(deadlineSt)).toISOString();
                     }
 
                     var tags = $.trim($("#tags").val()).split(',');
@@ -103,22 +104,23 @@
                     }
 
                     var startDateSt = $.trim($("#StartDate").val());
+                    var StartDate = "";
                     if (!startDateSt) {
                         StartDate = null;
                     }
                     else {
-                        var StartDate = new Date(Date.parse(startDateSt)).toISOString();
+                        StartDate = new Date(Date.parse(startDateSt)).toISOString();
                     }
 
                     var endDateSt = $.trim($("#EndDate").val());
+                    var EndDate = "";
                     if (!endDateSt) {
                         EndDate = null;
                     }
                     else {
-                        var EndDate = new Date(Date.parse(endDateSt)).toISOString();
+                        EndDate = new Date(Date.parse(endDateSt)).toISOString();
                     }
 
-                    debugger
                     var idCustomer = this.$("#customerDd option:selected").val();
                     var customer = this.customersDdCollection.get(idCustomer);
                     console.log(idCustomer);

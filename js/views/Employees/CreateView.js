@@ -1,17 +1,17 @@
 define([
-    "text!templates/Projects/CreateTemplate.html",
+    "text!templates/Employees/CreateTemplate.html",
     "collections/Customers/AccountsDdCollection",
-    "collections/Projects/ProjectsCollection",
+    "collections/Employees/EmployeesCollection",
     "collections/Customers/CustomersCollection",
     "collections/Workflows/WorkflowsCollection",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (CreateTemplate, AccountsDdCollection, EmployeesCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
-            contentType: "Projects",
+            contentType: "Employees",
             template: _.template(CreateTemplate),
 
             initialize: function (options) {
@@ -31,7 +31,6 @@ define([
             },
 
             saveItem: function () {
-                 
             	var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;

@@ -51,7 +51,7 @@ define([
             	    fax = "";
             	}
                 
-            	//debugger
+            	
 
             	this.companyCollection.create({
                         cname: cname,

@@ -32,12 +32,6 @@ define([
             parse:true,
 
             parse: function(response){
-            	//debugger
-                //console.log('parse Workflows');
-                //$.each(response.data.value, function(index,val){
-                //    response.data.value[index]["id"] = response.data.value[index]["_id"];
-                //    delete response.data.value[index]["_id"];
-                //});
                 return response.data.value;
             },
 
@@ -50,7 +44,6 @@ define([
             fetchError: function(error){
 
             }
-
 
         });
 

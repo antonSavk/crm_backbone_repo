@@ -1,9 +1,9 @@
 define([
-    'text!templates/Projects/list/ListTemplate.html',
-    'text!templates/Projects/form/FormTemplate.html',
-    'collections/Projects/ProjectsCollection',
-    'views/Projects/list/ListItemView',
-    'views/Projects/thumbnails/ThumbnailsItemView',
+    'text!templates/Employees/list/ListTemplate.html',
+    'text!templates/Employees/form/FormTemplate.html',
+    'collections/Employees/EmployeesCollection',
+    'views/Employees/list/ListItemView',
+    'views/Employees/thumbnails/ThumbnailsItemView',
     'custom',
     'localstorage'
 

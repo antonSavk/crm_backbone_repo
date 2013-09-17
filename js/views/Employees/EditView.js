@@ -1,5 +1,5 @@
 define([
-    "text!templates/Projects/EditTemplate.html",
+    "text!templates/Employees/EditTemplate.html",
     "collections/Customers/AccountsDdCollection",
     "collections/Projects/ProjectsCollection",
     "collections/Customers/CustomersCollection",
@@ -11,7 +11,7 @@ define([
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
-            contentType: "Projects",
+            contentType: "Employees",
 
             initialize: function (options) {
                this.accountsDdCollection = new AccountsDdCollection();
@@ -27,8 +27,7 @@ define([
                this.render();
             },
 
-            saveItem: function () {
-                 
+            saveItem: function(){
             	var itemIndex = Custom.getCurrentII() - 1;
             	
             	if (itemIndex != -1) 
