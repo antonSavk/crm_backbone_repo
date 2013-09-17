@@ -57,7 +57,7 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                         this.$el.html(_.template(TasksKanbanTemplate));
                         var workflows = this.workflowsCollection.models;
                         _.each(workflows, function (workflow, index) {
-                            $("<div class='column' data-index='" + index + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><div class='columnNameDiv'><h2 class='columnName'>" + workflow.get('name') + "</h2></div></div>").appendTo(".kanban");
+                            $("<div class='column' data-index='" + index + "' data-status='"+workflow.get('status')+"' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><div class='columnNameDiv'><h2 class='columnName'>" + workflow.get('name') + "</h2></div></div>").appendTo(".kanban");
                         });
 
                         _.each(workflows, function (workflow, i) {
@@ -126,12 +126,14 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                 revert: true,
                 helper : 'clone',
                 stop: function (event, ui) {
+                    debugger 
                     var model = that.collection.get(ui.item.attr("id"));
+                    var column = ui.item.closest(".column");
                     var ob = {
                         workflow: {
                             id: ui.item.closest(".column").data("id"),
-                            name: ui.item.closest(".column").data("name"),
-                            status: model.get("workflow").status
+                            name: column.data("name"),
+                            status: column.data("status")
                         }
                     };
 

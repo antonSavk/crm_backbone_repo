@@ -34,7 +34,8 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
 	        		this.$el.html(_.template(ListTemplate));
 	                var table = this.$el.find('table > tbody');
 	
-	                this.collection.each(function(model){
+	                this.collection.each(function (model) {
+	                    debugger 
 	                    table.append(new ListItemView({model:model}).render().el);
 	                });
             	    

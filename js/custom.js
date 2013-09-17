@@ -2,7 +2,8 @@ define(['libs/date.format'], function (dateformat) {
     var runApplication = function (success, description) {
         debugger 
 		if (!Backbone.history.fragment)
-			Backbone.history.start({silent: true});
+		    Backbone.history.start({silent: true});
+		    //Backbone.history.start();
 		if(success)
 	    {
 			var url = (App.requestedURL == null) ? Backbone.history.fragment : App.requestedURL;
@@ -51,15 +52,16 @@ define(['libs/date.format'], function (dateformat) {
     	}
 	};
 	
-	var changeContentViewType = function(event){
+	var changeContentViewType = function (event) {
+	    debugger 
     	event.preventDefault();
     	var viewtype = $(event.target).attr('data-view-type'),
     		url = "#home/content-" + this.contentType + "/"+viewtype;
     	
     	var itemIndex = getCurrentII();
     	
-    	if (viewtype == "form") url+="/"+itemIndex; 
-    	
+    	if (viewtype == "form") url+="/"+itemIndex;
+	    App.ownContentType = true;
     	Backbone.history.navigate(url, {trigger: true});
     };
 	
@@ -94,25 +96,36 @@ define(['libs/date.format'], function (dateformat) {
     	return index;
     };
     
-    var getCurrentVT = function(){
-    	if (App.currentViewType == null) 
-    	{
-    		App.currentViewType = "list";
-    		return App.currentViewType;
+    var getCurrentVT = function (option) {
+        debugger
+        var viewType;
+        if (option && (option.contentType != App.contentType)) {
+            App.ownContentType = false;
+        }
+    	if (App.currentViewType == null) {
+    	    if (option && option.contentType == 'Tasks') {
+    	        App.currentViewType = "kanban";
+    	    } else App.currentViewType = "thumbnails";
+    	    return App.currentViewType;
+    	} else {
+    	    if (option && option.contentType == 'Tasks') {
+    	        if (!App.ownContentType) App.currentViewType = "kanban";
+    	    } else if (option && option.contentType !== 'Tasks') {
+    	        if (!App.ownContentType) App.currentViewType = "thumbnails";
+    	    }
+    	    //return viewType;
     	}	
     	
-    	var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"], viewType;
-  	  
-  	  	if ($.inArray(App.currentViewType, viewVariants) == -1) 
-  	  	{
-  	  		App.currentViewType = "list";
-  	  		viewType = "list";
-  	  	}else
-  	  	{
-  	  		viewType = App.currentViewType;
-  	  	}
-  	  	
-    	return viewType;
+    	var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"];
+
+        if ($.inArray(App.currentViewType, viewVariants) == -1) {
+            App.currentViewType = "thumbnails";
+            viewType = "thumbnails";
+        } else {
+            viewType = App.currentViewType;
+        }
+
+        return viewType;
     };
     
     var setCurrentVT = function(viewType){
@@ -123,7 +136,7 @@ define(['libs/date.format'], function (dateformat) {
   	  		App.currentViewType = viewType;
   	  	}else
   	  	{
-  	  		viewType = "list"; 
+  	  	    viewType = "thumbnails";
   	  		App.currentViewType = viewType;
   	  	}
   	  	

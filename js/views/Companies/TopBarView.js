@@ -1,5 +1,5 @@
 define([
-    'text!templates/Projects/TopBarTemplate.html',
+    'text!templates/Companies/TopBarTemplate.html',
     'custom'
 ],
     function (ContentTopBarTemplate, Custom) {

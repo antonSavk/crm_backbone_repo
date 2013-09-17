@@ -5,10 +5,11 @@ define([
     "collections/Tasks/TasksCollection",
     "collections/Customers/CustomersCollection",
     "collections/Workflows/WorkflowsCollection",
+    "collections/Priority/TaskPriority",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, ProjectsDdCollection, AccountsDdCollection, TasksCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (CreateTemplate, ProjectsDdCollection, AccountsDdCollection, TasksCollection, CustomersCollection, WorkflowsCollection, PriorityCollection, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -25,6 +26,8 @@ define([
                 this.workflowsDdCollection = new WorkflowsCollection({ id: "task" });
                 this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
                 this.bind('reset', _.bind(this.render, this));
+                this.priorityCollection = new PriorityCollection();
+                this.priorityCollection.bind('reset', _.bind(this.render, this));
                 this.tasksCollection = options.collection;
                 this.render();
             },
@@ -129,8 +132,20 @@ define([
                 } else {
                     workflow = workflow.toJSON();
                 }
+                var estimated = $("#estimated").val();
+                if ($.trim(estimated) == "") {
+                    estimated = 0;
+                }
+                var loged = $("#loged").val();
+                if ($.trim(loged) == "") {
+                    loged = 0;
+                }
+                debugger 
+                var priority = $("#priority").val();
+                if ($.trim(priority) == "") {
+                    priority = null;
+                }
 
-                
                 this.tasksCollection.create({
                     summary: summary,
                     assignedto: assignedto,
@@ -143,7 +158,7 @@ define([
                     deadline: deadline,
                     description: description,
                     extrainfo: {
-                        priority: null,
+                        priority: priority,
                         sequence: sequence,
                         customer:{
                                 id: idCustomer,
@@ -152,7 +167,9 @@ define([
                             },
                         StartDate: StartDate,
                         EndDate: EndDate
-                    }
+                    },
+                    estimated: estimated,
+                    loged: loged
                 },
                 {
                     headers: {
@@ -161,12 +178,17 @@ define([
                         mid: mid
                     }
                 });
+                
+                debugger 
 
                 Backbone.history.navigate("home/content-" + this.contentType, { trigger: true });
             },
 
             render: function () {
-                this.$el.html(this.template({ projectsDdCollection: this.projectsDdCollection, accountDdCollection: this.accountDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection }));
+                this.$el.html(this.template({
+                    projectsDdCollection: this.projectsDdCollection, accountDdCollection: this.accountDdCollection, customersDdCollection: this.customersDdCollection,
+                    workflowsDdCollection: this.workflowsDdCollection, priorityCollection: this.priorityCollection
+                }));
 
                 return this;
             }

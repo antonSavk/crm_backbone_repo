@@ -1,5 +1,5 @@
 define([
-    "text!templates/Projects/thumbnails/ThumbnailsItemTemplate.html"
+    "text!templates/Companies/thumbnails/ThumbnailsItemTemplate.html"
 ],
     function (ThumbnailsItemTemplate) {
         var ThumbnailsItemView = Backbone.View.extend({

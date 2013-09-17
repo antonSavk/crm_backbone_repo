@@ -39,13 +39,26 @@ define([
         		  
         		  contentCollection.unbind('reset');
         		  this.Custom.setCurrentCL(contentCollection.models.length);
-        		  
-        		  if (viewType)
-        			  this.Custom.setCurrentVT(viewType);
-            	  if (itemIndex)
+
+        		  if (viewType) {
+        		      debugger 
+        		      if (!App.contentType) {
+        		          //if (contentType == 'Tasks') this.Custom.setCurrentVT('kanban');
+        		          App.contentType = contentType;
+        		      } else if (App.contentType && App.contentType != contentType) {
+        		          //if (contentType == 'Tasks') this.Custom.setCurrentVT('kanban');
+        		          App.ownContentType = false;
+        		          App.contentType = contentType;
+        		      }
+        		      this.Custom.setCurrentVT(viewType);
+        		      //App.contentType = contentType;
+        	      }
+        	      if (itemIndex)
             		  this.Custom.setCurrentII(itemIndex);
             	  
-            	  viewType = this.Custom.getCurrentVT();
+        	      viewType = this.Custom.getCurrentVT({
+        	           contentType: contentType
+        	      });
             	  itemIndex = this.Custom.getCurrentII();
         		  
                   var url = "#home/content-"+ contentType + "/" + viewType;

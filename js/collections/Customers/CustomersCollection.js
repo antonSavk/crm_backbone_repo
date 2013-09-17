@@ -18,7 +18,8 @@ define([
             },
 
 
-            initialize: function(){
+            initialize: function () {
+                debugger 
                 console.log("Customer Collection Init");
                 
                 this.fetch({
@@ -30,7 +31,7 @@ define([
             },
 
             parse:true,
-
+           
             parse: function (response) {
                 return response.data;
             },

@@ -3,6 +3,7 @@ define([
 ],
     function (Localstorage) {
         var TaskModel = Backbone.Model.extend({
+            idAttribute: '_id'
         });
 
         var TasksCollection = Backbone.Collection.extend({
@@ -42,10 +43,10 @@ define([
 
             parse: function(response){
             	console.log('parse Tasks');
-                $.each(response.data, function(index,val){
-                    response.data[index]["id"] = response.data[index]["_id"];
-                    delete response.data[index]["_id"];
-                });
+                //$.each(response.data, function(index,val){
+                //    response.data[index]["id"] = response.data[index]["_id"];
+                //    delete response.data[index]["_id"];
+                //});
                 return response.data;
             },
 

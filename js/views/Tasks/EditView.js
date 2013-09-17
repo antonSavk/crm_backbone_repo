@@ -5,10 +5,11 @@
     "collections/Tasks/TasksCollection",
     "collections/Customers/CustomersCollection",
     "collections/Workflows/WorkflowsCollection",
+    "collections/Priority/TaskPriority",
     "localstorage",
     "custom"
 ],
-    function (EditTemplate, ProjectsDdCollection, AccountsDdCollection, TasksCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (EditTemplate, ProjectsDdCollection, AccountsDdCollection, TasksCollection, CustomersCollection, WorkflowsCollection, PriorityCollection, LocalStorage, Custom) {
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
@@ -19,6 +20,7 @@
                 this.accountsDdCollection = new AccountsDdCollection();
                 this.customersDdCollection = new CustomersCollection();
                 this.workflowsDdCollection = new WorkflowsCollection({ id: "task" });
+                this.priorityCollection = new PriorityCollection();
                 this.tasksCollection = options.collection;
 
                 this.projectsDdCollection.bind('reset', _.bind(this.render, this));
@@ -26,7 +28,8 @@
                 this.accountsDdCollection.bind('reset', _.bind(this.render, this));
                 this.customersDdCollection.bind('reset', _.bind(this.render, this));
                 this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
-
+                this.priorityCollection.bind('reset', _.bind(this.render, this));
+                
                 this.render();
 
             },
@@ -133,6 +136,20 @@
                         workflow = workflow.toJSON();
                     }
 
+                    var estimated = $("#estimated").val();
+                    if ($.trim(estimated) == "") {
+                        estimated = 0;
+                    }
+                    var loged = $("#loged").val();
+                    if ($.trim(loged) == "") {
+                        loged = 0;
+                    }
+                    
+                    var priority = $("#priority").val();
+                    if ($.trim(priority) == "") {
+                        priority = null;
+                    }
+
                     currentModel.set({
                         summary: summary,
                         assignedto: assignedto,
@@ -145,7 +162,7 @@
                         deadline: deadline,
                         description: description,
                         extrainfo: {
-                            priority: null,
+                            priority: priority,
                             sequence: sequence,
                             customer:
                                 {
@@ -155,7 +172,9 @@
                                 },
                             StartDate: StartDate,
                             EndDate: EndDate
-                        }
+                        },
+                        estimated: estimated,
+                        loged: loged
                     });
                     currentModel.save({}, {
                         headers: {
@@ -185,7 +204,10 @@
                     extrainfo['StartDate'] = this.ISODateToDate(currentModel.get('extrainfo').StartDate);
                     extrainfo['EndDate'] = this.ISODateToDate(currentModel.get('extrainfo').EndDate);
                     currentModel.set({ deadline: this.ISODateToDate(currentModel.get('deadline')), extrainfo: extrainfo }, { silent: true });
-                    this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON(), projectsDdCollection: this.projectsDdCollection, accountsDdCollection: this.accountsDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection }));
+                    this.$el.html(_.template(EditTemplate, {
+                        model: currentModel.toJSON(), projectsDdCollection: this.projectsDdCollection, accountsDdCollection: this.accountsDdCollection,
+                        customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection, priorityCollection: this.priorityCollection
+                    }));
                 }
                 return this;
             }

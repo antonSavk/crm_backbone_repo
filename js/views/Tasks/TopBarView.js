@@ -29,8 +29,9 @@ define([
                 this.render();
             },
 
-            render: function(){
-            	var viewType = Custom.getCurrentVT();
+            render: function () {
+                
+                var viewType = Custom.getCurrentVT();
             	this.$el.html(this.template({ viewType: viewType, contentType: this.contentType }));
                 
             	if (this.actionType == "Content") {

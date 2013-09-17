@@ -8,7 +8,7 @@ define([
         var TasksItemView = Backbone.View.extend({
             className: "task",
             id: function () {
-                return this.model.get("id");
+                return this.model.get("_id");
             },
             initialize: function () {
                 this.collection = new TasksCollection;

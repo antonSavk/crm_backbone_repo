@@ -20,27 +20,30 @@ define([
 
             currentModule: "HR",
 
-            initialize: function(){
+            initialize: function () {
+                debugger 
                 console.log("init collection");
                 var hash = Localstorage.getFromLocalStorage('hash'),
                     uid = Localstorage.getFromLocalStorage('uid');
 
-                this.fetch({data: $.param({
-                    hash:hash,
-                    uid:uid
-                }),
-                    type: 'POST',
-                    reset:true,
+                this.fetch({
+                    data: $.param({
+                        hash: hash,
+                        uid: uid
+                    }),
+                    type: 'GET',
+                    reset: true,
                     success: this.fetchSuccess,
                     error: this.fetchError
                 });
 
 
             },
-
+            
             parse:true,
 
-            parse: function(response){
+            parse: function (response) {
+                debugger 
                 console.log('parse');
                 $.each(response.data, function(index,val){
                     response.data[index]["id"] = response.data[index]["_id"];

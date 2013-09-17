@@ -27,7 +27,8 @@ define([
                this.render();
             },
 
-            saveItem: function(){
+            saveItem: function () {
+                debugger 
             	var itemIndex = Custom.getCurrentII() - 1;
             	
             	if (itemIndex != -1) 
