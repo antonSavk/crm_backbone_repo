@@ -1,5 +1,5 @@
 define([
-    "text!templates/Projects/thumbnails/ThumbnailsItemTemplate.html",
+    "text!templates/Employees/thumbnails/ThumbnailsItemTemplate.html",
 ],
     function (ThumbnailsItemTemplate, TasksContentView, TasksCollection) {
         var ThumbnailsItemView = Backbone.View.extend({
@@ -16,7 +16,7 @@ define([
 
             gotoForm: function (e) {
                 var itemIndex = $(e.target).data("index") + 1;
-                window.location.hash = "#home/content-Projects/form/" + itemIndex;
+                window.location.hash = "#home/content-Employees/form/" + itemIndex;
             },
 
             template: _.template(ThumbnailsItemTemplate),

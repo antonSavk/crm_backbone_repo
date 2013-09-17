@@ -1,13 +1,10 @@
 <div class="form-holder">
 
-
-
     <form method="post" action="" id="createTaskForm" class="form">
         <fieldset>
             <p>
                 <label for="summary">Task summary </label>
                 <input type="text" name="summary" id="summary" required />
-
             </p>
 
             <p>
@@ -27,7 +24,6 @@
                     <% accountDdCollection.each(function(option){ %>
                     <option value="<%= option.get('_id') %>"><%= option.get('name').first %> <%= option.get('name').last %></option>
                     <% }); %>
-               
                 </select>
             </p>
 
@@ -49,7 +45,6 @@
                         <li>
                             <a href="#">Extra Info</a></li>
                     </ul>
-
                 </div>
                 <br />
                 <div class="tab">
@@ -102,7 +97,6 @@
                             <% workflowsDdCollection.each(function(option){ %>
                             <option value="<%= option.get('_id') %>"><%= option.get('name') %> (<%= option.get('status') %>)</option>
                             <% }); %>
-               
                         </select>
                     </p>
                     <p>

@@ -1,35 +1,35 @@
 define(['libs/date.format'], function (dateformat) {
     var runApplication = function (success, description) {
-       
+        debugger 
 		if (!Backbone.history.fragment)
-		    Backbone.history.start({silent: true});
-		    //Backbone.history.start();
-		if(success)
-	    {
+            Backbone.history.start({ silent: true });
+        if (success) {
 			var url = (App.requestedURL == null) ? Backbone.history.fragment : App.requestedURL;
 			if ((url == "") || (url == "login")) url = 'home';
 			
 			Backbone.history.fragment = "";
-			Backbone.history.navigate(url, {trigger:true});
-	    }else
-	    {
-	    	//console.log(description);
+            Backbone.history.navigate(url, { trigger: true });
+        } else {
 	    	if (App.requestedURL == null)
 	    		App.requestedURL = Backbone.history.fragment; 
 	    	
 	    	Backbone.history.fragment = "";
-	    	Backbone.history.navigate("login", {trigger:true});
+            Backbone.history.navigate("login", { trigger: true });
 	    }
 		
 	};
 	
-	var changeItemIndex = function(event){
+    var changeItemIndex = function (event, hash, actionType, contentType) {
 		event.preventDefault();
+        if (!this.actionType || !this.contentType) {
+            this.actionType = actionType;
+            this.contentType = contentType;
+        }
     	var shift = $(event.target).attr('data-shift'),
     		itemIndex = getCurrentII(),
     		viewType = getCurrentVT();
     	
-    	switch(shift){
+        switch (shift) {
     		case "left": {
     			setCurrentII(parseInt(itemIndex) - 1);
     			break;
@@ -42,49 +42,58 @@ define(['libs/date.format'], function (dateformat) {
 
     	itemIndex = getCurrentII();
     	
-    	if (this.actionType == 'Content')
-    	{
-    		window.location.hash = "#home/content-" + this.contentType + "/"+viewType+"/"+itemIndex;
-    	}else
-    	if (this.actionType == 'Edit')
-    	{
-    		window.location.hash = "#home/action-" + this.contentType + "/"+this.actionType+"/"+itemIndex;
+        if (this.actionType == 'Content') {
+            if (!hash) {
+                window.location.hash = "#home/content-" + this.contentType + "/" + viewType + "/" + itemIndex;
+            } else {
+                window.location.hash = "#home/content-" + this.contentType + "/" + viewType + "/" + hash + "/" + itemIndex;
     	}
+        } else
+            if (this.actionType == 'Edit') {
+                window.location.hash = "#home/action-" + this.contentType + "/" + this.actionType + "/" + itemIndex;
+            }
 	};
 	
 	var changeContentViewType = function (event) {
-	     
+	    debugger 
     	event.preventDefault();
+        var itemIndex = getCurrentII();
+        if (contentType) {
+            this.contentType = contentType;
+        }
     	var viewtype = $(event.target).attr('data-view-type'),
-    		url = "#home/content-" + this.contentType + "/"+viewtype;
+    		url = "#home/content-" + this.contentType + "/" + viewtype;
     	
-    	var itemIndex = getCurrentII();
+        if (hash) {
+            url += "/" + hash;
+        }
     	
-    	if (viewtype == "form") url+="/"+itemIndex;
+        if (viewtype == "form") {
+            url += "/" + itemIndex;
+        }
+
 	    App.ownContentType = true;
-    	Backbone.history.navigate(url, {trigger: true});
+
+        Backbone.history.navigate(url, { trigger: true });
     };
 	
-    var getCurrentII = function(){
-    	if (App.currentItemIndex == null)
-    	{
+    var getCurrentII = function () {
+        if (App.currentItemIndex == null) {
     		App.currentItemIndex = 1;
     		return App.currentItemIndex;
     	}
     	
     	var testIndex = new RegExp(/^[1-9]{1}[0-9]*$/), itemIndex;
-    	if (testIndex.test(App.currentItemIndex) == false) 
-    	{
+        if (testIndex.test(App.currentItemIndex) == false) {
     		App.currentItemIndex = 1; 
     		itemIndex = 1;
-    	}else
-    	{
+        } else {
     		itemIndex = App.currentItemIndex;
     	}
     	return itemIndex;
     };
     
-    var setCurrentII = function(index){
+    var setCurrentII = function (index) {
     	var testIndex = new RegExp(/^[1-9]{1}[0-9]*$/),
     		contentLength = getCurrentCL();
   	  
@@ -97,7 +106,7 @@ define(['libs/date.format'], function (dateformat) {
     };
     
     var getCurrentVT = function (option) {
-        
+        debugger
         var viewType;
         if (option && (option.contentType != App.contentType)) {
             App.ownContentType = false;
@@ -111,7 +120,7 @@ define(['libs/date.format'], function (dateformat) {
     	    if (option && option.contentType == 'Tasks') {
     	        if (!App.ownContentType) App.currentViewType = "kanban";
     	    } else if (option && option.contentType !== 'Tasks') {
-    	        if (!App.ownContentType) App.currentViewType = "thumbnails";
+                //if (!App.ownContentType) App.currentViewType = "thumbnails";
     	    }
     	    //return viewType;
     	}	
@@ -128,14 +137,12 @@ define(['libs/date.format'], function (dateformat) {
         return viewType;
     };
     
-    var setCurrentVT = function(viewType){
+    var setCurrentVT = function (viewType) {
         var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"];
     	  
-  	  	if ($.inArray(viewType, viewVariants) != -1) 
-  	  	{
+        if ($.inArray(viewType, viewVariants) != -1) {
   	  		App.currentViewType = viewType;
-  	  	}else
-  	  	{
+        } else {
   	  	    viewType = "thumbnails";
   	  		App.currentViewType = viewType;
   	  	}
@@ -143,26 +150,23 @@ define(['libs/date.format'], function (dateformat) {
   	  	return viewType;
     };
     
-    var getCurrentCL = function(){
-    	if (App.currentContentLength == null)
-    	{
+    var getCurrentCL = function () {
+        if (App.currentContentLength == null) {
     		App.currentContentLength = 0;
     		return App.currentContentLength;
     	}
     	
     	var testLength = new RegExp(/^[0-9]{1}[0-9]*$/), contentLength;
-    	if (testLength.test(App.currentContentLength) == false)
-    	{
+        if (testLength.test(App.currentContentLength) == false) {
     		App.currentContentLength = 0; 
     		contentLength = 0;
-    	}else
-    	{
+        } else {
     		contentLength = App.currentContentLength;
     	}
     	return contentLength;
     };
     
-    var setCurrentCL = function(length){
+    var setCurrentCL = function (length) {
     	var testLength = new RegExp(/^[0-9]{1}[0-9]*$/);
   	  
   	  	if (testLength.test(length) == false)
@@ -172,18 +176,18 @@ define(['libs/date.format'], function (dateformat) {
     	return length;
     };
 
-    var convertProjectsForGantt = function (data){
+    var convertProjectsForGantt = function (data) {
         var projects = [];
-        data.forEach(function(project){
+        data.forEach(function (project) {
             projects.push({
-                'id':project.id,
-                'projectname':project.projectname,
-                'projectmanager':project.projectmanager.uname || 'No name',
-                'customer':project.customer || 'Unknown',
+                'id': project.id,
+                'projectname': project.projectname,
+                'projectmanager': project.projectmanager.uname || 'No name',
+                'customer': project.customer || 'Unknown',
                 'StartDate': new Date(project.info.StartDate),
                 'EndDate': new Date(),
-                'plannedtime':  calculateHours(new Date(project.info.StartDate), new Date()),
-                'timespent':  calculateHours(new Date(project.info.StartDate), new Date()),
+                'plannedtime': calculateHours(new Date(project.info.StartDate), new Date()),
+                'timespent': calculateHours(new Date(project.info.StartDate), new Date()),
                 'progress': '%',
                 'status': 'In Progress',
                 'taskCount': project.task.tasks.length
@@ -192,36 +196,36 @@ define(['libs/date.format'], function (dateformat) {
         return projects;
     };
 
-    var calculateHours = function (startDate, endDate){
+    var calculateHours = function (startDate, endDate) {
         var hours = 0;
-        if(!startDate || !endDate){
+        if (!startDate || !endDate) {
             throw new Error("CalculateTaskHours: Start or end date is undefined");
         }
-        if(startDate > endDate){
+        if (startDate > endDate) {
             throw new Error("CalculateTaskHours: Start date can not be greater that end date");
         }
         try {
             var delta = new Date(endDate) - new Date(startDate);
-            hours = Math.floor(((delta/1000)/60)/60);
-        } catch(error){
+            hours = Math.floor(((delta / 1000) / 60) / 60);
+        } catch (error) {
             throw new Error(error.message);
         }
         return hours;
     };
 
-    var convertTasksForGantt = function (data){
+    var convertTasksForGantt = function (data) {
         var tasks = [];
-        data.forEach(function(project){
-            if(project.task.tasks.length > 0){
-                project.task.tasks.forEach(function(task){
+        data.forEach(function (project) {
+            if (project.task.tasks.length > 0) {
+                project.task.tasks.forEach(function (task) {
                     tasks.push({
-                        'summary':task.summary,
-                        'projectname':project.projectname  || 'Unknown project',
-                        'assignedto':task.assignedto.uname || 'Unknown name',
-                        'stage':'Unknown Stage',
+                        'summary': task.summary,
+                        'projectname': project.projectname || 'Unknown project',
+                        'assignedto': task.assignedto.uname || 'Unknown name',
+                        'stage': 'Unknown Stage',
                         'StartDate': dateFormat(new Date(task.extrainfo.StartDate), "dd/mm/yy hh:mm:ss"),
                         'EndDate': dateFormat(new Date(task.extrainfo.EndDate), "dd/mm/yy hh:mm:ss"),
-                        'progress':'Unknown progress'
+                        'progress': 'Unknown progress'
                     });
                 });
             }
@@ -230,30 +234,30 @@ define(['libs/date.format'], function (dateformat) {
         return tasks;
     };
 
-    function applyDefaultSettings(chartControl){
+    function applyDefaultSettings(chartControl) {
         chartControl.setImagePath("/crm_backbone_repo/images/");
         chartControl.setEditable(false);
         chartControl.showTreePanel(true);
         chartControl.showContextMenu(false);
-        chartControl.showDescTask(true,'d,s-f');
-        chartControl.showDescProject(true,'n,d');
+        chartControl.showDescTask(true, 'd,s-f');
+        chartControl.showDescProject(true, 'n,d');
     }
 
-    function createGanttChart(data, withTasks){
+    function createGanttChart(data, withTasks) {
         var ganttChartControl = new GanttChart();
         applyDefaultSettings(ganttChartControl);
         var projectArray = [];
         //create gantt chart from projects and descending tasks
-        if(withTasks){
+        if (withTasks) {
             projectArray = convertTasksForGantt(data);
-            projectArray.forEach(function(project){
-                if(project.task.tasks.length > 0){
+            projectArray.forEach(function (project) {
+                if (project.task.tasks.length > 0) {
                     //get the 'Date' portion of a Date object(without time)
                     var startDate = new Date(project.info.StartDate);
                     var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
-                    project.task.tasks.forEach(function(task){
+                    project.task.tasks.forEach(function (task) {
                         var hourCount = calculateHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
-                        var percentCompleted = Math.floor(Math.random()*100+1);
+                        var percentCompleted = Math.floor(Math.random() * 100 + 1);
                         var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
                         newProject.addTask(parentTask);
                     });
@@ -265,7 +269,7 @@ define(['libs/date.format'], function (dateformat) {
         //create gantt chart from only projects
         else {
             var newProject = createProjectForGantt(data);
-            ganttChartControl.showDescProject(false,'n,d');
+            ganttChartControl.showDescProject(false, 'n,d');
             ganttChartControl.addProject(newProject);
         }
 
@@ -273,26 +277,26 @@ define(['libs/date.format'], function (dateformat) {
     };
 
 
-    function createProjectForGantt(data){
+    function createProjectForGantt(data) {
         var projectArray = convertProjectsForGantt(data);
         //get date array
-        var arr = $.map(projectArray,function(val){
+        var arr = $.map(projectArray, function (val) {
             return val.StartDate;
         });
         // and find the minimum date
         var date = findMinDate(arr);
 
         var newProject = new GanttProjectInfo(1, 'Guntt View', date);
-        projectArray.forEach(function(project){
-            var hourCount = calculateHours(project.StartDate,project.EndDate);
-            var percentCompleted = Math.floor(Math.random()*100+1);
-            var parentTask = new GanttTaskInfo(project.id, project.projectname, project.StartDate, hourCount, percentCompleted,"");
+        projectArray.forEach(function (project) {
+            var hourCount = calculateHours(project.StartDate, project.EndDate);
+            var percentCompleted = Math.floor(Math.random() * 100 + 1);
+            var parentTask = new GanttTaskInfo(project.id, project.projectname, project.StartDate, hourCount, percentCompleted, "");
             newProject.addTask(parentTask);
         });
         return newProject;
     }
 
-    function findMinDate(dateArray){
+    function findMinDate(dateArray) {
         return _.min(dateArray);
         /*var minDate = dateArray[0];
         dateArray.forEach(function(date){
@@ -304,10 +308,10 @@ define(['libs/date.format'], function (dateformat) {
     }
     
 	return {
-        createGanttChart : createGanttChart,
-        calculateHours : calculateHours,
+        createGanttChart: createGanttChart,
+        calculateHours: calculateHours,
         convertTasksForGantt: convertTasksForGantt,
-        convertProjectsForGantt:convertProjectsForGantt,
+        convertProjectsForGantt: convertProjectsForGantt,
 		runApplication: runApplication,
 		changeItemIndex: changeItemIndex,
 		changeContentViewType: changeContentViewType,

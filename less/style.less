@@ -2,10 +2,12 @@
     font-family: 'Segoe UI';
     src: url("../font/segoeui.woff") format('woff');
 }
+
 @font-face {
     font-family: 'Metrize-Icons';
     src: url("../font/Metrize-Icons.ttf") format('truetype');
 }
+
 @font-face {
     font-family: 'Icons';
     src: url("../font/entypo-webfont.ttf") format('truetype');
@@ -96,12 +98,13 @@ body {
 
 .clearfix {
     zoom: 1;
-	clear: both;
+    clear: both;
+
     &:before {
         .clear;
     }
 
-    &:afrer {
+    &:after {
         .clear;
         clear: both;
     }
@@ -175,21 +178,21 @@ body {
     ul {
         li {
             list-style: none;
-            padding: 0px 0px 0px 20px;
+            padding-left: 20px;
             width: auto;
             text-shadow: 1px 1px #fff;
             font-size: 12px;
             font-weight: bold;
             color: @blue;
+
             a {
                 color: @blue;
                 text-decoration: none;
                 font-size: 12px;
                 line-height: 23px;
                 font-weight: bold;
-                
             }
-			
+
             &.selected {
                 background: #4d5a75;
                 border-top: 1px solid lightgrey;
@@ -207,11 +210,28 @@ body {
 
             >ul {
                 li {
+                    &.hover {
+                        border-top: 1px solid lightgrey;
+                        border-bottom: 1px solid #dedede;
+                        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 -1px 3px rgba(40, 40, 40, 0.2);
+                        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 -1px 3px rgba(40, 40, 40, 0.2);
+                        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 -1px 3px rgba(40, 40, 40, 0.2);
+                        background: #4d5a75;
+                        margin: -1px 0 -1px -20px;
+                        padding-left: 40px;
+                        cursor: pointer;
+
+                        a {
+                            color: #fff;
+                            padding: 2px 4px 2px 0;
+                        }
+                    }
+
                     a {
                         font-weight: normal;
                         text-shadow: none;
                     }
-                    
                 }
             }
         }
@@ -253,41 +273,47 @@ body {
     display: block;
     width: 310px;
     margin: 230px auto;
-    min-height:150px;
+    min-height: 150px;
     background: #fff;
-    border:1px solid #ccc;
+    border: 1px solid #ccc;
     padding: 20px 30px;
-	h2{
-	
-	}
+
+    h2 {
+    }
+
     p {
-		margin:10px 0px;	
+        margin: 10px 0px;
     }
-    input{
-    	border-radius:0;
-    	width:300px;
-    	height:30px;
+
+    input {
+        border-radius: 0;
+        width: 300px;
+        height: 30px;
     }
-    input[type="submit"]{
-     font-size:30px;
-     border:0;
-     height:36px; 
-     width:36px;
-     padding:0;
-     display:block;
-     color:@blue;
-     opacity:0.7;
-     &:hover{
-     	opacity:1;
-    	}
-	}
-	a{
-	color:#2672EC;
-	font-size:14px;
-	&:hover{
-		color:#002cff;
-	}
-}
+
+        input[type="submit"] {
+            font-size: 30px;
+            border: 0;
+            height: 36px;
+            width: 36px;
+            padding: 0;
+            display: block;
+            color: @blue;
+            opacity: 0.7;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+    a {
+        color: #2672EC;
+        font-size: 14px;
+
+        &:hover {
+            color: #002cff;
+        }
+    }
 }
 
 .loginPanelBtnHoover {
@@ -445,16 +471,23 @@ body {
             background: #eeeeee !important;
             vertical-align: top;
         }
-    }
 
-    th {
-        padding: 3px 6px;
-        line-height: 18px;
-        cursor: pointer;
-        color: #4c4c4c;
-        font-size: 13px;
-        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
-        border-left: 1px solid #dfdfdf;
+        th {
+            padding: 3px 6px;
+            line-height: 18px;
+            color: #4c4c4c;
+            font-size: 13px;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+            border-left: 1px solid #dfdfdf;
+
+            &:first-of-type {
+                width: 12px;
+
+                input {
+                    cursor: pointer;
+                }
+            }
+        }
     }
 
     tr {
@@ -464,10 +497,19 @@ body {
         border-top: 1px solid #dddddd;
 
         td {
+            cursor: pointer;
             padding: 4px 5px;
             white-space: pre-line;
             line-height: 18px;
             font-size: 11px;
+
+            &:first-of-type {
+                padding-left: 7px;
+
+                input {
+                    cursor: pointer;
+                }
+            }
         }
     }
 
@@ -500,15 +542,24 @@ body {
         margin-bottom: 12px;
     }
 
+        h2:first-of-type {
+            font-size: 26px;
+            font-weight: bold;
+            color: #4c4c4c;
+            margin: 0 0 18px;
+        }
+
     p {
         font-family: @lucida-font;
         color: #4c4c4c;
         font-size: 13px;
         text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
-		line-height:30px;
+        line-height: 30px;
+
         lable {
             margin-bottom: 2px;
         }
+
         input {
             margin-bottom: 2px;
         }
@@ -526,7 +577,7 @@ body {
         display: block;
         float: left;
         font-weight: bold;
-        width:90%;
+        width: 90%;
         height: 30px;
         line-height: 23px;
     }
@@ -534,9 +585,39 @@ body {
     input {
         margin: 2px 2px 2px 0px;
     }
-    textarea{
-    width:99%;
-    min-height:160px;
+
+    textarea {
+        width: 99%;
+        min-height: 160px;
+    }
+
+    &#taskForm, &#projectForm {
+        >p {
+            display: block;
+            font-size: 14px;
+            margin: 3px 0 0 3px;
+
+            a {
+                color: #7c7bad;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            label {
+                margin-left: 0;
+                display: inline;
+                float: none;
+            }
+
+            span {
+                &.tag {
+                    padding: 1px 2px;
+                }
+            }
+        }
     }
 }
 
@@ -548,6 +629,7 @@ body {
 .form-holder {
     background: url("@{imagesfolder}/form_sheetbg.png");
     padding: 20px 0px;
+    border-bottom: 1px solid #dddddd;
 }
 
 input, textarea, select {
@@ -562,6 +644,7 @@ input, textarea, select {
 .input-block {
     display: block;
     height: 40px;
+
     select {
         margin-left: 10px;
     }
@@ -570,6 +653,7 @@ input, textarea, select {
 .half-block {
     display: block;
     width: 50%;
+
     label {
         margin-right: 10px;
         border-right: 1px solid #dddddd;
@@ -625,10 +709,24 @@ input, textarea, select {
     border-radius: 4px;
     width: 200px;
     min-height: 110px;
+    cursor: pointer;
+    z-index: 1;
 
     span {
         font-family: @lucida-font;
+        position: relative;
+        z-index: 2;
         .thumbnail-text;
+    }
+
+    a.tasksByProject {
+        color: #7c7bad;
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
     p {
@@ -748,7 +846,7 @@ button {
 .column {
     float: left;
     position: relative;
-    width: 12.44%;
+    width: 12.4%;
     height: 101.5%;
     border-right: 1px solid #afafb6;
 
@@ -786,7 +884,14 @@ button {
         background: #f0f0fa;
         color: #4c4c4c;
     }
-   
+
+    .remaining {
+        margin-left: 3px;
+        font-size: 13px;
+        color: #4c4c4c;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+    }
+
     &.rotate h2 {
         position: relative;
         top: 60px;
@@ -803,6 +908,10 @@ button {
     &.rotate .dropDownMenu {
         top: 21px;
     }
+
+    &.lastColumn .dropDownOpened {
+        right: 0;
+    }
 }
 
 .dropDownMenu {
@@ -811,7 +920,8 @@ button {
     padding: 3px 5px!important;
     position: absolute;
     top: 16px;
-    right: 0px;
+    right: 0;
+    z-index: 1;
 
     & > li > a {
         text-decoration: none;
@@ -838,39 +948,55 @@ button {
     }
 }
 
+.task-header {
+    padding: 1px 0 4px 4px;
+    background-color: @taskBorderColor;
+    color: #fff;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transition: background-color 1s ease;
+    position: relative;
+
+    p {
+        width: 120px;
+        margin-left: 1px;
+        font-size: 14px;
+        font-weight: bold!important;
+    }
+}
+
 .task-content {
-    padding: 5px;
-    .tag {
-        border: 1px solid #afafb6;
-        font-size: 11px;
-        padding: 1px 2px;
-        border-radius: 3px;
-        background: #f0f0fa;
-        color: #4c4c4c;
+    padding: 2px 3px 4px 4px;
+
+    p {
+        margin: 0.5px;
+    }
+
+    .deadline {
+        /*margin-left: 2px;*/
+        font-size: 14px;
+        font-style: italic;
     }
 
     .person {
         display: block;
         float: right;
         width: 25px;
-        margin: 10px 2px 0 0;
+        margin: 13px 2px 0 0;
         border-radius: 3px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 }
 
-.task-header {
-    padding-bottom: 3px;
-    padding-left: 0.2em;
-    background-color: @taskBorderColor;
-    color: #fff;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    transition: background-color 1s ease;
-
-    p {
-        font-weight: bold!important;
-    }
+.tag {
+    margin: 0 0 3px 1px;
+    display: inline-block;
+    border: 1px solid #afafb6;
+    font-size: 10px;
+    padding: 0 2px;
+    border-radius: 3px;
+    background: #f0f0fa;
+    color: #4c4c4c;
 }
 
 .task:hover .dropDown img, .task .selected img {
@@ -890,8 +1016,9 @@ button {
 .dropDown {
     width: 5%;
     float: right;
-    margin: -13px 5px 5px;
-    position: relative;
+    top: 2.5px;
+    right: 7px;
+    position: absolute;
 }
 
 .dropDownOpened,

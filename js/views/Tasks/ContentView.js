@@ -5,6 +5,7 @@ define([
     'text!templates/Tasks/kanban/KanbanTemplate.html',
     'collections/Tasks/TasksCollection',
     'collections/Workflows/WorkflowsCollection',
+    'collections/Projects/ProjectsCollection',
     'views/Tasks/list/ListItemView',
     'views/Tasks/thumbnails/ThumbnailsItemView',
     'views/Tasks/kanban/KanbanItemView',
@@ -12,7 +13,7 @@ define([
     'custom'
 ],
 
-function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, TasksCollection, WorkflowsCollection, TasksListItemView, TasksThumbnailsItemView, TasksKanbanItemView, LocalStorage, Custom) {
+function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, TasksCollection, WorkflowsCollection, ProjectsCollection, TasksListItemView, TasksThumbnailsItemView, TasksKanbanItemView, LocalStorage, Custom) {
     var TasksView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
@@ -20,6 +21,9 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             var that = this;
             this.workflowsCollection = new WorkflowsCollection({ id: 'task' });
             this.workflowsCollection.bind('reset', _.bind(this.render, this));
+            this.projectsCollection = new ProjectsCollection();
+            this.projectsCollection.bind('reset', _.bind(this.render, this));
+            console.log(this.projectsCollection);
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
             this.render();
@@ -40,7 +44,14 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
         events: {
             "click .checkbox": "checked",
             "click .foldUnfold": "openDropDown",
-            "click .fold": "foldUnfoldColumn"
+            "click .fold": "foldUnfoldColumn",
+            "click .form a": "gotoProjectForm"
+        },
+
+        gotoProjectForm: function (e) {
+            e.preventDefault();
+            var itemIndex = this.projectsCollection.indexOf(this.projectsCollection.get($(e.target).closest("a").attr("id"))) + 1;
+            window.location.hash = "#home/content-Projects/form/" + itemIndex;
         },
 
         render: function () {
@@ -51,25 +62,40 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
+            var models = [];
+            var projectId = window.location.hash.split('/')[3];
+            if (!projectId || projectId.length < 24) {
+                models = this.collection.models;
+            }
+            else {
+                _.each(this.collection.models, function (item) {
+                    if (item.get("project").pId == projectId) models.push(item)
+                }, this);
+            }
             switch (viewType) {
                 case "kanban":
                     {
                         this.$el.html(_.template(TasksKanbanTemplate));
                         var workflows = this.workflowsCollection.models;
+
                         _.each(workflows, function (workflow, index) {
-                            $("<div class='column' data-index='" + index + "' data-status='"+workflow.get('status')+"' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><div class='columnNameDiv'><h2 class='columnName'>" + workflow.get('name') + "</h2></div></div>").appendTo(".kanban");
+                            $("<div class='column' data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><div class='columnNameDiv'><h2 class='columnName'>" + workflow.get('name') + "</h2></div></div>").appendTo(".kanban");
                         });
 
+                        $(".column").last().addClass("lastColumn");
+
                         _.each(workflows, function (workflow, i) {
-                            var counter = 0;
+                            var counter = 0,
+                                remaining = 0;
                             var column = this.$(".column").eq(i);
-                            _.each(this.collection.models, function (model) {
+                            _.each(models, function (model) {
                                 if (model.get("workflow").name === column.data("name")) {
                                     column.append(new TasksKanbanItemView({ model: model }).render().el);
                                     counter++;
+                                    remaining += model.get("estimated") - model.get("loged");
                                 }
                             }, this);
-                            column.find("div").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul>");
+                            column.find("div").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul><p class='remaining'>Remaining time: <span>" + remaining + "</span></p>");
                         }, this);
                         break;
                     }
@@ -78,32 +104,45 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                         this.$el.html(_.template(TasksListTemplate));
                         var table = this.$el.find('table > tbody');
 
-                        this.collection.each(function (model) {
+                        _.each(models, function (model) {
                             table.append(new TasksListItemView({ model: model }).render().el);
+                        }, this);
+
+                        $('#check_all').click(function () {
+                            var c = this.checked;
+                            $(':checkbox').prop('checked', c);
                         });
+
                         break;
                     }
                 case "thumbnails":
                     {
                         this.$el.html('');
                         var holder = this.$el;
-                        this.collection.each(function (model) {
+                        _.each(models, function (model) {
                             $(holder).append(new TasksThumbnailsItemView({ model: model }).render().el);
-                        });
+                        }, this);
                         break;
                     }
                 case "form":
                     {
                         var itemIndex = Custom.getCurrentII() - 1;
-                        if (itemIndex > this.collection.models.length - 1) {
-                            itemIndex = this.collection.models.length - 1;
-                            Custom.setCurrentII(this.collection.models.length);
+                        if (itemIndex > models.length - 1) {
+                            itemIndex = models.length - 1;
+
+                            var urlParts = window.location.hash.split('/');
+                            if (urlParts[4]) {
+                                urlParts[4] = models.length;
+                                window.location.hash = urlParts.join('/');
+                            }
+                            Custom.setCurrentII(models.length);
                         }
 
                         if (itemIndex == -1) {
                             this.$el.html();
                         } else {
-                            var currentModel = this.collection.models[itemIndex];
+                            var currentModel = models[itemIndex];
+                            currentModel.set({ deadline: currentModel.get('deadline').split('T')[0].replace('-', '/') }, { silent: true });
                             this.$el.html(_.template(TasksFormTemplate, currentModel.toJSON()));
                         }
 
@@ -124,14 +163,18 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                 items: ".task",
                 opacity: 0.7,
                 revert: true,
-                helper : 'clone',
+                helper: 'clone',
+                start: function (event, ui) {
+                    var column = ui.item.closest(".column");
+                    var model = that.collection.get(ui.item.attr("id"));
+                    column.find(".counter").html(parseInt(column.find(".counter").html()) - 1);
+                    column.find(".remaining span").html(parseInt(column.find(".remaining span").html()) - (model.get("estimated") - model.get("loged")));
+                },
                 stop: function (event, ui) {
-                    
                     var model = that.collection.get(ui.item.attr("id"));
                     var column = ui.item.closest(".column");
                     var ob = {
                         workflow: {
-                            id: ui.item.closest(".column").data("id"),
                             name: column.data("name"),
                             status: column.data("status")
                         }
@@ -144,8 +187,11 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                             hash: hash,
                             mid: mid
                         }
+
                     });
-                    that.collection.trigger('reset');
+                    column.find(".counter").html(parseInt(column.find(".counter").html()) + 1);
+                    column.find(".remaining span").html(parseInt(column.find(".remaining span").html()) + (model.get("estimated") - model.get("loged")));
+                    //that.collection.trigger('reset');
                 }
             }).disableSelection();
             return this;
@@ -153,7 +199,6 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
 
         openDropDown: function (e) {
             e.preventDefault();
-            console.log(e.target);
             var foldUnfold = "Unfold";
             if (!$(e.target).closest(".column").hasClass("rotate")) {
                 foldUnfold = "Fold";
@@ -167,14 +212,14 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             var column = $(e.target).closest(".column");
             if (column.hasClass("rotate")) {
                 column.attr('style', '');
-                column.find(".task").show();
+                column.find(".task, .remaining").show();
                 column.find(".dropDownMenu").hide();
                 column.find(".columnNameDiv");
                 column.removeClass("rotate");
                 column.find(".counter, .foldUnfold img").attr('style', '');;
             } else {
                 column.css('max-width', '40px');
-                column.find(".task, .dropDownMenu").hide();
+                column.find(".task, .dropDownMenu, .remaining").hide();
                 column.addClass("rotate");
                 column.find(".columnNameDiv").removeClass("selected");
                 column.find(".counter, .foldUnfold img").css({ 'position': 'relative', 'right': '6px', 'top': '-12px' });
@@ -195,7 +240,7 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
         		uid = LocalStorage.getFromLocalStorage('uid'),
         		mid = 39;
 
-            $.each($("input:checked"), function (index, checkbox) {
+            $.each($("tbody input:checked"), function (index, checkbox) {
                 var task = that.collection.get(checkbox.value);
 
                 task.destroy({

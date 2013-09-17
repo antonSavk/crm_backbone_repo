@@ -8,18 +8,16 @@ define([
 
         var TasksCollection = Backbone.Collection.extend({
             model: TaskModel,
-            url: function(){
-            	var hash = Localstorage.getFromLocalStorage('hash'),
-                	uid = Localstorage.getFromLocalStorage('uid'),
-                	mid = 39,
-                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Tasks";
-            	
-            	
-            	return url;
+            url: function () {
+                var hash = Localstorage.getFromLocalStorage('hash'),
+                       uid = Localstorage.getFromLocalStorage('uid'),
+                       mid = 39,
+                       url = "http://" + App.Server.ip + ":" + App.Server.port + "/Tasks";
+                return url;
             },
-            
-            
-            initialize: function(){
+
+
+            initialize: function () {
                 console.log("Task Collection Init");
 
                 var hash = Localstorage.getFromLocalStorage('hash'),
@@ -33,13 +31,13 @@ define([
                         mid: mid
                     }),
                     type: 'GET',
-                    reset:true,
+                    reset: true,
                     success: this.fetchSuccess,
                     error: this.fetchError
                 });
             },
 
-            parse:true,
+            parse: true,
 
             parse: function(response){
             	console.log('parse Tasks');
@@ -50,13 +48,13 @@ define([
                 return response.data;
             },
 
-            fetchSuccess: function(collection, response){
+            fetchSuccess: function (collection, response) {
                 console.log("Tasks fetchSuccess");
                 /*if (options.success) {
                     options.success(result);
                 }*/
             },
-            fetchError: function(error){
+            fetchError: function (error) {
 
             }
 

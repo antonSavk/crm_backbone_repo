@@ -42,7 +42,11 @@ define([
 
             switchTab: function (e) {
                 e.preventDefault();
-                var index = this.$("#tabList a").toggleClass("selected").index($(e.target));
+                var link = this.$("#tabList a");
+                if (link.hasClass("selected")) {
+                    link.removeClass("selected");
+                }
+                var index = link.index($(e.target).addClass("selected"));
                 this.$(".tab").hide().eq(index).show();
             },
 
@@ -58,7 +62,7 @@ define([
 
                 var idProject = this.$("#projectDd option:selected").val();
                 var project = this.projectsDdCollection.get(idProject);
-               
+
                 if (!project) {
                     project = null;
                 } else {
@@ -140,7 +144,6 @@ define([
                 if ($.trim(loged) == "") {
                     loged = 0;
                 }
-                
                 var priority = $("#priority").val();
                 if ($.trim(priority) == "") {
                     priority = null;
@@ -160,11 +163,11 @@ define([
                     extrainfo: {
                         priority: priority,
                         sequence: sequence,
-                        customer:{
-                                id: idCustomer,
-                                name: customer.name,
-                                type: customer.type
-                            },
+                        customer: {
+                            id: idCustomer,
+                            name: customer.name,
+                            type: customer.type
+                        },
                         StartDate: StartDate,
                         EndDate: EndDate
                     },
@@ -178,8 +181,6 @@ define([
                         mid: mid
                     }
                 });
-                
-               
 
                 Backbone.history.navigate("home/content-" + this.contentType, { trigger: true });
             },

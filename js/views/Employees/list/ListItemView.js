@@ -1,5 +1,5 @@
 define([
-    "text!templates/Projects/list/ListItemTemplate.html"
+    "text!templates/Employees/list/ListItemTemplate.html"
 ],
     function (ListItemTemplate) {
         var ListItemView = Backbone.View.extend({
@@ -15,7 +15,7 @@ define([
 
             gotoForm: function (e) {
                 var itemIndex = $(e.target).closest("tr").data("index") + 1;
-                window.location.hash = "#home/content-Projects/form/" + itemIndex;
+                window.location.hash = "#home/content-Employees/form/" + itemIndex;
             },
 
             template: _.template(ListItemTemplate),

@@ -10,8 +10,9 @@ define([
             id: function () {
                 return this.model.get("_id");
             },
+
             initialize: function () {
-                this.collection = new TasksCollection;
+                this.collection = new TasksCollection();
                 this.collection.bind('reset', _.bind(this.render, this));
                 this.render();
             },
@@ -28,11 +29,13 @@ define([
 
             gotoEditForm: function (e) {
                 e.preventDefault();
-                window.location.hash = "#home/action-Tasks/Edit/1";
+                var itemIndex = $(e.target).closest(".task").data("index") + 1;
+                window.location.hash = "#home/action-Tasks/Edit/" + itemIndex;
             },
 
             gotoForm: function (e) {
-                window.location.hash = "#home/content-Tasks/form/1";
+                var itemIndex = $(e.target).closest(".task").data("index") + 1;
+                window.location.hash = "#home/content-Tasks/form/" + itemIndex;
             },
 
             deleteTask: function (e) {
@@ -41,9 +44,9 @@ define([
                 uid = LocalStorage.getFromLocalStorage('uid'),
                 mid = 39;
                 var that = this;
+                var model = that.collection.get($(e.target).closest(".task").attr("id"));
+                var remaining = model.get("estimated") - model.get("loged");
                 this.$("#delete").closest(".task").fadeToggle(300, function () {
-                    var task = this;
-                    var model = that.collection.get($(this).attr("id"));
                     model.destroy(
                         {
                             headers: {
@@ -55,7 +58,10 @@ define([
                         { wait: true });
                     $(this).remove();
                 });
-                that.collection.trigger('reset');
+                var column = this.$el.closest(".column");
+                column.find(".counter").html(parseInt(column.find(".counter").html()) - 1);
+                column.find(".remaining span").html(parseInt(column.find(".remaining span").html()) - remaining);
+                this.collection.trigger('reset');
             },
 
             openDropDown: function (e) {
@@ -89,23 +95,24 @@ define([
             },
 
             changeDeadlineColor: function () {
-                if ((this.$(".task").attr("id") == this.model.get('id'))) {
-                    this.$(".deadline").css({ 'color': '#E74C3C', 'font-weight': 'bold' });
+                if ((this.$el.attr("id") == this.model.get('id'))) {
+                    this.$(".deadline").css({ 'color': '#E74C3C' });
                 }
             },
 
             render: function () {
-                var viewType = Custom.getCurrentVT();
-                var itemIndex = Custom.getCurrentII();
-                console.log(itemIndex);
+                var index = this.model.collection.indexOf(this.model);
                 var todayString = new Date().format("yyyy-mm-dd");
-                var deadlineString = this.model.get('deadline').split('T')[0];
-                this.model.set({ deadline: this.model.get('deadline').split('T')[0].replace('-', '/') }, { silent: true });
+                if (this.model.get('deadline')) {
+                    var deadlineString = this.model.get('deadline').split('T')[0];
+                    this.model.set({ deadline: deadlineString.replace('-', '/') }, { silent: true });
+                }
                 this.$el.html(this.template(this.model.toJSON()));
                 if (this.isLater(todayString, deadlineString)) {
                     this.changeDeadlineColor();
                 };
                 this.changeColor(this.model.get('color'));
+                this.$el.attr("data-index", index);
                 return this;
             }
         });
