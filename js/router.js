@@ -41,17 +41,14 @@ define([
         		  this.Custom.setCurrentCL(contentCollection.models.length);
 
         		  if (viewType) {
-        		      debugger 
+        		      
         		      if (!App.contentType) {
-        		          //if (contentType == 'Tasks') this.Custom.setCurrentVT('kanban');
         		          App.contentType = contentType;
         		      } else if (App.contentType && App.contentType != contentType) {
-        		          //if (contentType == 'Tasks') this.Custom.setCurrentVT('kanban');
-        		          App.ownContentType = false;
+        		          //App.ownContentType = false;
         		          App.contentType = contentType;
         		      }
         		      this.Custom.setCurrentVT(viewType);
-        		      //App.contentType = contentType;
         	      }
         	      if (itemIndex)
             		  this.Custom.setCurrentII(itemIndex);
@@ -152,7 +149,6 @@ define([
       },
 
       main: function () {
-          debugger 
     	  this.mainView = new MainView();
     	  this.changeWrapperView(this.mainView);
       },

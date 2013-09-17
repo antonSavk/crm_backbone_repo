@@ -9,7 +9,7 @@ define([
         var MenuItems = Backbone.Collection.extend({
             model: MyModel,
             url: function () {
-                debugger 
+                 
                 return "http://" + App.Server.ip + ":" + App.Server.port + "/getModules"
             },
 
@@ -21,7 +21,8 @@ define([
             currentModule: "HR",
 
             initialize: function () {
-                debugger 
+               
+
                 console.log("init collection");
                 var hash = Localstorage.getFromLocalStorage('hash'),
                     uid = Localstorage.getFromLocalStorage('uid');
@@ -43,7 +44,7 @@ define([
             parse:true,
 
             parse: function (response) {
-                debugger 
+                
                 console.log('parse');
                 $.each(response.data, function(index,val){
                     response.data[index]["id"] = response.data[index]["_id"];

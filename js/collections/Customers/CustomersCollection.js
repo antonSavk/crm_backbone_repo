@@ -19,7 +19,7 @@ define([
 
 
             initialize: function () {
-                debugger 
+                
                 console.log("Customer Collection Init");
                 
                 this.fetch({

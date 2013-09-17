@@ -38,7 +38,7 @@ function (ListTemplate, FormTemplate, CompaniesCollection, ListItemView, Thumbna
 	                });
             	    
 	                $('#check_all').click(function () {
-	                    //debugger
+	                   
 	                    var c = this.checked;
 	                    $(':checkbox').prop('checked', c);
 	                });
@@ -56,7 +56,7 @@ function (ListTemplate, FormTemplate, CompaniesCollection, ListItemView, Thumbna
             	}
             	case "form":
             	{
-            	    //debugger
+            	    
             	    var itemIndex = Custom.getCurrentII() - 1;
             		if (itemIndex > this.collection.models.length - 1)
             		{
@@ -110,7 +110,7 @@ function (ListTemplate, FormTemplate, CompaniesCollection, ListItemView, Thumbna
         				mid: mid
         			}
         		});*/
-        		debugger
+        		
         	    companies.destroy({
         	            headers: {
         	                uid: uid,

@@ -1,6 +1,6 @@
 define(['libs/date.format'], function (dateformat) {
     var runApplication = function (success, description) {
-        debugger 
+       
 		if (!Backbone.history.fragment)
 		    Backbone.history.start({silent: true});
 		    //Backbone.history.start();
@@ -53,7 +53,7 @@ define(['libs/date.format'], function (dateformat) {
 	};
 	
 	var changeContentViewType = function (event) {
-	    debugger 
+	     
     	event.preventDefault();
     	var viewtype = $(event.target).attr('data-view-type'),
     		url = "#home/content-" + this.contentType + "/"+viewtype;
@@ -97,7 +97,7 @@ define(['libs/date.format'], function (dateformat) {
     };
     
     var getCurrentVT = function (option) {
-        debugger
+        
         var viewType;
         if (option && (option.contentType != App.contentType)) {
             App.ownContentType = false;

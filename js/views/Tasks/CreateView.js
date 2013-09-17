@@ -140,7 +140,7 @@ define([
                 if ($.trim(loged) == "") {
                     loged = 0;
                 }
-                debugger 
+                
                 var priority = $("#priority").val();
                 if ($.trim(priority) == "") {
                     priority = null;
@@ -179,7 +179,7 @@ define([
                     }
                 });
                 
-                debugger 
+               
 
                 Backbone.history.navigate("home/content-" + this.contentType, { trigger: true });
             },

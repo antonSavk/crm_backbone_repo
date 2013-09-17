@@ -31,7 +31,7 @@ define([
             },
 
             saveItem: function () {
-                //debugger 
+              
             	var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;

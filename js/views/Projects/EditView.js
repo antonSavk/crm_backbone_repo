@@ -28,7 +28,7 @@ define([
             },
 
             saveItem: function () {
-                debugger 
+              
             	var itemIndex = Custom.getCurrentII() - 1;
             	
             	if (itemIndex != -1) 
@@ -38,7 +38,7 @@ define([
             		var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
-            	    debugger 
+            	  
             		var projectname = $("#projectName").val();
             		if ($.trim(projectname) == "") {
             		    projectname = "New Project";
@@ -95,7 +95,7 @@ define([
 	                        users: users
 	                    }
 	                });
-	                //debugger
+	                
 	                currentModel.save({}, {
 	                	headers: {
 	            			uid: uid,

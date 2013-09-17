@@ -15,7 +15,7 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
             console.log('Init Projects View');
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
-            debugger
+           
             this.render();
         },
 
@@ -35,7 +35,7 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
 	                var table = this.$el.find('table > tbody');
 	
 	                this.collection.each(function (model) {
-	                    debugger 
+	                     
 	                    table.append(new ListItemView({model:model}).render().el);
 	                });
             	    

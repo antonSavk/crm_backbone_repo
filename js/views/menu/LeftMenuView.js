@@ -26,7 +26,7 @@ define([
             },
 
             render: function () {
-                debugger 
+               
                 console.log("Render LeftMenuView");
                 var $el = $(this.el);
                 $el.html('');

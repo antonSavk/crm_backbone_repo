@@ -33,7 +33,7 @@ define([
             parse:true,
 
             parse: function(response){
-            	debugger
+            	
             	console.log('parse Users');
                 $.each(response.data, function(index,val){
                     response.data[index]["id"] = response.data[index]["_id"];

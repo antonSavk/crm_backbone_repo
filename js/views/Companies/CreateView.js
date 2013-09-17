@@ -50,9 +50,7 @@ define([
             	if ($.trim(fax) == "") {
             	    fax = "";
             	}
-                
-            	//debugger
-
+               
             	this.companyCollection.create({
                         cname: cname,
                         cemail: cemail,

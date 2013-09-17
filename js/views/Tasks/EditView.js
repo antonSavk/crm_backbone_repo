@@ -35,7 +35,7 @@
             },
 
             events: {
-                "click #tabList a": "switchTab",
+                "click #tabList a": "switchTab"
             },
 
             switchTab: function (e) {
@@ -118,7 +118,7 @@
                         var EndDate = new Date(Date.parse(endDateSt)).toISOString();
                     }
 
-                    debugger
+                    
                     var idCustomer = this.$("#customerDd option:selected").val();
                     var customer = this.customersDdCollection.get(idCustomer);
                     console.log(idCustomer);

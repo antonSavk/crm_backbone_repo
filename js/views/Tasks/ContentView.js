@@ -126,7 +126,7 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                 revert: true,
                 helper : 'clone',
                 stop: function (event, ui) {
-                    debugger 
+                    
                     var model = that.collection.get(ui.item.attr("id"));
                     var column = ui.item.closest(".column");
                     var ob = {

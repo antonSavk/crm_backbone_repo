@@ -40,7 +40,7 @@ define(["localstorage"], function(LocalStorage){
                 upass: data.upass
             },
             success: function (resp) {
-                debugger 
+                
             	if (resp.result.status == 0)
             	{
             		LocalStorage.saveToLocalStorage('uid', resp.data._id);

@@ -11,7 +11,7 @@
             },
 
             initialize: function () {
-                debugger 
+                
                 var hash = Localstorage.getFromLocalStorage('hash'),
                     uid = Localstorage.getFromLocalStorage('uid'),
                     mid = 39;
@@ -32,7 +32,7 @@
             parse: true,
 
             parse: function (response) {
-                debugger 
+                
                 return response.data;
             },
 
