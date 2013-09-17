@@ -1,6 +1,5 @@
 define(['libs/date.format'], function (dateformat) {
     var runApplication = function (success, description) {
-        debugger 
 		if (!Backbone.history.fragment)
             Backbone.history.start({ silent: true });
         if (success) {
@@ -18,44 +17,45 @@ define(['libs/date.format'], function (dateformat) {
 	    }
 		
 	};
-	
-    var changeItemIndex = function (event, hash, actionType, contentType) {
-		event.preventDefault();
+
+    var changeItemIndex = function(event, hash, actionType, contentType) {
+        event.preventDefault();
         if (!this.actionType || !this.contentType) {
             this.actionType = actionType;
             this.contentType = contentType;
         }
-    	var shift = $(event.target).attr('data-shift'),
-    		itemIndex = getCurrentII(),
-    		viewType = getCurrentVT();
-    	
-        switch (shift) {
-    		case "left": {
-    			setCurrentII(parseInt(itemIndex) - 1);
-    			break;
-    		}
-    		case "right": {
-    			setCurrentII(parseInt(itemIndex) + 1);
-    			break;
-    		}
-    	}
+        var shift = $(event.target).attr('data-shift'),
+            itemIndex = getCurrentII(),
+            viewType = getCurrentVT();
 
-    	itemIndex = getCurrentII();
-    	
+        switch (shift) {
+        case "left":
+            {
+                setCurrentII(parseInt(itemIndex) - 1);
+                break;
+            }
+        case "right":
+            {
+                setCurrentII(parseInt(itemIndex) + 1);
+                break;
+            }
+        }
+
+        itemIndex = getCurrentII();
+
         if (this.actionType == 'Content') {
             if (!hash) {
                 window.location.hash = "#home/content-" + this.contentType + "/" + viewType + "/" + itemIndex;
             } else {
                 window.location.hash = "#home/content-" + this.contentType + "/" + viewType + "/" + hash + "/" + itemIndex;
-    	}
-        } else
-            if (this.actionType == 'Edit') {
-                window.location.hash = "#home/action-" + this.contentType + "/" + this.actionType + "/" + itemIndex;
             }
-	};
+        } else if (this.actionType == 'Edit') {
+            window.location.hash = "#home/action-" + this.contentType + "/" + this.actionType + "/" + itemIndex;
+        }
+    };
 	
-	var changeContentViewType = function (event) {
-	    debugger 
+    var changeContentViewType = function (event, hash, contentType) {
+	    
     	event.preventDefault();
         var itemIndex = getCurrentII();
         if (contentType) {
@@ -106,7 +106,7 @@ define(['libs/date.format'], function (dateformat) {
     };
     
     var getCurrentVT = function (option) {
-        debugger
+       
         var viewType;
         if (option && (option.contentType != App.contentType)) {
             App.ownContentType = false;
@@ -120,7 +120,7 @@ define(['libs/date.format'], function (dateformat) {
     	    if (option && option.contentType == 'Tasks') {
     	        if (!App.ownContentType) App.currentViewType = "kanban";
     	    } else if (option && option.contentType !== 'Tasks') {
-                //if (!App.ownContentType) App.currentViewType = "thumbnails";
+                if (!App.ownContentType) App.currentViewType = "thumbnails";
     	    }
     	    //return viewType;
     	}	

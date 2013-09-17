@@ -112,14 +112,14 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
         		});*/
 
                 project.destroy({
-                    headers: {
-                        uid: uid,
-                        hash: hash,
-                        mid: mid
-                    }
-                },
-        		{ wait: true }
-        		);
+                        headers: {
+                            uid: uid,
+                            hash: hash,
+                            mid: mid
+                        }
+                    },
+                    { wait: true }
+                );
             });
 
             this.collection.trigger('reset');
