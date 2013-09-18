@@ -114,12 +114,16 @@ define(['libs/date.format'], function (dateformat) {
     	if (App.currentViewType == null) {
     	    if (option && option.contentType == 'Tasks') {
     	        App.currentViewType = "kanban";
+    	    } else if (option && option.contentType == 'Profiles') {
+    	        App.currentViewType = "list";
     	    } else App.currentViewType = "thumbnails";
     	    return App.currentViewType;
     	} else {
     	    if (option && option.contentType == 'Tasks') {
     	        if (!App.ownContentType) App.currentViewType = "kanban";
-    	    } else if (option && option.contentType !== 'Tasks') {
+    	    } else if (option && option.contentType == 'Profiles') {
+    	        if (!App.ownContentType) App.currentViewType = "list";
+    	    } else if (option) {
                 if (!App.ownContentType) App.currentViewType = "thumbnails";
     	    }
     	    //return viewType;

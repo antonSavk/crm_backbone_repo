@@ -49,6 +49,12 @@ define([
                                 App.contentType = contentType;
                             }
                             this.Custom.setCurrentVT(viewType);
+                        } else {
+                            App.ownContentType = false;
+                            if (!App.contentType || App.contentType != contentType) {
+                                App.contentType = contentType;
+                            }
+                            this.Custom.getCurrentVT();
                         }
                         if (itemIndex)
                             this.Custom.setCurrentII(itemIndex);
