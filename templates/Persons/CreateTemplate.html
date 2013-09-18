@@ -13,10 +13,10 @@
             <p>
                 <label for="companiesDd">Company</label>
                 <select id="companiesDd">
-                    <option selected="selected" value="0">Select...</option>
+                    <option selected="selected" value="0"></option>
                     <% companiesCollection.each(function(option){ %>
                         <option value="<%= option.id %>"><%= option.get('cname')%></option>
-                    <% }); %>
+                    <% }) %>
                 </select>
             </p>
 

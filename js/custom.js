@@ -180,10 +180,10 @@ define(['libs/date.format'], function (dateformat) {
         var projects = [];
         data.forEach(function (project) {
             projects.push({
-                'id': project.id,
-                'projectname': project.projectname,
-                'projectmanager': project.projectmanager.uname || 'No name',
-                'customer': project.customer || 'Unknown',
+                'id':project._id || project.id,
+                'projectname':project.projectname,
+                'projectmanager':project.projectmanager.uname || 'No name',
+                'customer':project.customer || 'Unknown',
                 'StartDate': new Date(project.info.StartDate),
                 'EndDate': new Date(),
                 'plannedtime': calculateHours(new Date(project.info.StartDate), new Date()),
