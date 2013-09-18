@@ -29,12 +29,12 @@ define([
                 }
             }
             console.log('GetList: '+contentType+" "+viewType+" "+hash+" "+itemIndex);
-    	  
+
             var ContentViewUrl = "views/" + contentType + "/ContentView",
                 TopBarViewUrl = "views/" + contentType + "/TopBarView",
                 CollectionUrl = "collections/" + contentType + "/" + contentType + "Collection",
                 self = this;
-    	  
+
             self.Custom = Custom;
 
             require([ContentViewUrl, TopBarViewUrl, CollectionUrl], function(ContentView, TopBarView, ContentCollection){
@@ -42,7 +42,7 @@ define([
                 contentCollection.bind('reset', _.bind(createViews, self));
                 function createViews()
                 {
-        		  
+
                     contentCollection.unbind('reset');
                     this.Custom.setCurrentCL(contentCollection.models.length);
 
@@ -56,12 +56,12 @@ define([
                     }
                     if (itemIndex)
                         this.Custom.setCurrentII(itemIndex);
-            	  
+
                     viewType = this.Custom.getCurrentVT({
                         contentType: contentType
                     });
                     itemIndex = this.Custom.getCurrentII();
-        		  
+
                     var url = "#home/content-" + contentType + "/" + viewType;
 
                     if (hash) {
@@ -71,19 +71,19 @@ define([
                     if (viewType === "form" && (!hash || hash.length == 24)) {
                         url += "/" + itemIndex;
                     }
-                  
+
                     Backbone.history.navigate(url);
                     var contentView = new ContentView({collection: contentCollection});
                     var topBarView = new TopBarView({actionType: "Content"});
-                  
+
                     topBarView.bind('deleteEvent', contentView.deleteItems, contentView);
-                  
+
                     this.changeView(contentView);
                     this.changeTopBarView(topBarView);
                 }
-              
+
             });
-          
+
         },
         makeAction: function(contentType, action, itemIndex){
             if (this.mainView == null) this.main();

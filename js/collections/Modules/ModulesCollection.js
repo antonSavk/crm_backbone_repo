@@ -1,25 +1,21 @@
 define([
-    "localstorage",
-    "models/PersonModel"
+    'localstorage'
 ],
-    function (Localstorage, PersonModel) {
-        var PersonsCollection = Backbone.Collection.extend({
-            model:PersonModel,
-            url: function () {
-                return "http://" + App.Server.ip + ":" + App.Server.port + "/Persons";
+    function (Localstorage) {
+        var MenuItems = Backbone.Collection.extend({
+
+            url: function(){
+                return "http://" + App.Server.ip + ":" + App.Server.port + "/getModules"
             },
             initialize: function(){
                 var hash = Localstorage.getFromLocalStorage('hash'),
-                    uid = Localstorage.getFromLocalStorage('uid'),
-                    mid = 39;
+                    uid = Localstorage.getFromLocalStorage('uid');
 
                 this.fetch({
                     data: $.param({
                         uid: uid,
-                        hash: hash,
-                        mid: mid
+                        hash: hash
                     }),
-                    type: 'GET',
                     reset:true,
                     success: this.fetchSuccess,
                     error: this.fetchError
@@ -37,5 +33,5 @@ define([
             }
         });
 
-        return PersonsCollection;
+        return MenuItems;
     });

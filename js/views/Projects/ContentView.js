@@ -43,14 +43,14 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
                         break;
                     }
                 case "thumbnails":
-                    {
-                        this.$el.html('');
-                        var holder = this.$el;
-                        this.collection.each(function (model) {
-                            $(holder).append(new ThumbnailsItemView({ model: model }).render().el);
-                        });
-                        break;
-                    }
+            {
+                this.$el.html('');
+                var holder = this.$el;
+                this.collection.each(function (model) {
+                    $(holder).append(new ThumbnailsItemView({ model: model }).render().el);
+                });
+                break;
+            }
                 case "form":
                     {
                         var itemIndex = Custom.getCurrentII() - 1;

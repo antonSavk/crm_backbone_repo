@@ -8,8 +8,7 @@ define([
          
         var MenuItems = Backbone.Collection.extend({
             model: MyModel,
-            url: function () {
-                 
+            url: function(){
                 return "http://" + App.Server.ip + ":" + App.Server.port + "/getModules"
             },
 
@@ -20,9 +19,7 @@ define([
 
             currentModule: "HR",
 
-            initialize: function () {
-               
-
+            initialize: function(){
                 console.log("init collection");
                 var hash = Localstorage.getFromLocalStorage('hash'),
                     uid = Localstorage.getFromLocalStorage('uid');
@@ -37,14 +34,11 @@ define([
                     success: this.fetchSuccess,
                     error: this.fetchError
                 });
-
-
             },
-            
+
             parse:true,
 
-            parse: function (response) {
-                
+            parse: function(response){
                 console.log('parse');
                 $.each(response.data, function(index,val){
                     response.data[index]["id"] = response.data[index]["_id"];
@@ -56,8 +50,6 @@ define([
             fetchSuccess: function(collection, response){
                 console.log("fetchSuccess");
                 collection.relationships();
-
-
             },
 
             fetchError: function(collection, response){

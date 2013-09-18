@@ -42,8 +42,6 @@ define([
                     }
                 }
                 if (currentModule == null) currentModule = root[0];
-
-
                 var elem = $el.append(this.renderMenu(this.collection.children(currentModule)));
                 return this;
             },
