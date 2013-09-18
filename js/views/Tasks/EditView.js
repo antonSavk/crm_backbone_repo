@@ -35,12 +35,16 @@
             },
 
             events: {
-                "click #tabList a": "switchTab",
+                "click #tabList a": "switchTab"
             },
 
             switchTab: function (e) {
                 e.preventDefault();
-                var index = this.$("#tabList a").toggleClass("selected").index($(e.target));
+                var link = this.$("#tabList a");
+                if (link.hasClass("selected")) {
+                    link.removeClass("selected");
+                }
+                var index = link.index($(e.target).addClass("selected"));
                 this.$(".tab").hide().eq(index).show();
             },
 

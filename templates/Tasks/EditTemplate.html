@@ -61,8 +61,11 @@
                 <div class="tab">
                     <p>
                         <label for="priority">Priority </label>
-                        <select class="extrainfo" id="priority">
-                            <option selected="selected" value="0">Select...</option>
+                        <select id="priority">
+                            <option value="<%=model.extrainfo.priority%>"Select...</option>
+                            <% priorityCollection.each(function(option){ %>
+                            <option value="<%= option.get('priority') %>" <%= (option.get('priority') == model.extrainfo.priority) ? 'selected="selected"' : ''%>> <%= option.get('priority') %></option>
+                            <% }); %>
                         </select>
                     </p>
 
@@ -86,7 +89,6 @@
                      <p>
                         <label for="customerDd">Customer</label>
                         <select id="customerDd">
-                            <%console.log(model);%>
                             <option value="<%=model.extrainfo.customer.id%>">Select...</option>
                             <% customersDdCollection.each(function(option){ %>
                             <option value="<%= option.get('_id') %>" <%= (option.get('_id') == model.extrainfo.customer.id) ? 'selected="selected"' : ''%>><%= option.get('name').first %> <%= option.get('name').last %> (<%= option.get('type') %>)</option>
@@ -103,6 +105,14 @@
                             <% }); %>
                
                         </select>
+                    </p>
+                        <p>
+                        <label for="loged">Loged</label>
+                        <input type="text" name="loged" id="loged" value="<%=model.loged%>"/>
+                    </p>
+                    <p>
+                        <label for="estimated">Estimeted</label>
+                        <input type="text" name="loged" id="estimated" value="<%=model.estimated%>" />
                     </p>
                 </div>
             </div>
