@@ -2,22 +2,22 @@ define([
     'views/menu/MenuItem',
     'collections/menu/MenuItems'
 ],
-    function(MenuItemView){
+    function(MenuItemView) {
 
         var LeftMenuView = Backbone.View.extend({
             tagName: 'nav',
             className: 'menu',
             el: '#leftmenu-holder nav',
-            currentSection:null,
+            currentSection: null,
 
-            setCurrentSection:function(section){
+            setCurrentSection: function(section) {
                 this.leftMenu.currentSection = section;
                 this.leftMenu.render();
             },
 
-            initialize: function(options){
+            initialize: function(options) {
                 console.log("init MenuView");
-                if(!options.collection) throw "No collection specified!";
+                if (!options.collection) throw "No collection specified!";
                 this.collection = options.collection;
                 _.bindAll(this, 'render');
                 this.render();
@@ -25,18 +25,18 @@ define([
 
             },
 
-            render: function () {
-               
+            render: function() {
+
                 console.log("Render LeftMenuView");
                 var $el = $(this.el);
                 $el.html('');
                 var currentModule = null;
                 var root = this.collection.root();
-                if(this.currentSection == null)
+                if (this.currentSection == null)
                     this.currentSection = root[0].get('mname');
 
-                for(var i= 0, len=root.length; i<len; i++){
-                    if(root[i].get('mname') == this.currentSection){
+                for (var i = 0, len = root.length; i < len; i++) {
+                    if (root[i].get('mname') == this.currentSection) {
                         currentModule = root[i];
                         break;
                     }
@@ -45,14 +45,26 @@ define([
                 var elem = $el.append(this.renderMenu(this.collection.children(currentModule)));
                 return this;
             },
+            
+            events: {
+                "click a": "selectMenuItem"
+            },
 
-            renderMenu: function(list){
-                if(_.size(list) === 0) {return null;}
+            selectMenuItem: function(e) {
+                this.$('li.hover').removeClass('hover');
+                $(e.target).closest('li').addClass('hover');
+
+            },
+            
+            renderMenu: function(list) {
+                if (_.size(list) === 0) {
+                    return null;
+                }
                 var $dom = $('<ul></ul>');
 
-                _.each(list, function(model){
-                    var html =  this.renderMenuItem(model);
-                    
+                _.each(list, function(model) {
+                    var html = this.renderMenuItem(model);
+
                     $dom.append(html);
                     var kids = this.collection.children(model);
                     $dom.find(':last').append(this.renderMenu(kids));
@@ -60,12 +72,11 @@ define([
                 return $dom;
             },
 
-            renderMenuItem: function(model){
-                var view = new MenuItemView({model:model});
+            renderMenuItem: function(model) {
+                var view = new MenuItemView({ model: model });
                 var elem = view.render().el;
                 return elem;
             }
-
         });
 
         return LeftMenuView;
