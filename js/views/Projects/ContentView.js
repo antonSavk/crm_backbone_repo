@@ -1,41 +1,41 @@
 define([
-        'text!templates/Projects/list/ListTemplate.html',
-        'text!templates/Projects/form/FormTemplate.html',
-        'collections/Projects/ProjectsCollection',
-        'views/Projects/list/ListItemView',
-        'views/Projects/thumbnails/ThumbnailsItemView',
-        'custom',
-        'localstorage'
-    ],
-    function(ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
-        var ContentView = Backbone.View.extend({
-            el: '#content-holder',
-            initialize: function(options) {
-                console.log('Init Projects View');
-                this.collection = options.collection;
-                this.collection.bind('reset', _.bind(this.render, this));
-                this.render();
-            },
+    'text!templates/Projects/list/ListTemplate.html',
+    'text!templates/Projects/form/FormTemplate.html',
+    'collections/Projects/ProjectsCollection',
+    'views/Projects/list/ListItemView',
+    'views/Projects/thumbnails/ThumbnailsItemView',
+    'custom',
+    'localstorage'
+],
+function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
+    var ContentView = Backbone.View.extend({
+        el: '#content-holder',
+        initialize: function (options) {
+            console.log('Init Projects View');
+            this.collection = options.collection;
+            this.collection.bind('reset', _.bind(this.render, this));
+            this.render();
+        },
 
-            events: {
-                "click .checkbox": "checked"
-            },
+        events: {
+            "click .checkbox": "checked"
+        },
 
-            render: function() {
-                Custom.setCurrentCL(this.collection.models.length);
-                console.log('Render Projects View');
-                var viewType = Custom.getCurrentVT();
-                switch (viewType) {
+        render: function () {
+            Custom.setCurrentCL(this.collection.models.length);
+            console.log('Render Projects View');
+            var viewType = Custom.getCurrentVT();
+            switch (viewType) {
                 case "list":
                     {
                         this.$el.html(_.template(ListTemplate));
                         var table = this.$el.find('table > tbody');
 
-                        this.collection.each(function(model) {
+                        this.collection.each(function (model) {
                             table.append(new ListItemView({ model: model }).render().el);
                         });
 
-                        $('#check_all').click(function() {
+                        $('#check_all').click(function () {
                             var c = this.checked;
                             $(':checkbox').prop('checked', c);
                         });
@@ -45,7 +45,7 @@ define([
                     {
                         this.$el.html('');
                         var holder = this.$el;
-                        this.collection.each(function(model) {
+                        this.collection.each(function (model) {
                             $(holder).append(new ThumbnailsItemView({ model: model }).render().el);
                         });
                         break;
@@ -78,41 +78,41 @@ define([
                         }
                         break;
                     }
-                }
-
-                return this;
-
-            },
-
-            checked: function(event) {
-                if ($("input:checked").length > 0)
-                    $("#top-bar-deleteBtn").show();
-                else
-                    $("#top-bar-deleteBtn").hide();
-            },
-
-            deleteItems: function() {
-                var self = this,
-                    hash = LocalStorage.getFromLocalStorage('hash'),
-                    uid = LocalStorage.getFromLocalStorage('uid'),
-                    mid = 39;
-
-                $.each($("tbody input:checked"), function(index, checkbox) {
-                    var project = self.collection.get(checkbox.value);
-                    project.destroy({
-                            headers: {
-                                uid: uid,
-                                hash: hash,
-                                mid: mid
-                            }
-                        },
-                        { wait: true }
-                    );
-                });
-
-                this.collection.trigger('reset');
             }
-        });
 
-        return ContentView;
+            return this;
+
+        },
+
+        checked: function (event) {
+            if ($("input:checked").length > 0)
+                $("#top-bar-deleteBtn").show();
+            else
+                $("#top-bar-deleteBtn").hide();
+        },
+
+        deleteItems: function () {
+            var self = this,
+        		hash = LocalStorage.getFromLocalStorage('hash'),
+        		uid = LocalStorage.getFromLocalStorage('uid'),
+        		mid = 39;
+
+            $.each($("tbody input:checked"), function (index, checkbox) {
+                var project = self.collection.get(checkbox.value);
+                project.destroy({
+                        headers: {
+                            uid: uid,
+                            hash: hash,
+                            mid: mid
+                        }
+                    },
+                    { wait: true }
+                );
+            });
+
+            this.collection.trigger('reset');
+        }
     });
+
+    return ContentView;
+});

@@ -69,17 +69,6 @@ define([
                         mid: mid
                     }
                 });
-
-                /*this.personsCollection.create(
-                    data,
-                    {
-                	headers: {
-            			uid: uid,
-            			hash: hash,
-            			mid: mid
-            		}
-                });*/
-
                 Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
                 
             },

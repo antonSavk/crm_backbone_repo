@@ -811,6 +811,13 @@ button {
     }
 }
 
+#employeeForm #tabList, #createEmployeeForm #tabList, #editEmployeeForm #tabList{
+    li {
+        float: left;
+        margin: -24px 2px 5px 0;
+    }
+}
+
 .tab {
     margin-top: 13px;
     padding: 5px;
@@ -818,13 +825,14 @@ button {
     border-radius: 5px;
     border-top-left-radius: 0;
 
-    &:last-of-type {
+    & ~ & {
         display: none;
     }
 }
 
 #createTaskForm,
 #editTaskForm,
+#createEmployeeForm,
 #createProjectForm {
     p {
         margin-bottom: 5px;

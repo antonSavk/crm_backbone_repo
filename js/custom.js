@@ -106,7 +106,6 @@ define(['libs/date.format'], function (dateformat) {
     };
     
     var getCurrentVT = function (option) {
-       
         var viewType;
         if (option && (option.contentType != App.contentType)) {
             App.ownContentType = false;
@@ -125,7 +124,7 @@ define(['libs/date.format'], function (dateformat) {
     	        if (!App.ownContentType) App.currentViewType = "list";
     	    } else if (option) {
                 if (!App.ownContentType) App.currentViewType = "thumbnails";
-    	    }
+            }
     	    //return viewType;
     	}	
     	

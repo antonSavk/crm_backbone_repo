@@ -1,30 +1,37 @@
 define([
     "text!templates/Employees/EditTemplate.html",
-    "collections/Customers/AccountsDdCollection",
-    "collections/Projects/ProjectsCollection",
-    "collections/Customers/CustomersCollection",
-    "collections/Workflows/WorkflowsCollection",
+    "collections/Employees/EmployeesCollection",
     "localstorage",
     "custom"
 ],
-    function (EditTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (EditTemplate, EmployeesCollection, LocalStorage, Custom) {
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
             contentType: "Employees",
 
             initialize: function (options) {
-               this.accountsDdCollection = new AccountsDdCollection();
-               this.customersDdCollection = new CustomersCollection();
-               this.workflowsDdCollection = new WorkflowsCollection({id:'project'});
-               this.projectsCollection = options.collection;
+               //this.workflowsDdCollection = new WorkflowsCollection({id:'project'});
+               this.employeesCollection = options.collection;
                
-               this.projectsCollection.bind('reset', _.bind(this.render, this));
-               this.accountsDdCollection.bind('reset', _.bind(this.render, this));
-               this.customersDdCollection.bind('reset', _.bind(this.render, this));
-               this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
+               this.employeesCollection.bind('reset', _.bind(this.render, this));
+               //this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
                
                this.render();
+            },
+
+            events: {
+                "click #tabList a": "switchTab"
+            },
+
+            switchTab: function (e) {
+                e.preventDefault();
+                var link = this.$("#tabList a");
+                if (link.hasClass("selected")) {
+                    link.removeClass("selected");
+                }
+                var index = link.index($(e.target).addClass("selected"));
+                this.$(".tab").hide().eq(index).show();
             },
 
             saveItem: function(){
@@ -38,61 +45,80 @@ define([
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
             	     
-            		var projectname = $("#projectName").val();
-            		if ($.trim(projectname) == "") {
-            		    projectname = "New Project";
+            		var name = $("#name").val();
+            		if ($.trim(name) == "") {
+            		    name = "New Employee";
             		}
 
-            		var idCustomer = $(this.el).find("#customerDd option:selected").val();
-            		var customer = this.customersDdCollection.get(idCustomer);
+            		var wemail = $("#wemail").val();
+            		if ($.trim(wemail) == "") {
+            		    wemail = null;
+            		}
 
-            		if (!customer) {
-            		    customer = null;
+            		var phone = $("#phone").val();
+            		var mobile = $("#mobile").val();
+            		var wphones = {};
+            		if ($.trim(phone) == "" || $.trim(mobile) == "") {
+            		    wphones = null;
             		}
             		else {
-            		    customer = customer.toJSON();
+            		    wphones.phone = phone;
+            		    wphones.mobile = mobile;
             		}
-            		var idManager = $(this.el).find("#managerDd option:selected").val();
-            		var projectmanager = this.accountsDdCollection.get(idManager);
-            		if (!projectmanager) {
-            		    projectmanager = null;
-            		} else {
-            		    projectmanager = projectmanager.toJSON();
+
+            		var officeLocation = $("#officeLocation").val();
+            		if ($.trim(officeLocation) == "") {
+            		    officeLocation = null;
             		}
-            		var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
-            		var workflow = this.workflowsDdCollection.get(idWorkflow);
-            		if (!workflow) {
-            		    workflow = null;
-            		} else {
-            		    workflow = workflow.toJSON();
+
+            		var identNo = parseInt($.trim($("#identNo").val()));
+            		if (!identNo) {
+            		    identNo = null;
             		}
-            		var $userNodes = $("#usereditDd option:selected"), users = [];
-            		$userNodes.each(function (key, val) {
-            		    users.push({
-            		        uid: val.value,
-            		        uname: val.innerHTML
-            		    });
-            		});
-	                
+
+            		var passportNo = parseInt($.trim($("#passportNo").val()));
+            		if (!passportNo) {
+            		    passportNo = null;
+            		}
+
+            		var otherId = parseInt($.trim($("#otherId").val()));
+            		if (!otherId) {
+            		    otherId = null;
+            		}
+
+            		var dateBirthSt = $.trim($("#dateBirth").val());
+            		var dateBirth = "";
+            		if (!dateBirthSt) {
+            		    dateBirth = null;
+            		}
+            		else {
+            		    dateBirth = new Date(Date.parse(dateBirthSt)).toISOString();
+            		}
+
+            		var active = false;
+            		if ($("#active:checked")) active = true;
 	                
 	                currentModel.set({
-	                    projectname: projectname,
-	                    customer: {
-	                        id: customer._id,
-	                        type: customer.type,
-	                        name: customer.name.last + ' ' + customer.name.first
-	                    },
-	                    projectmanager: {
-	                        uid: projectmanager._id,
-	                        uname: projectmanager.name.last + ' ' + projectmanager.name.first
-	                    },
-	                    workflow: {
-	                        name: workflow.name,
-	                        status: workflow.status
-	                    },
-	                    teams: {
-	                        users: users
-	                    }
+	                    name: name,
+	                    wemail: wemail,
+	                    wphones: wphones,
+	                    officeLocation: officeLocation,
+	                    relatedUser: null,
+	                    visibility: null,
+	                    department: null,
+	                    job: null,
+	                    manager: null,
+	                    coach: null,
+	                    nationality: null,
+	                    identNo: identNo,
+	                    passportNo: passportNo,
+	                    bankAccountNo: null,
+	                    otherId: otherId,
+	                    gender: null,
+	                    maritalStatus: null,
+	                    homeAddress: null,
+	                    dateBirth: dateBirth,
+	                    active: active
 	                });
 	                
 	                currentModel.save({}, {
@@ -116,8 +142,8 @@ define([
         			this.$el.html();
         		}else
         		{
-        			var currentModel = this.projectsCollection.models[itemIndex];
-        			this.$el.html(_.template(EditTemplate, {model: currentModel.toJSON(), accountsDdCollection: this.accountsDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection}));
+            	    var currentModel = this.employeesCollection.models[itemIndex];
+            	    this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON() }));
         		}
             	
                 return this;
