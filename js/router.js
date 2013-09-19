@@ -86,6 +86,8 @@ define([
 
                 });
 
+
+
             },
             makeAction: function(contentType, action, itemIndex) {
                 if (this.mainView == null) this.main();
