@@ -1,13 +1,10 @@
 define([
     "text!templates/Employees/CreateTemplate.html",
-    "collections/Customers/AccountsDdCollection",
     "collections/Employees/EmployeesCollection",
-    "collections/Customers/CustomersCollection",
-    "collections/Workflows/WorkflowsCollection",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, AccountsDdCollection, EmployeesCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (CreateTemplate, EmployeesCollection, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -15,105 +12,123 @@ define([
             template: _.template(CreateTemplate),
 
             initialize: function (options) {
-               this.accountDdCollection = new AccountsDdCollection();
-               this.accountDdCollection.bind('reset', _.bind(this.render, this));
-               this.customersDdCollection = new CustomersCollection();
-               this.customersDdCollection.bind('reset', _.bind(this.render, this));
-               this.workflowsDdCollection = new WorkflowsCollection({id: 'project'});
-               this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
-               this.bind('reset', _.bind(this.render, this));
-               this.projectsCollection = options.collection;
-               this.render();
+                this.bind('reset', _.bind(this.render, this));
+                this.employeesCollection = options.collection;
+                this.render();
             },
 
-            close: function(){
+            events: {
+                "click #tabList a": "switchTab"
+            },
+
+            switchTab: function (e) {
+                e.preventDefault();
+                var link = this.$("#tabList a");
+                if (link.hasClass("selected")) {
+                    link.removeClass("selected");
+                }
+                var index = link.index($(e.target).addClass("selected"));
+                this.$(".tab").hide().eq(index).show();
+            },
+
+            close: function () {
                 this._modelBinder.unbind();
             },
 
             saveItem: function () {
-            	var hash = LocalStorage.getFromLocalStorage('hash'),
+                var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
-            	
-            	
-                var projectname = $("#projectName").val();
-                if ($.trim(projectname) == "")
-                {
-                	projectname = "New Project";
+
+                var name = $("#name").val();
+                if ($.trim(name) == "") {
+                    name = "New Employee";
                 }
-                
-                var idCustomer = $(this.el).find("#customerDd option:selected").val();
-                var customer = this.customersDdCollection.get(idCustomer);
-                
-                if (!customer)
-                {
-                	customer = null;
+
+                var wemail = $("#wemail").val();
+                if ($.trim(wemail) == "") {
+                    wemail = null;
                 }
-                else
-                {
-                	customer = customer.toJSON(); 
+
+                var phone = $("#phone").val();
+                var mobile = $("#mobile").val();
+                var wphones = {};
+                if ($.trim(phone) == "" || $.trim(mobile) == "") {
+                    wphones = null;
                 }
-                var idManager = $(this.el).find("#managerDd option:selected").val();
-                var projectmanager = this.accountDdCollection.get(idManager);
-                if (!projectmanager)
-                {
-                	projectmanager = null;
-                }else
-                {
-                	projectmanager = projectmanager.toJSON(); 
+                else {
+                    wphones.phone = phone;
+                    wphones.mobile = mobile;
                 }
-                var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
-                var workflow = this.workflowsDdCollection.get(idWorkflow);
-                if (!workflow)
-                {
-                	workflow = null;
-                }else
-                {
-                	workflow = workflow.toJSON(); 
+
+                var officeLocation = $("#officeLocation").val();
+                if ($.trim(officeLocation) == "") {
+                    officeLocation = null;
                 }
-                var $userNodes = $("#usereditDd option:selected"), users = [];
-                $userNodes.each(function(key, val){
-                	users.push({
-                		uid: val.value,
-                		uname: val.innerHTML
-                	});
-                });
-                
-                
-                this.projectsCollection.create({
-                	projectname: projectname,
-                	customer: {
-                	    id: customer._id,
-                	    type: customer.type,
-                	    name: customer.name.last + ' ' + customer.name.first
-                	},
-                	projectmanager: {
-                	    uid: projectmanager._id,
-                	    uname: projectmanager.name.last + ' ' + projectmanager.name.first
-                	},
-                	workflow: {
-                	    name: workflow.name,
-                	    status: workflow.status
-                	},
-                	teams: {
-                		users: users
-                	}
+
+                var identNo = parseInt($.trim($("#identNo").val()));
+                if (!identNo) {
+                    identNo = null;
+                }
+
+                var passportNo = parseInt($.trim($("#passportNo").val()));
+                if (!passportNo) {
+                    passportNo = null;
+                }
+
+                var otherId = parseInt($.trim($("#otherId").val()));
+                if (!otherId) {
+                    otherId = null;
+                }
+
+                var dateBirthSt = $.trim($("#dateBirth").val());
+                var dateBirth = "";
+                if (!dateBirthSt) {
+                    dateBirth = null;
+                }
+                else {
+                    dateBirth = new Date(Date.parse(dateBirthSt)).toISOString();
+                }
+
+                var active = false;
+                if ($("#active:checked")) active = true;
+
+                this.employeesCollection.create({
+                    name: name,
+                    wemail: wemail,
+                    wphones: wphones,
+                    officeLocation: officeLocation,
+                    relatedUser: null,
+                    visibility: null,
+                    department: null,
+                    job: null,
+                    manager: null,
+                    coach: null,
+                    nationality: null,
+                    identNo: identNo,
+                    passportNo: passportNo,
+                    bankAccountNo: null,
+                    otherId: otherId,
+                    gender: null,
+                    maritalStatus: null,
+                    homeAddress: null,
+                    dateBirth: dateBirth,
+                    active: active
                 },
                 {
-                	headers: {
-            			uid: uid,
-            			hash: hash,
-            			mid: mid
-            		}
+                    headers: {
+                        uid: uid,
+                        hash: hash,
+                        mid: mid
+                    }
                 });
-                                
-                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
-                
+
+                Backbone.history.navigate("home/content-" + this.contentType, { trigger: true });
+
             },
 
             render: function () {
-                this.$el.html(this.template({accountDdCollection:this.accountDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection}));
-
+                this.$el.html(this.template());
                 return this;
             }
 

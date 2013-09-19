@@ -46,6 +46,16 @@ define([
                 return this;
             },
 
+            events: {
+                "click a": "selectMenuItem"
+            },
+
+            selectMenuItem: function (e) {
+                this.$('li.hover').removeClass('hover');
+                $(e.target).closest('li').addClass('hover');
+
+            },
+
             renderMenu: function(list){
                 if(_.size(list) === 0) {return null;}
                 var $dom = $('<ul></ul>');

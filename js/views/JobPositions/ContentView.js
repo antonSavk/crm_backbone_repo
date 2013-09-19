@@ -1,41 +1,29 @@
 define([
-    'text!templates/Employees/list/ListTemplate.html',
-    'text!templates/Employees/form/FormTemplate.html',
-    'collections/Employees/EmployeesCollection',
-    'views/Employees/list/ListItemView',
-    'views/Employees/thumbnails/ThumbnailsItemView',
+    'text!templates/JobPositions/list/ListTemplate.html',
+    'text!templates/JobPositions/form/FormTemplate.html',
+    'collections/JobPositions/JobPositionsCollection',
+    'views/JobPositions/list/ListItemView',
     'custom',
     'localstorage'
 
 ],
-function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
+function (ListTemplate, FormTemplate, JobPositionsCollection, ListItemView, Custom, LocalStorage) {
     var ContentView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
-            console.log('Init Projects View');
+            console.log('Init JobPositions View');
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
             this.render();
         },
 
         events: {
-            "click .checkbox": "checked",
-            "click #tabList a": "switchTab"
-        },
-
-        switchTab: function (e) {
-            e.preventDefault();
-            var link = this.$("#tabList a");
-            if (link.hasClass("selected")) {
-                link.removeClass("selected");
-            }
-            var index = link.index($(e.target).addClass("selected"));
-            this.$(".tab").hide().eq(index).show();
+            "click .checkbox": "checked"
         },
 
         render: function () {
             Custom.setCurrentCL(this.collection.models.length);
-            console.log('Render Projects View');
+            console.log('Render JobPositions View');
             var viewType = Custom.getCurrentVT();
             switch (viewType) {
                 case "list":
@@ -50,15 +38,6 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
                         $('#check_all').click(function () {
                             var c = this.checked;
                             $(':checkbox').prop('checked', c);
-                        });
-                        break;
-                    }
-                case "thumbnails":
-                    {
-                        this.$el.html('');
-                        var holder = this.$el;
-                        this.collection.each(function (model) {
-                            $(holder).append(new ThumbnailsItemView({ model: model }).render().el);
                         });
                         break;
                     }
@@ -77,17 +56,6 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
                             this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
                         }
 
-                        break;
-                    }
-                case "gantt":
-                    {
-                        console.log('render gantt');
-                        if (this.collection) {
-                            var collection = this.collection.toJSON();
-                            var ganttChart = Custom.createGanttChart(collection, false);
-                            this.$el.html('<div style="width:1180px; height:550px; position:relative;" id="GanttDiv"></div>');
-                            ganttChart.create("GanttDiv");
-                        }
                         break;
                     }
             }
@@ -110,7 +78,7 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
         		mid = 39;
 
             $.each($("tbody input:checked"), function (index, checkbox) {
-                var project = self.collection.get(checkbox.value);
+                var jobPosition = self.collection.get(checkbox.value);
 
                 /*project.set("projectname", 'testEDIT');
         		
@@ -122,15 +90,15 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
         			}
         		});*/
 
-                project.destroy({
+                jobPosition.destroy({
                     headers: {
                         uid: uid,
                         hash: hash,
                         mid: mid
                     }
                 },
-        		{ wait: true }
-        		);
+                    { wait: true }
+                );
             });
 
             this.collection.trigger('reset');
