@@ -60,7 +60,9 @@ define([
                         if (!App.contentType || App.contentType != contentType) {
                             App.contentType = contentType;
                         }
-                        this.Custom.getCurrentVT();
+                        this.Custom.getCurrentVT({
+                            contentType: contentType
+                        });
                     }
                     if (itemIndex)
                         this.Custom.setCurrentII(itemIndex);
@@ -68,6 +70,7 @@ define([
                     viewType = this.Custom.getCurrentVT({
                         contentType: contentType
                     });
+                    
                     itemIndex = this.Custom.getCurrentII();
 
                     var url = "#home/content-" + contentType + "/" + viewType;

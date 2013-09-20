@@ -110,22 +110,41 @@ define(['libs/date.format'], function (dateformat) {
         if (option && (option.contentType != App.contentType)) {
             App.ownContentType = false;
         }
-    	if (App.currentViewType == null) {
-    	    if (option && option.contentType == 'Tasks') {
-    	        App.currentViewType = "kanban";
-    	    } else if (option && option.contentType == 'Profiles') {
-    	        App.currentViewType = "list";
-    	    } else App.currentViewType = "thumbnails";
-    	    return App.currentViewType;
-    	} else {
-    	    if (option && option.contentType == 'Tasks') {
-    	        if (!App.ownContentType) App.currentViewType = "kanban";
-    	    } else if (option && option.contentType == 'Profiles') {
-    	        if (!App.ownContentType) App.currentViewType = "list";
-    	    } else if (option) {
-                if (!App.ownContentType) App.currentViewType = "thumbnails";
+        if (App.currentViewType == null) {
+            if (option) {
+                switch (option.contentType) {
+                case 'Tasks':
+                    App.currentViewType = "kanban";
+                    break;
+                case 'Profiles':
+                    App.currentViewType = "list";
+                    break;
+                case 'JobPositions':
+                    App.currentViewType = "list";
+                    break;                    
+                default:
+                    App.currentViewType = "thumbnails";
+                    break;
+                }
+            } else {
+                App.currentViewType = "thumbnails"
             }
-    	    //return viewType;
+
+    	    return App.currentViewType;
+        } else {
+            if (option && !App.ownContentType) {
+                switch (option.contentType) {
+                    case 'Tasks': App.currentViewType = "kanban";
+                        break;
+                    case 'Profiles': App.currentViewType = "list";
+                        break;
+                    case 'JobPositions': App.currentViewType = "list";
+                        break;
+
+                    default: App.currentViewType = "thumbnails";
+                        break;
+                }
+            }
     	}	
     	
     	var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"];
