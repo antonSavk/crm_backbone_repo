@@ -1,11 +1,13 @@
 define([
-    "text!templates/Projects/list/ListItemTemplate.html"
+    "text!templates/Applications/list/ListItemTemplate.html",
+    'custom'
 ],
-    function (ListItemTemplate) {
-        var ListItemView = Backbone.View.extend({
-            tagName:"tr",
+    function (ApplicationsItemTemplate, Custom) {
 
-            initialize: function(){
+        var ApplicationsItemView = Backbone.View.extend({
+            tagName: "tr",
+
+            initialize: function () {
                 this.render();
             },
 
@@ -15,19 +17,18 @@ define([
 
             gotoForm: function (e) {
                 var itemIndex = $(e.target).closest("tr").data("index") + 1;
-                window.location.hash = "#home/content-Projects/form/" + itemIndex;
+                window.location.hash = "#home/content-Applications/form/" + itemIndex;
             },
 
-            template: _.template(ListItemTemplate),
+            template: _.template(ApplicationsItemTemplate),
 
             render: function () {
                 var index = this.model.collection.indexOf(this.model);
                 this.$el.attr("data-index", index);
-                console.log(this.model);
                 this.$el.html(this.template(this.model.toJSON()));
                 return this;
             }
         });
 
-        return ListItemView;
+        return ApplicationsItemView;
     });

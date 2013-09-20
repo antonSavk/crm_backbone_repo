@@ -1,10 +1,11 @@
 define([
     "text!templates/Companies/CreateTemplate.html",
     "collections/Companies/CompaniesCollection",
+    "models/CompanyModel",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, CompaniesCollection, LocalStorage, Custom) {
+    function (CreateTemplate, CompaniesCollection, CompanyModel, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -24,6 +25,8 @@ define([
             	var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
+
+            	var companyModel = new CompanyModel();
             	
             	var cname = $("#cname").val();
             	if ($.trim(cname) == "")
@@ -47,11 +50,12 @@ define([
             	}
                 
             	var fax = $("#fax").val();
+
             	if ($.trim(fax) == "") {
             	    fax = "";
             	}
                
-            	this.companyCollection.create({
+            	companyModel.save({
                         cname: cname,
                         cemail: cemail,
                         cphones: {
@@ -74,7 +78,6 @@ define([
 
             render: function () {
                 this.$el.html(this.template);
-
                 return this;
             }
 

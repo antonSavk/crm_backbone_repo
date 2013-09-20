@@ -4,10 +4,11 @@ define([
     "collections/Projects/ProjectsCollection",
     "collections/Customers/CustomersCollection",
     "collections/Workflows/WorkflowsCollection",
+    "models/ProjectModel",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, LocalStorage, Custom) {
+    function (CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, ProjectModel, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -36,6 +37,7 @@ define([
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
             	
+            	var projectModel = new ProjectModel();
             	
                 var projectname = $("#projectName").val();
                 if ($.trim(projectname) == "")
@@ -81,7 +83,7 @@ define([
                 });
                 
                 
-                this.projectsCollection.create({
+                projectModel.save({
                 	projectname: projectname,
                 	customer: {
                 	    id: customer._id,

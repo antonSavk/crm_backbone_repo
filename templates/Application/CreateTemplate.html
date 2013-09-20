@@ -1,0 +1,115 @@
+<div class="form-holder">
+
+    <form method="post" action="" id="createApplicationForm" class="form">
+        <fieldset>
+            <p>
+                <label for="summary">Subject </label>
+                <input type="text" class="title-input blueback" name="summary" id="summary" required />
+            </p>
+
+            <p>
+                <label for="projectDd">Applicant's Name </label>
+                <input type="date" name="deadline" id="Date1" />
+            </p>
+
+            <p>
+                <label for="assignedTo">Contact </label>
+                <select id="assignedTo" required>
+                    <option selected="selected" value="0">Select...</option>
+                    <% accountDdCollection.each(function(option){ %>
+                    <option value="<%= option.get('_id') %>"><%= option.get('name').first %> <%= option.get('name').last %></option>
+                    <% }); %>
+                </select>
+            </p>
+
+            <p>
+                <label for="deadline">Email </label>
+                <input type="date" name="deadline" id="deadline" />
+            </p>
+
+            <p>
+                <label for="tags">Phone </label>
+                <input type="text" name="tags" id="tags" />
+            </p>
+
+            <p>
+                <label for="description">Mobile </label>
+                <input type="text" name="description" id="description" />
+            </p>
+
+            <p>
+                <label for="description">Degree </label>
+                <input type="text" name="description" id="Text1" />
+            </p>
+
+            <p>
+                <label for="description">Responsible </label>
+                <input type="text" name="description" id="Text2" />
+            </p>
+
+            <p>
+                <label for="description">Next Action </label>
+                <input type="text" name="description" id="Text3" />
+            </p>
+
+            <p>
+                <label for="description">Appreciation </label>
+                <input type="text" name="description" id="Text4" />
+            </p>
+
+            <p>
+                <label for="description">Source </label>
+                <input type="text" name="description" id="Text5" />
+            </p>
+
+            <p>
+                <label for="description">Referred By </label>
+                <input type="text" name="description" id="Text6" />
+            </p>
+
+            <h2>Job</h2>
+            <p>
+                <label for="description">Applied Job </label>
+                <input type="text" name="description" id="Text7" />
+            </p>
+
+            <p>
+                <label for="description">Department</label>
+                <input type="text" name="description" id="Text8" />
+            </p>
+
+            <p>
+                <label for="description">Availability </label>
+                <input type="text" name="description" id="Text9" />
+            </p>
+
+            <h2>Contract</h2>
+
+            <p>
+                <label for="description">Expected Salary </label>
+                <input type="text" name="description" id="Text10" />
+            </p>
+
+            <p>
+                <label for="description">Proposed Salary </label>
+                <input type="text" name="description" id="Text11" />
+            </p>
+
+            <p>
+                <label for="priority">Tags </label>
+                <select id="priority">
+                    <option selected="selected" value="0">Select...</option>
+                    <% priorityCollection.each(function(option){ %>
+                            <!--<option value="<%= option.get('_id') %>"><%= option.get('priority') %></option>-->
+                    <option value="<%= option.get('priority') %>"><%= option.get('priority') %></option>
+                    <% }); %>
+                </select>
+            </p>
+
+            <h2>Application Summary</h2>
+            <p>
+                <input class="extrainfo" type="text" name="sequence" id="sequence" />
+            </p>
+        </fieldset>
+    </form>
+</div>

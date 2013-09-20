@@ -1,18 +1,18 @@
 define([
-        "text!templates/Tasks/kanban/KanbanItemTemplate.html",
-        "collections/Tasks/TasksCollection",
+        "text!templates/Applications/kanban/KanbanItemTemplate.html",
+        "collections/Applications/ApplicationsCollection",
         'localstorage',
         'custom'
     ],
-    function(KanbanItemTemplate, TasksCollection, LocalStorage, Custom) {
-        var TasksItemView = Backbone.View.extend({
+    function (KanbanItemTemplate, ApplicationsCollection, LocalStorage, Custom) {
+        var ApplicationsItemView = Backbone.View.extend({
             className: "task",
             id: function() {
                 return this.model.get("_id");
             },
 
             initialize: function() {
-                this.collection = new TasksCollection();
+                this.collection = new ApplicationsCollection();
                 this.collection.bind('reset', _.bind(this.render, this));
                 this.render();
             },
@@ -118,6 +118,5 @@ define([
             }
         });
 
-        return TasksItemView;
->>>>>>> Job Positions, Departments and Employees CRUD
+        return ApplicationsItemView;
     });

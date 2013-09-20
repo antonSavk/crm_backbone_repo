@@ -1,11 +1,8 @@
 define([
+    'models/ProjectModel',
     'localstorage'
 ],
-    function (Localstorage) {
-        var ProjectModel = Backbone.Model.extend({
-        	idAttribute: "_id"
-        });
-
+    function (ProjectModel, Localstorage) {
         var ProjectsCollection = Backbone.Collection.extend({
             model: ProjectModel,
             url: function(){

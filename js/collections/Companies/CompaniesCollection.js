@@ -1,11 +1,8 @@
 define([
+    'models/CompanyModel',
     'localstorage'
 ],
-    function (Localstorage) {
-        var CompanyModel = Backbone.Model.extend({
-            idAttribute: '_id'
-        });
-
+    function (CompanyModel, Localstorage) {
         var CompaniesCollection = Backbone.Collection.extend({
             model: CompanyModel,
             url: function(){

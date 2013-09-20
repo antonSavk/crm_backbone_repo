@@ -1,12 +1,7 @@
 define([
-    "text!templates/Tasks/CreateTemplate.html",
-    "collections/Projects/ProjectsDdCollection",
-    "collections/Customers/AccountsDdCollection",
-    "collections/Tasks/TasksCollection",
-    "collections/Customers/CustomersCollection",
-    "collections/Workflows/WorkflowsCollection",
-    "collections/Priority/TaskPriority",
-    "models/TaskModel",
+    "text!templates/Applications/CreateTemplate.html",
+    "collections/Applications/ApplicationsCollection",
+    "models/ApplicationModel",
     "localstorage",
     "custom"
 ],
@@ -14,22 +9,12 @@ define([
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
-            contentType: "Tasks",
+            contentType: "Applications",
             template: _.template(CreateTemplate),
 
             initialize: function (options) {
-                this.projectsDdCollection = new ProjectsDdCollection();
-                this.projectsDdCollection.bind('reset', _.bind(this.render, this));
-                this.accountDdCollection = new AccountsDdCollection();
-                this.accountDdCollection.bind('reset', _.bind(this.render, this));
-                this.customersDdCollection = new CustomersCollection();
-                this.customersDdCollection.bind('reset', _.bind(this.render, this));
-                this.workflowsDdCollection = new WorkflowsCollection({ id: "task" });
-                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
                 this.bind('reset', _.bind(this.render, this));
-                this.priorityCollection = new PriorityCollection();
-                this.priorityCollection.bind('reset', _.bind(this.render, this));
-                this.tasksCollection = options.collection;
+                this.applicationsCollection = options.collection;
                 this.render();
             },
 
@@ -56,7 +41,7 @@ define([
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
 
-                var taskModel = new TaskModel();
+                var applicationModel = new ApplicationModel();
 
                 var summary = $("#summary").val();
                 if ($.trim(summary) == "") {
@@ -152,7 +137,7 @@ define([
                     priority = null;
                 }
 
-                taskModel.save({
+                applicationModel.save({
                     summary: summary,
                     assignedto: assignedto,
                     workflow: workflow,
@@ -189,10 +174,7 @@ define([
             },
 
             render: function () {
-                this.$el.html(this.template({
-                    projectsDdCollection: this.projectsDdCollection, accountDdCollection: this.accountDdCollection, customersDdCollection: this.customersDdCollection,
-                    workflowsDdCollection: this.workflowsDdCollection, priorityCollection: this.priorityCollection
-                }));
+                this.$el.html(this.template());
 
                 return this;
             }
@@ -200,5 +182,4 @@ define([
         });
 
         return CreateView;
->>>>>>> Job Positions, Departments and Employees CRUD
     });

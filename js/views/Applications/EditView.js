@@ -1,37 +1,19 @@
 ﻿define([
-    "text!templates/Tasks/EditTemplate.html",
-    "collections/Projects/ProjectsDdCollection",
-    "collections/Customers/AccountsDdCollection",
-    "collections/Tasks/TasksCollection",
-    "collections/Customers/CustomersCollection",
-    "collections/Workflows/WorkflowsCollection",
-    "collections/Priority/TaskPriority",
+    "text!templates/Applications/EditTemplate.html",
+    "collections/Applications/ApplicationsCollection",
     "localstorage",
     "custom"
 ],
-    function (EditTemplate, ProjectsDdCollection, AccountsDdCollection, TasksCollection, CustomersCollection, WorkflowsCollection, PriorityCollection, LocalStorage, Custom) {
+    function (EditTemplate, ApplicationsCollection, LocalStorage, Custom) {
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
-            contentType: "Tasks",
+            contentType: "Applications",
 
             initialize: function (options) {
-                this.projectsDdCollection = new ProjectsDdCollection();
-                this.accountsDdCollection = new AccountsDdCollection();
-                this.customersDdCollection = new CustomersCollection();
-                this.workflowsDdCollection = new WorkflowsCollection({ id: "task" });
-                this.priorityCollection = new PriorityCollection();
-                this.tasksCollection = options.collection;
-
-                this.projectsDdCollection.bind('reset', _.bind(this.render, this));
-                this.tasksCollection.bind('reset', _.bind(this.render, this));
-                this.accountsDdCollection.bind('reset', _.bind(this.render, this));
-                this.customersDdCollection.bind('reset', _.bind(this.render, this));
-                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
-                this.priorityCollection.bind('reset', _.bind(this.render, this));
-                
+                this.applicationsCollection = options.collection;
+                this.applicationsCollection.bind('reset', _.bind(this.render, this));
                 this.render();
-
             },
 
             events: {
@@ -150,7 +132,7 @@
                     if ($.trim(loged) == "") {
                         loged = 0;
                     }
-                    
+
                     var priority = $("#priority").val();
                     if ($.trim(priority) == "") {
                         priority = null;
@@ -205,20 +187,16 @@
                     this.$el.html();
                 }
                 else {
-                    var currentModel = this.tasksCollection.models[itemIndex];
+                    var currentModel = this.applicationsCollection.models[itemIndex];
                     var extrainfo = currentModel.get('extrainfo');
                     extrainfo['StartDate'] = this.ISODateToDate(currentModel.get('extrainfo').StartDate);
                     extrainfo['EndDate'] = this.ISODateToDate(currentModel.get('extrainfo').EndDate);
                     currentModel.set({ deadline: this.ISODateToDate(currentModel.get('deadline')), extrainfo: extrainfo }, { silent: true });
-                    this.$el.html(_.template(EditTemplate, {
-                        model: currentModel.toJSON(), projectsDdCollection: this.projectsDdCollection, accountsDdCollection: this.accountsDdCollection,
-                        customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection, priorityCollection: this.priorityCollection
-                    }));
+                    this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON() }));
                 }
                 return this;
             }
 
         });
         return EditView;
->>>>>>> Job Positions, Departments and Employees CRUD
     });

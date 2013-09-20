@@ -1,29 +1,22 @@
 define([
     'jqueryui',
-    'text!templates/Tasks/list/ListTemplate.html',
-    'text!templates/Tasks/form/FormTemplate.html',
-    'text!templates/Tasks/kanban/KanbanTemplate.html',
-    'collections/Tasks/TasksCollection',
-    'collections/Workflows/WorkflowsCollection',
-    'collections/Projects/ProjectsCollection',
-    'views/Tasks/list/ListItemView',
-    'views/Tasks/thumbnails/ThumbnailsItemView',
-    'views/Tasks/kanban/KanbanItemView',
+    'text!templates/Applications/list/ListTemplate.html',
+    'text!templates/Applications/form/FormTemplate.html',
+    'text!templates/Applications/kanban/KanbanTemplate.html',
+    'collections/Applications/ApplicationsCollection',
+    'views/Applications/list/ListItemView',
+    'views/Applications/thumbnails/ThumbnailsItemView',
+    'views/Applications/kanban/KanbanItemView',
     "localstorage",
     'custom'
 ],
 
-function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, TasksCollection, WorkflowsCollection, ProjectsCollection, TasksListItemView, TasksThumbnailsItemView, TasksKanbanItemView, LocalStorage, Custom) {
-    var TasksView = Backbone.View.extend({
+function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, ApplicationsCollection, ApplicationsListItemView, ApplicationsThumbnailsItemView, ApplicationsKanbanItemView, LocalStorage, Custom) {
+    var ApplicationsView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
-            console.log('Init Tasks View');
+            console.log('Init Applications View');
             var that = this;
-            this.workflowsCollection = new WorkflowsCollection({ id: 'task' });
-            this.workflowsCollection.bind('reset', _.bind(this.render, this));
-            this.projectsCollection = new ProjectsCollection();
-            this.projectsCollection.bind('reset', _.bind(this.render, this));
-            console.log(this.projectsCollection);
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
             this.render();
@@ -51,13 +44,13 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
         gotoProjectForm: function (e) {
             e.preventDefault();
             var itemIndex = this.projectsCollection.indexOf(this.projectsCollection.get($(e.target).closest("a").attr("id"))) + 1;
-            window.location.hash = "#home/content-Projects/form/" + itemIndex;
+            window.location.hash = "#home/content-Applications/form/" + itemIndex;
         },
 
         render: function () {
             var that = this;
             Custom.setCurrentCL(this.collection.models.length);
-            console.log('Render Tasks View');
+            console.log('Render Applications View');
             var viewType = Custom.getCurrentVT();
             var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
@@ -110,7 +103,6 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
 
                         $('#check_all').click(function () {
                             var c = this.checked;
-
                             $(':checkbox').prop('checked', c);
                         });
 
@@ -259,5 +251,5 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
         }
     });
 
-    return TasksView;
+    return ApplicationsView;
 });

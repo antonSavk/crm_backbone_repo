@@ -1,25 +1,25 @@
 define([
-    'models/TaskModel',
+    'models/EmployeeModel',
     'localstorage'
 ],
-    function (TaskModel, Localstorage) {
-        var TasksCollection = Backbone.Collection.extend({
-            model: TaskModel,
+    function (EmployeeModel, Localstorage) {
+        var EmployeesCollection = Backbone.Collection.extend({
+            model: EmployeeModel,
             url: function () {
                 var hash = Localstorage.getFromLocalStorage('hash'),
-                       uid = Localstorage.getFromLocalStorage('uid'),
-                       mid = 39,
-                       url = "http://" + App.Server.ip + ":" + App.Server.port + "/Tasks";
+                	uid = Localstorage.getFromLocalStorage('uid'),
+                	mid = 39,
+                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Employees";
+
                 return url;
             },
 
-
             initialize: function () {
-                console.log("Task Collection Init");
+                console.log("Employees Collection Init");
 
                 var hash = Localstorage.getFromLocalStorage('hash'),
-                   uid = Localstorage.getFromLocalStorage('uid'),
-                   mid = 39;
+            		uid = Localstorage.getFromLocalStorage('uid'),
+            		mid = 39;
 
                 this.fetch({
                     data: $.param({
@@ -36,8 +36,8 @@ define([
 
             parse: true,
 
-            parse: function(response){
-            	console.log('parse Tasks');
+            parse: function (response) {
+                //console.log('parse Projects');
                 //$.each(response.data, function(index,val){
                 //    response.data[index]["id"] = response.data[index]["_id"];
                 //    delete response.data[index]["_id"];
@@ -46,17 +46,14 @@ define([
             },
 
             fetchSuccess: function (collection, response) {
-                console.log("Tasks fetchSuccess");
-                /*if (options.success) {
-                    options.success(result);
-                }*/
+                console.log("Employees fetchSuccess");
             },
+
             fetchError: function (error) {
 
             }
 
-
         });
 
-        return TasksCollection;
+        return EmployeesCollection;
     });
