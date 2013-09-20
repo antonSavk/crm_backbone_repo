@@ -70,17 +70,6 @@ define([
             		}
             		break;
             	}
-            	case "gantt":
-                {
-                    /*console.log('render gantt');
-                    if(this.collection){
-                        var collection = this.collection.toJSON();
-                        var ganttChart =  Custom.createGanttChart(collection, false);
-                        this.$el.html('<div style="width:1180px; height:550px; position:relative;" id="GanttDiv"></div>');
-                        ganttChart.create("GanttDiv");
-                    }*/
-                    break;
-                }
             }
             
             return this;

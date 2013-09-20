@@ -1,9 +1,10 @@
 define([
     "text!templates/Profiles/CreateProfileTemplate.html",
     "models/ProfileModel",
-    "localstorage"
+    "localstorage",
+    "collections/Users/UsersCollection"
 ],
-    function (CreateProfileTemplate, ProfileModel, LocalStorage) {
+    function (CreateProfileTemplate, ProfileModel, LocalStorage, UsersCollection) {
         var CreateView = Backbone.View.extend({
             el: '#content-holder',
             contentType: "Profiles",

@@ -1,12 +1,13 @@
 define([
-    "localstorage",
-    "models/PersonModel"
+    'localstorage',
+    "models/UserModel"
 ],
-    function (Localstorage, PersonModel) {
-        var PersonsCollection = Backbone.Collection.extend({
-            model:PersonModel,
-            url: function () {
-                return "http://" + App.Server.ip + ":" + App.Server.port + "/Persons";
+    function (Localstorage, UserModel) {
+
+        var UsersCollection = Backbone.Collection.extend({
+            model: UserModel,
+            url: function(){
+                return "http://" + App.Server.ip + ":" + App.Server.port + "/Users";
             },
             initialize: function(){
                 var hash = Localstorage.getFromLocalStorage('hash'),
@@ -25,7 +26,6 @@ define([
                 });
             },
             parse:true,
-
             parse: function(response){
                 return response.data;
             },
@@ -36,5 +36,5 @@ define([
             }
         });
 
-        return PersonsCollection;
+        return UsersCollection;
     });
