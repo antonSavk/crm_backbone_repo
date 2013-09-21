@@ -39,7 +39,7 @@ define(function () {
         },
 
         urlRoot: function () {
-            return "http://" + App.Server.ip + ":" + App.Server.port + "/Progects";
+            return "http://" + App.Server.ip + ":" + App.Server.port + "/Projects";
         }
     });
 

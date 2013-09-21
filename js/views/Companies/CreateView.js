@@ -50,7 +50,6 @@ define([
             	}
                 
             	var fax = $("#fax").val();
-
             	if ($.trim(fax) == "") {
             	    fax = "";
             	}

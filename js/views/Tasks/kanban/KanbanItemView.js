@@ -119,5 +119,4 @@ define([
         });
 
         return TasksItemView;
->>>>>>> Job Positions, Departments and Employees CRUD
     });

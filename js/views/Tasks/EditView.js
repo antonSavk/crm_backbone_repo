@@ -220,5 +220,4 @@
 
         });
         return EditView;
->>>>>>> Job Positions, Departments and Employees CRUD
     });

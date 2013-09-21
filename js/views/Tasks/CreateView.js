@@ -200,5 +200,4 @@ define([
         });
 
         return CreateView;
->>>>>>> Job Positions, Departments and Employees CRUD
     });
