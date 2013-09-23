@@ -15,6 +15,7 @@ define([
             },
 
             gotoForm: function (e) {
+                App.ownContentType = true;
                 var itemIndex = $(e.target).data("index") + 1;
                 window.location.hash = "#home/content-Employees/form/" + itemIndex;
             },

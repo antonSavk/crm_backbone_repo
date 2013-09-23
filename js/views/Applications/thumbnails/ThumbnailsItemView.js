@@ -14,7 +14,8 @@ define([
                 "click":"gotoForm"
             },
 
-            gotoForm: function(e){
+            gotoForm: function (e) {
+                App.ownContentType = true;
                 var itemIndex = $(e.target).data("index") + 1;
                 window.location.hash = "#home/content-Applications/form/" + itemIndex;
             },
