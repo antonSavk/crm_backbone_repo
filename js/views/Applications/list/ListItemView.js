@@ -23,9 +23,11 @@ define([
             template: _.template(ApplicationsItemTemplate),
 
             render: function () {
-                var index = this.model.collection.indexOf(this.model);
+                var model = this.model;
+                var index = model.collection.indexOf(model);
+                model.set({ creationDate: model.get("creationDate").split('.')[0].replace(/T|Z/g, ' ').replace(/-/g,'/') });
                 this.$el.attr("data-index", index);
-                this.$el.html(this.template(this.model.toJSON()));
+                this.$el.html(this.template(model.toJSON()));
                 return this;
             }
         });

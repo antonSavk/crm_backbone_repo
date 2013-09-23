@@ -24,36 +24,55 @@
                 </div>
                 <div class="tab">
                     <!--<div class="half-block left">-->
+                    <label>Working Address</label>
                     <p>
-                        <label for="waddress">Working Address</label>
-                        <select id="waddress">
-                            <option selected="selected" value="0">Select...</option>
-                        </select>
+                        <label>Street</label>
+                        <input type="text" class="waddress" name="street" />
+                    </p>
+                    <p>
+                        <label>City</label>
+                        <input type="text" class="waddress" name="city" />
+                    </p>
+                    <p>
+                        <label>State</label>
+                        <input type="text" class="waddress" name="state" />
+                    <p>
+                        <label>Zip</label>
+                        <input type="text" class="waddress" name="zip" />
+                    </p>
+                    <p>
+                        <label>Country</label>
+                        <input type="text" class="waddress" name="country" />
                     </p>
 
                     <p>
                         <label for="wemail">Work Email</label>
-                        <input type="text" name="wemail" id="wemail" required />
+                        <input type="text" name="wemail" id="wemail" />
                     </p>
                     <!--</div>-->
                     <!--<div class="half-block left">-->
                     <p>
                         <label for="phone">Work Phone</label>
-                        <input type="text" name="phone" id="phone" required />
+                        <input type="text" name="phone" id="phone" />
                     </p>
 
                     <p>
                         <label for="mobile">Work Mobile</label>
-                        <input type="text" name="mobile" id="mobile" required />
+                        <input type="text" name="mobile" id="mobile" />
                     </p>
                     <p>
                         <label for="officeLocation">Office Location</label>
-                        <input type="text" name="officeLocation" id="officeLocation" required />
+                        <input type="text" name="officeLocation" id="officeLocation" />
                     </p>
                     <p>
                         <label for="relatedUser">Related User</label>
                         <select id="relatedUser">
                             <option selected="selected" value="0">Select...</option>
+                            <% usersCollection.each(function(option){ %>
+                           
+                            <option value="<%= option.get('_id') %>"><%= option.get('ulogin')%></option>
+                            <% }); %>
+                       
                         </select>
                     </p>
                     <p>
@@ -70,6 +89,7 @@
                            
                             <option value="<%= option.get('_id') %>"><%= option.get('departmentName')%></option>
                             <% }); %>
+                       
                         </select>
                     </p>
                     <p>
@@ -80,15 +100,18 @@
                            
                             <option value="<%= option.get('_id') %>"><%= option.get('name')%></option>
                             <% }); %>
+                       
                         </select>
                     </p>
                     <p>
                         <label for="manager">Manager</label>
                         <select id="manager">
                             <option selected="selected" value="0">Select...</option>
-                             <% accountsDdCollection.each(function(option){ %>
-                                <option value="<%= option.get('_id') %>"><%= option.get('name').first %>  <%= option.get('name').last %></option>
+                            <% accountsDdCollection.each(function(option){ %>
+                               
+                            <option value="<%= option.get('_id') %>"><%= option.get('name').first %>  <%= option.get('name').last %></option>
                             <% }); %>
+                       
                         </select>
                     </p>
                     <p>
@@ -96,8 +119,10 @@
                         <select id="coach">
                             <option selected="selected" value="0">Select...</option>
                             <% accountsDdCollection.each(function(option){ %>
-                                <option value="<%= option.get('_id') %>"><%= option.get('name').first %>  <%= option.get('name').last %></option>
+                               
+                            <option value="<%= option.get('_id') %>"><%= option.get('name').first %>  <%= option.get('name').last %></option>
                             <% }); %>
+                       
                         </select>
                     </p>
                     <!--</div>-->
@@ -112,11 +137,11 @@
                     </p>
                     <p>
                         <label for="identNo">Identification No</label>
-                        <input type="text" name="identNo" id="identNo" required />
+                        <input type="text" name="identNo" id="identNo" />
                     </p>
                     <p>
                         <label for="passportNo">Passport No</label>
-                        <input type="text" name="passportNo" id="passportNo" required />
+                        <input type="text" name="passportNo" id="passportNo" />
                     </p>
                     <p>
                         <label for="bankAccountNo">Bank Account No</label>
@@ -126,7 +151,7 @@
                     </p>
                     <p>
                         <label for="otherId">Other Id</label>
-                        <input type="text" name="otherId" id="otherId" required />
+                        <input type="text" name="otherId" id="otherId" />
                     </p>
                     <h2>Status</h2>
                     <p>
@@ -142,16 +167,31 @@
                         </select>
                     </p>
                     <h2>Contact Information</h2>
+                    <label>Home Address</label>
                     <p>
-                        <label for="homeAddress">Home Address</label>
-                        <select id="homeAddress">
-                            <option selected="selected" value="0">Select...</option>
-                        </select>
+                        <label>Street</label>
+                        <input type="text" class="homeAddress" name="street" />
+                    </p>
+                    <p>
+                        <label>City</label>
+                        <input type="text" class="homeAddress" name="city" />
+                    </p>
+                    <p>
+                        <label>State</label>
+                        <input type="text" class="homeAddress" name="state" />
+                    </p>
+                    <p>
+                        <label>Zip</label>
+                        <input type="text" class="homeAddress" name="zip" />
+                    </p>
+                    <p>
+                        <label>Country</label>
+                        <input type="text" class="homeAddress" name="country" />
                     </p>
                     <h2>Birth</h2>
                     <p>
                         <label for="dateBirth">Date of Birth</label>
-                        <input type="date" name="dateBirth" id="dateBirth" required />
+                        <input type="date" name="dateBirth" id="dateBirth" />
                     </p>
                 </div>
                 <div class="tab">
@@ -160,6 +200,7 @@
                         <input type="checkbox" name="active" id="active" />
                     </p>
                 </div>
+            </div>
         </fieldset>
     </form>
 </div>

@@ -1,11 +1,14 @@
 define([
     "text!templates/Applications/CreateTemplate.html",
     "collections/Applications/ApplicationsCollection",
+    "collections/Employees/EmployeesCollection",
+    "collections/JobPositions/JobPositionsCollection",
+    "collections/Departments/DepartmentsCollection",
     "models/ApplicationModel",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, ProjectsDdCollection, AccountsDdCollection, TasksCollection, CustomersCollection, WorkflowsCollection, PriorityCollection, TaskModel, LocalStorage, Custom) {
+    function (CreateTemplate, ApplicationsCollection, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, ApplicationModel, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -13,6 +16,12 @@ define([
             template: _.template(CreateTemplate),
 
             initialize: function (options) {
+                this.employeesCollection = new EmployeesCollection();
+                this.employeesCollection.bind('reset', _.bind(this.render, this));
+                this.jobPositionsCollection = new JobPositionsCollection();
+                this.jobPositionsCollection.bind('reset', _.bind(this.render, this));
+                this.departmentsCollection = new DepartmentsCollection();
+                this.departmentsCollection.bind('reset', _.bind(this.render, this));
                 this.bind('reset', _.bind(this.render, this));
                 this.applicationsCollection = options.collection;
                 this.render();
@@ -43,124 +52,73 @@ define([
 
                 var applicationModel = new ApplicationModel();
 
-                var summary = $("#summary").val();
-                if ($.trim(summary) == "") {
-                    summary = "New Summary";
+                var subject = $.trim($("#subject").val());
+                var name = $.trim($("#name").val());
+                var wemail = $.trim($("#wemail").val());
+                var phone = $.trim($("#phone").val());
+                var mobile = $.trim($("#mobile").val());
+                var wphones = {
+                    phone: phone,
+                    mobile: mobile
+                };
+
+                var relatedUser = {};
+                var relatedUserId = this.$("#relatedUser option:selected").val();
+                var objRelatedUser = this.employeesCollection.get(relatedUserId);
+                if (objRelatedUser) {
+                    relatedUser.id = relatedUserId;
+                    relatedUser.login = objRelatedUser.get('name');
                 }
 
-                var idProject = this.$("#projectDd option:selected").val();
-                var project = this.projectsDdCollection.get(idProject);
-
-                if (!project) {
-                    project = null;
-                } else {
-                    project = project.toJSON();
+                var nextActionSt = $.trim($("#nextAction").val());
+                var nextAction = "";
+                if (nextActionSt) {
+                    nextAction = new Date(Date.parse(nextActionSt)).toISOString();
                 }
 
-                var assignedto = {};
-                var idAssignedTo = this.$("#assignedTo option:selected").val();
-                var unameAssignedTo = this.accountDdCollection.get(idAssignedTo);
-                if (!unameAssignedTo) {
-                    unameAssignedTo = null;
-                }
-                assignedto.uname = unameAssignedTo.get('name').first + " " + unameAssignedTo.get('name').last;
-                assignedto.uid = idAssignedTo;
+                var source = {};
+                var sourceName = $.trim($("#source").val());
+                source.name = sourceName;
 
+                var referredBy = $.trim($("#referredBy").val());
 
-                var deadlineSt = $.trim($("#deadline").val());
-                var deadline = "";
-                if (!deadlineSt) {
-                    deadline = null;
-                }
-                else {
-                    deadline = new Date(Date.parse(deadlineSt)).toISOString();
+                var departmentId = this.$("#department option:selected").val();
+                var objDepartment = this.departmentsCollection.get(departmentId);
+                var department = {};
+                if (objDepartment) {
+                    department.departmentName = objDepartment.get('departmentName');
+                    department.departmentId = departmentId;
                 }
 
+                var jobId = this.$("#job option:selected").val();
+                var objJob = this.jobPositionsCollection.get(jobId);
+                var job = {};
+                if (objJob) {
+                    job.jobPositionId = jobId;
+                    job.jobPositionName = objJob.get('name');
+                }
+
+                var expectedSalary = $.trim($("#expectedSalary").val());
+                var proposedSalary = $.trim($("#proposedSalary").val());
                 var tags = $.trim($("#tags").val()).split(',');
-                if (tags.length == 0) {
-                    tags = null;
-                }
-
-                var description = $("#description").val();
-                if ($.trim(description) == "") {
-                    description = "New Description";
-                }
-
-                var sequence = parseInt($.trim($("#sequence").val()));
-                if (!sequence) {
-                    sequence = null;
-                }
-
-                var startDateSt = $.trim($("#StartDate").val());
-                var StartDate = "";
-                if (!startDateSt) {
-                    StartDate = null;
-                }
-                else {
-                    StartDate = new Date(Date.parse(startDateSt)).toISOString();
-                }
-
-                var endDateSt = $.trim($("#EndDate").val());
-                var EndDate = "";
-                if (!endDateSt) {
-                    EndDate = null;
-                }
-                else {
-                    EndDate = new Date(Date.parse(endDateSt)).toISOString();
-                }
-
-                var idCustomer = this.$("#customerDd option:selected").val();
-                var customer = this.customersDdCollection.get(idCustomer);
-                if (!customer) {
-                    customer = null;
-                } else {
-                    customer = customer.toJSON();
-                }
-
-                var idWorkflow = this.$("#workflowDd option:selected").val();
-                var workflow = this.workflowsDdCollection.get(idWorkflow);
-                if (!workflow) {
-                    workflow = null;
-                } else {
-                    workflow = workflow.toJSON();
-                }
-                var estimated = $("#estimated").val();
-                if ($.trim(estimated) == "") {
-                    estimated = 0;
-                }
-                var loged = $("#loged").val();
-                if ($.trim(loged) == "") {
-                    loged = 0;
-                }
-                var priority = $("#priority").val();
-                if ($.trim(priority) == "") {
-                    priority = null;
-                }
+                var otherInfo = $("#otherInfo").val();
+                console.log(otherInfo);
 
                 applicationModel.save({
-                    summary: summary,
-                    assignedto: assignedto,
-                    workflow: workflow,
-                    project: {
-                        pId: idProject,
-                        projectName: project.projectname
-                    },
+                    subject: subject,
+                    name: name,
+                    wemail: wemail,
+                    wphones: wphones,
+                    relatedUser: relatedUser,
+                    nextAction: nextAction,
+                    source: source,
+                    referredBy: referredBy,
+                    department: department,
+                    job: job,
+                    expectedSalary: expectedSalary,
+                    proposedSalary: proposedSalary,
                     tags: tags,
-                    deadline: deadline,
-                    description: description,
-                    extrainfo: {
-                        priority: priority,
-                        sequence: sequence,
-                        customer: {
-                            id: idCustomer,
-                            name: customer.name,
-                            type: customer.type
-                        },
-                        StartDate: StartDate,
-                        EndDate: EndDate
-                    },
-                    estimated: estimated,
-                    loged: loged
+                    otherInfo: otherInfo
                 },
                 {
                     headers: {
@@ -174,8 +132,7 @@ define([
             },
 
             render: function () {
-                this.$el.html(this.template());
-
+                this.$el.html(this.template({ employeesCollection: this.employeesCollection, jobPositionsCollection: this.jobPositionsCollection, departmentsCollection: this.departmentsCollection }));
                 return this;
             }
 

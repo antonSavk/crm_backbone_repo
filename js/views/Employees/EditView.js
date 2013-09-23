@@ -4,16 +4,19 @@ define([
     "collections/JobPositions/JobPositionsCollection",
     "collections/Departments/DepartmentsCollection",
     "collections/Customers/AccountsDdCollection",
+    "collections/Users/UsersCollection",
     "localstorage",
     "custom"
 ],
-    function (EditTemplate, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, AccountsDdCollection, LocalStorage, Custom) {
+    function (EditTemplate, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, AccountsDdCollection, UsersCollection, LocalStorage, Custom) {
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
             contentType: "Employees",
 
             initialize: function (options) {
+                this.usersCollection = new UsersCollection();
+                this.usersCollection.bind('reset', _.bind(this.render, this));
                 this.jobPositionsCollection = new JobPositionsCollection();
                 this.jobPositionsCollection.bind('reset', _.bind(this.render, this));
                 this.departmentsCollection = new DepartmentsCollection();
@@ -50,30 +53,31 @@ define([
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
 
-                    var name = $("#name").val();
-                    if ($.trim(name) == "") {
-                        name = "New Employee";
-                    }
+                    var name = $.trim($("#name").val());
 
-                    var wemail = $("#wemail").val();
-                    if ($.trim(wemail) == "") {
-                        wemail = null;
-                    }
+                    var waddress = {};
+                    $("p").find(".waddress").each(function () {
+                        var el = $(this);
+                        waddress[el.attr("name")] = el.val();
+                    });
 
-                    var phone = $("#phone").val();
-                    var mobile = $("#mobile").val();
-                    var wphones = {};
-                    if ($.trim(phone) == "" || $.trim(mobile) == "") {
-                        wphones = null;
-                    }
-                    else {
-                        wphones.phone = phone;
-                        wphones.mobile = mobile;
-                    }
+                    var wemail = $.trim($("#wemail").val());
 
-                    var officeLocation = $("#officeLocation").val();
-                    if ($.trim(officeLocation) == "") {
-                        officeLocation = null;
+                    var phone = $.trim($("#phone").val());
+                    var mobile = $.trim($("#mobile").val());
+                    var wphones = {
+                        phone: phone,
+                        mobile: mobile
+                    };
+
+                    var officeLocation = $.trim($("#officeLocation").val());
+
+                    var relatedUserId = this.$("#relatedUser option:selected").val();
+                    var objRelatedUser = this.usersCollection.get(relatedUserId);
+                    var relatedUser = {};
+                    if (objRelatedUser) {
+                        relatedUser.id = relatedUserId;
+                        relatedUser.login = objRelatedUser.get('ulogin');
                     }
 
                     var departmentId = this.$("#department option:selected").val();
@@ -91,7 +95,6 @@ define([
                         job.jobPositionId = jobId;
                         job.jobPositionName = objJob.get('name');
                     }
-                    console.log(job);
 
                     var managerId = this.$("#manager option:selected").val();
                     var objManager = this.accountsDdCollection.get(managerId);
@@ -110,51 +113,39 @@ define([
                     }
 
                     var identNo = parseInt($.trim($("#identNo").val()));
-                    if (!identNo) {
-                        identNo = null;
-                    }
 
                     var passportNo = parseInt($.trim($("#passportNo").val()));
-                    if (!passportNo) {
-                        passportNo = null;
-                    }
 
-                    var otherId = parseInt($.trim($("#otherId").val()));
-                    if (!otherId) {
-                        otherId = null;
-                    }
+                    var otherId = $.trim($("#otherId").val());
+
+                    var homeAddress = {};
+                    $("p").find(".homeAddress").each(function () {
+                        var el = $(this);
+                        homeAddress[el.attr("name")] = el.val();
+                    });
+                    console.log(homeAddress);
 
                     var dateBirthSt = $.trim($("#dateBirth").val());
                     var dateBirth = "";
-                    if (!dateBirthSt) {
-                        dateBirth = null;
-                    }
-                    else {
+                    if (dateBirthSt) {
                         dateBirth = new Date(Date.parse(dateBirthSt)).toISOString();
                     }
 
-                    var active = false;
-                    if ($("#active:checked")) active = true;
+                    if ($("#active:checked")) var active = true;
 
                     currentModel.set({
                         name: name,
                         wemail: wemail,
                         wphones: wphones,
                         officeLocation: officeLocation,
-                        relatedUser: null,
-                        visibility: null,
+                        relatedUser: relatedUser,
                         department: department,
                         job: job,
                         manager: manager,
                         coach: coach,
-                        nationality: null,
                         identNo: identNo,
                         passportNo: passportNo,
-                        bankAccountNo: null,
                         otherId: otherId,
-                        gender: null,
-                        maritalStatus: null,
-                        homeAddress: null,
                         dateBirth: dateBirth,
                         active: active
                     });
@@ -178,9 +169,11 @@ define([
                 if (itemIndex == -1) {
                     this.$el.html();
                 } else {
-                    var currentModel = this.employeesCollection.models[itemIndex];
-                    currentModel.set({ dateBirth: currentModel.get('dateBirth').split('T')[0].replace(/-/g, '/') }, { silent: true });
-                    this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON(), departmentsCollection: this.departmentsCollection, jobPositionsCollection: this.jobPositionsCollection, accountsDdCollection: this.accountsDdCollection }));
+                    var currentModel = this.collection.models[itemIndex];
+                    if (currentModel.get('dateBirth')) {
+                        currentModel.set({ dateBirth: currentModel.get('dateBirth').split('T')[0].replace(/-/g, '/') }, { silent: true });
+                    }
+                    this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON(), departmentsCollection: this.departmentsCollection, jobPositionsCollection: this.jobPositionsCollection, accountsDdCollection: this.accountsDdCollection, usersCollection: this.usersCollection }));
                 }
 
                 return this;

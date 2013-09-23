@@ -26,12 +26,27 @@
                 <div class="tab">
 
                     <!--<div class="half-block left">-->
+                    <label>Working Address</label>
                     <p>
-                        <label for="waddress">Working Address</label>
-                        <select id="waddress">
-                            <option selected="selected" value="0">Select...</option>
-                        </select>
+                        <label>Street</label>
+                        <input type="text" class="waddress" name="street" value="<%=model.waddress.street%>" />
                     </p>
+                    <p>
+                        <label>City</label>
+                        <input type="text" class="waddress" name="city" value="<%=model.waddress.city%>" />
+                    </p>
+                    <p>
+                        <label>State</label>
+                        <input type="text" class="waddress" name="state" value="<%=model.waddress.state%>"/>
+                    <p>
+                        <label>Zip</label>
+                        <input type="text" class="waddress" name="zip" value="<%=model.waddress.zip%>"/>
+                    </p>
+                    <p>
+                        <label>Country</label>
+                        <input type="text" class="waddress" name="country" value="<%=model.waddress.country%>" />
+                    </p>
+
 
                     <p>
                         <label for="wemail">Work Email</label>
@@ -56,6 +71,10 @@
                         <label for="relatedUser">Related User</label>
                         <select id="relatedUser">
                             <option selected="selected" value="0">Select...</option>
+                            <% usersCollection.each(function(option){ %>
+                           
+                            <option value="<%= option.get('_id') %>" <%=(option.get('_id')==model.relatedUser.id)? 'selected="selected"':''%>><%= option.get('ulogin')%></option>
+                            <% }); %>
                         </select>
                     </p>
                     <p>
@@ -142,11 +161,26 @@
                         </select>
                     </p>
                     <h2>Contact Information</h2>
+                    <label>Home Address</label>
                     <p>
-                        <label for="homeAddress">Home Address</label>
-                        <select id="homeAddress">
-                            <option selected="selected" value="0">Select...</option>
-                        </select>
+                        <label>Street</label>
+                        <input type="text" class="homeAddress" name="street" value="<%=model.homeAddress.street%>" />
+                    </p>
+                    <p>
+                        <label>City</label>
+                        <input type="text" class="homeAddress" name="city" value="<%=model.homeAddress.city%>"/>
+                    </p>
+                    <p>
+                        <label>State</label>
+                        <input type="text" class="homeAddress" name="state" value="<%=model.homeAddress.state%>"/>
+                    </p>
+                    <p>
+                        <label>Zip</label>
+                        <input type="text" class="homeAddress" name="zip" value="<%=model.homeAddress.zip%>"/>
+                    </p>
+                    <p>
+                        <label>Country</label>
+                        <input type="text" class="homeAddress" name="country" value="<%=model.homeAddress.country%>"/>
                     </p>
                     <h2>Birth</h2>
                     <p>

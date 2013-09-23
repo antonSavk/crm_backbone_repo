@@ -3,11 +3,15 @@
         idAttribute: "_id",
 
         defaults: {
+            isEmployee: true,
             name: '',
             tags: [],
             waddress: {
-                custommerId: '',
-                custommerName: ''
+                street: '',
+                city: '',
+                state: '',
+                zip: '',
+                country: ''
             },
             wemail: '',
             wphones: {
@@ -16,8 +20,8 @@
             },
             officeLocation: '',
             relatedUser: {
-                userId: '',
-                userName: ''
+                id: '',
+                login: ''
             },
             visibility: false,
             department: {
@@ -42,12 +46,13 @@
             bankAccountNo: '',
             otherId: '',
             homeAddress: {
-                custommerId: '',
-                custommerName: ''
+                street: '',
+                city: '',
+                state: '',
+                zip: '',
+                country: ''
             },
-            dateBirth: '',
-            product: '',
-            analyticJournal: '',
+            dateBirth: null,
             active: true
         },
 

@@ -922,6 +922,20 @@ button {
     }
 }
 
+#applicationColumn {
+    width: 14.4%;
+
+    h2 {
+        width: 149px;
+    }
+
+    &.rotate h2 {
+        position: relative;
+        top: 80px;
+        right: 55px;
+    }
+}
+
 .dropDownMenu {
     float: right;
     margin: 5px;
@@ -938,7 +952,8 @@ button {
     }
 }
 
-.task {
+.task, 
+.application {
     word-wrap: break-word;
     margin: 5px auto;
     width: 95%;
@@ -956,7 +971,8 @@ button {
     }
 }
 
-.task-header {
+.task-header, 
+.application-header {
     padding: 1px 0 4px 4px;
     background-color: @taskBorderColor;
     color: #fff;
@@ -973,7 +989,8 @@ button {
     }
 }
 
-.task-content {
+.task-content, 
+.application-content {
     padding: 2px 3px 4px 4px;
 
     p {
@@ -1007,7 +1024,10 @@ button {
     color: #4c4c4c;
 }
 
-.task:hover .dropDown img, .task .selected img {
+.task:hover .dropDown img, 
+.application:hover .dropDown img, 
+.task .selected img, 
+.application .selected img {
     display: block;
     cursor: pointer;
 }

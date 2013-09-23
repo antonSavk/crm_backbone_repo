@@ -74,7 +74,10 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
                             this.$el.html();
                         } else {
                             var currentModel = this.collection.models[itemIndex];
-                            currentModel.set({ dateBirth: currentModel.get('dateBirth').split('T')[0].replace(/-/g, '/') }, { silent: true });
+                            var dateBirth = currentModel.get('dateBirth');
+                            if (dateBirth) {
+                                currentModel.set({ dateBirth: dateBirth.split('T')[0].replace(/-/g, '/') }, { silent: true });
+                            }
                             this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
                         }
 

@@ -6,7 +6,7 @@ define([
     ],
     function (KanbanItemTemplate, ApplicationsCollection, LocalStorage, Custom) {
         var ApplicationsItemView = Backbone.View.extend({
-            className: "task",
+            className: "application",
             id: function() {
                 return this.model.get("_id");
             },
@@ -18,10 +18,10 @@ define([
             },
 
             events: {
-                "click #delete": "deleteTask",
+                "click #delete": "deleteItem",
                 "click .dropDown > a": "openDropDown",
                 "click .colorPicker a": "pickColor",
-                "click .task-content": "gotoForm",
+                "click .application-content": "gotoForm",
                 "click #edit": "gotoEditForm"
             },
 
@@ -29,25 +29,25 @@ define([
 
             gotoEditForm: function(e) {
                 e.preventDefault();
-                var itemIndex = $(e.target).closest(".task").data("index") + 1;
-                window.location.hash = "#home/action-Tasks/Edit/" + itemIndex;
+                var itemIndex = $(e.target).closest(".application").data("index") + 1;
+                window.location.hash = "#home/action-Applications/Edit/" + itemIndex;
             },
 
             gotoForm: function(e) {
-                var itemIndex = $(e.target).closest(".task").data("index") + 1;
+                var itemIndex = $(e.target).closest(".application").data("index") + 1;
                 App.ownContentType = true;
-                window.location.hash = "home/content-Tasks/form/" + itemIndex;
+                window.location.hash = "home/content-Applications/form/" + itemIndex;
             },
 
-            deleteTask: function(e) {
+            deleteItem: function(e) {
                 e.preventDefault();
                 hash = LocalStorage.getFromLocalStorage('hash'),
                 uid = LocalStorage.getFromLocalStorage('uid'),
                 mid = 39;
                 var that = this;
-                var model = that.collection.get($(e.target).closest(".task").attr("id"));
-                var remaining = model.get("estimated") - model.get("loged");
-                this.$("#delete").closest(".task").fadeToggle(300, function() {
+                var model = that.collection.get($(e.target).closest(".application").attr("id"));
+                //var remaining = model.get("estimated") - model.get("loged");
+                this.$("#delete").closest(".application").fadeToggle(300, function () {
                     model.destroy(
                         {
                             headers: {
@@ -61,7 +61,7 @@ define([
                 });
                 var column = this.$el.closest(".column");
                 column.find(".counter").html(parseInt(column.find(".counter").html()) - 1);
-                column.find(".remaining span").html(parseInt(column.find(".remaining span").html()) - remaining);
+                //column.find(".remaining span").html(parseInt(column.find(".remaining span").html()) - remaining);
                 this.collection.trigger('reset');
             },
 
@@ -88,30 +88,30 @@ define([
             },
 
             changeColor: function(color) {
-                this.$(".colorPicker a").closest(".task-header").css('background-color', color).closest(".task").css('border-color', color);
+                this.$(".colorPicker a").closest(".application-header").css('background-color', color).closest(".application").css('border-color', color);
             },
 
-            isLater: function(str1, str2) {
-                return new Date(str1) > new Date(str2);
-            },
+            //isLater: function(str1, str2) {
+            //    return new Date(str1) > new Date(str2);
+            //},
 
-            changeDeadlineColor: function() {
-                if ((this.$el.attr("id") == this.model.get('id'))) {
-                    this.$(".deadline").css({ 'color': '#E74C3C' });
-                }
-            },
+            //changeDeadlineColor: function() {
+            //    if ((this.$el.attr("id") == this.model.get('id'))) {
+            //        this.$(".deadline").css({ 'color': '#E74C3C' });
+            //    }
+            //},
 
             render: function() {
                 var index = this.model.collection.indexOf(this.model);
                 var todayString = new Date().format("yyyy-mm-dd");
-                if (this.model.get('deadline')) {
-                    var deadlineString = this.model.get('deadline').split('T')[0];
-                    this.model.set({ deadline: deadlineString.replace(/-/g, '/') }, { silent: true });
-                }
+                //if (this.model.get('deadline')) {
+                //    var deadlineString = this.model.get('deadline').split('T')[0];
+                //    this.model.set({ deadline: deadlineString.replace(/-/g, '/') }, { silent: true });
+                //}
                 this.$el.html(this.template(this.model.toJSON()));
-                if (this.isLater(todayString, deadlineString)) {
-                    this.changeDeadlineColor();
-                }
+                //if (this.isLater(todayString, deadlineString)) {
+                //    this.changeDeadlineColor();
+                //}
                 this.changeColor(this.model.get('color'));
                 this.$el.attr("data-index", index);
                 return this;
