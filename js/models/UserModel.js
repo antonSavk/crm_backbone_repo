@@ -26,7 +26,6 @@ define(function () {
         urlRoot: function(){
             return "http://" + App.Server.ip + ":" + App.Server.port + "/Users";
         }
-        idAttribute: "_id",
     });
 
     return UserModel;
