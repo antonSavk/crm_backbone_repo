@@ -7,13 +7,6 @@
             subject: '',
             name: '',
             tags: [],
-            waddress: {
-                street: '',
-                city: '',
-                state: '',
-                zip: '',
-                country: ''
-            },
             wemail: '',
             wphones: {
                 mobile: '',

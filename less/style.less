@@ -811,7 +811,7 @@ button {
     }
 }
 
-#employeeForm #tabList, #createEmployeeForm #tabList, #editEmployeeForm #tabList{
+#employeeForm #tabList, #createEmployeeForm #tabList, #editEmployeeForm #tabList {
     li {
         float: left;
         margin: -24px 2px 5px 0;
@@ -866,6 +866,7 @@ button {
         font-size: 16px;
         font-weight: bold;
         text-shadow: 0 1px 0 white;
+        white-space: nowrap;
     }
 
     .columnNameDiv {
@@ -902,6 +903,7 @@ button {
 
     &.rotate h2 {
         position: relative;
+        display: inline-block;
         top: 60px;
         right: 15px;
         font-size: 28px;
@@ -922,18 +924,8 @@ button {
     }
 }
 
-#applicationColumn {
-    width: 14.4%;
-
-    h2 {
-        width: 149px;
-    }
-
-    &.rotate h2 {
-        position: relative;
-        top: 80px;
-        right: 55px;
-    }
+.applicationColumn {
+    width: 16%;
 }
 
 .dropDownMenu {
@@ -952,7 +944,7 @@ button {
     }
 }
 
-.task, 
+.task,
 .application {
     word-wrap: break-word;
     margin: 5px auto;
@@ -971,7 +963,7 @@ button {
     }
 }
 
-.task-header, 
+.task-header,
 .application-header {
     padding: 1px 0 4px 4px;
     background-color: @taskBorderColor;
@@ -989,7 +981,7 @@ button {
     }
 }
 
-.task-content, 
+.task-content,
 .application-content {
     padding: 2px 3px 4px 4px;
 
@@ -1024,9 +1016,9 @@ button {
     color: #4c4c4c;
 }
 
-.task:hover .dropDown img, 
-.application:hover .dropDown img, 
-.task .selected img, 
+.task:hover .dropDown img,
+.application:hover .dropDown img,
+.task .selected img,
 .application .selected img {
     display: block;
     cursor: pointer;
@@ -1143,4 +1135,114 @@ button {
 
 .color_9 {
     background-color: #2980B9;
+}
+
+.breadcrumb {
+    margin-top: -0.5px;
+    margin-bottom: 20px;
+    display: block;
+    float: right;
+    overflow: hidden;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #6f6f6f;
+
+    li {
+        float: left;
+        margin: 0;
+        list-style: none;
+        max-width: 280px;
+
+        a {
+            padding: 13px 35px 4px 30px;
+            font-size: 14px;
+            display: block;
+            font-weight: 700;
+            margin-left: -20px;
+            border-right: 1px solid;
+            background-repeat: no-repeat;
+            background-position: 0px 0px;
+            height: 25px;
+            text-decoration: none;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #999999;
+            text-shadow: 0 1px 0 #ffffff;
+            border-color: #eeeeee #dddddd #dddddd #dddddd;
+            background-image: url("@{imagesfolder}/breadcrumb.png");
+
+            &:hover {
+                color: #777777;
+                background-position: 0px -43px;
+            }
+
+            &:active, &.active {
+                color: #555555;
+                text-shadow: 0 0 1px #ffffff;
+                background-position: 0px -86px;
+            }
+        }
+
+        &:first-child {
+            margin-left: 0px;
+
+            a {
+                border-left: 1px solid;
+                border-left-color: #dddddd;
+                background-position: -20px 0px;
+                margin-left: 0px;
+                padding-left: 20px;
+
+                &:hover {
+                    background-position: -20px -43px;
+                }
+
+                &:active, &.active {
+                    background-position: -20px -86px;
+                }
+            }
+        }
+    }
+}
+
+.formHeader {
+    height: 41px;
+    background-color: #ddd;
+    background-image: linear-gradient(to bottom, #fefefe, #eee);
+    border-bottom: 1px solid #ddd;
+
+    >button {
+        margin: 7px 1px;
+        background-color: #c02c2c;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#df3f3f), to(#a21a1a));
+        background-image: -webkit-linear-gradient(top, #df3f3f, #a21a1a);
+        background-image: -moz-linear-gradient(top, #df3f3f, #a21a1a);
+        background-image: -ms-linear-gradient(top, #df3f3f, #a21a1a);
+        background-image: -o-linear-gradient(top, #df3f3f, #a21a1a);
+        background-image: linear-gradient(to bottom, #df3f3f, #a21a1a);
+        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+
+        &:first-of-type {
+            margin-left: 9px;
+        }
+
+        &:hover {
+            background-color: #c63939;
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#e25858), to(#ab1b1b));
+            background-image: -webkit-linear-gradient(top, #e25858, #ab1b1b);
+            background-image: -moz-linear-gradient(top, #e25858, #ab1b1b);
+            background-image: -ms-linear-gradient(top, #e25858, #ab1b1b);
+            background-image: -o-linear-gradient(top, #e25858, #ab1b1b);
+            background-image: linear-gradient(to bottom, #e25858, #ab1b1b);
+        }
+
+        >span {
+            color: white;
+        }
+    }
 }

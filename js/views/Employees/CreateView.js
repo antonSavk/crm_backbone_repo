@@ -125,7 +125,6 @@ define([
                     var el = $(this);
                     homeAddress[el.attr("name")] = el.val();
                 });
-                console.log(homeAddress);
 
                 var dateBirthSt = $.trim($("#dateBirth").val());
                 var dateBirth = "";

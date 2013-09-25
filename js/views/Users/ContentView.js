@@ -3,9 +3,10 @@ define([
     'text!templates/Users/form/UsersTemplate.html',
     'collections/Users/UsersCollection',
     'views/Users/list/UsersItemView',
-    'custom'
+    'custom',
+    "localstorage"
 ],
-function (UserListTemplate, UserFormTemplate, UsersCollection, UsersItemView, Custom) {
+function (UserListTemplate, UserFormTemplate, UsersCollection, UsersItemView, Custom, LocalStorage) {
     var UsersView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function(options){
@@ -14,7 +15,36 @@ function (UserListTemplate, UserFormTemplate, UsersCollection, UsersItemView, Cu
             this.collection.bind('reset', _.bind(this.render, this));
             this.render();
         },
+        events:{
+            "click .chechbox":"checked"
+        },
+        checked: function(){
+            if ($("input:checked").length > 0)
+                $("#top-bar-deleteBtn").show();
+            else
+                $("#top-bar-deleteBtn").hide();
+        },
+        deleteItems: function () {
+            var that = this,
+                hash = LocalStorage.getFromLocalStorage('hash'),
+                uid = LocalStorage.getFromLocalStorage('uid'),
+                mid = 39;
 
+            $.each($("tbody input:checked"), function (index, checkbox) {
+                var user = that.collection.get(checkbox.value);
+                user.destroy({
+                        headers: {
+                            uid: uid,
+                            hash: hash,
+                            mid: mid
+                        }
+                    },
+                    { wait: true }
+                );
+            });
+
+            this.collection.trigger('reset');
+        },
         render: function(){
         	Custom.setCurrentCL(this.collection.models.length);
         	console.log('Render Users View');
@@ -31,7 +61,7 @@ function (UserListTemplate, UserFormTemplate, UsersCollection, UsersItemView, Cu
 	                });
 					break;
             	}
-            	case "form":
+                case "form":
             	{
             		var itemIndex = Custom.getCurrentII()-1;
             		if (itemIndex > this.collection.models.length - 1)
@@ -51,6 +81,9 @@ function (UserListTemplate, UserFormTemplate, UsersCollection, UsersItemView, Cu
             			
             		break;
             	}
+                case "thumbnails":
+                    this.$el.html("Thumbnails View");
+                    break;
             }
             
             return this;

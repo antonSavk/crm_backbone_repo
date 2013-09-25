@@ -11,7 +11,8 @@ define([
                 return this.model.get("_id");
             },
 
-            initialize: function() {
+            initialize: function () {
+                this.model.on('change', this.render, this);
                 this.collection = new TasksCollection();
                 this.collection.bind('reset', _.bind(this.render, this));
                 this.render();

@@ -1,18 +1,34 @@
+<div class="formHeader">
+    <button id="Done">
+        <span>Done</span>
+    </button>
+    <button id="Cancel">
+        <span>Cancel Task</span>
+    </button>
+    <ul class="breadcrumb">
+    </ul>
+</div>
 <div class="form-holder">
-    <form class="form">
-		<h2>	<%=summary%></h2>
-			 <div class="half-block left">
-        	<div class="half-block left">
-	        	<p><label for="projectmanager">Project</label></p>
-	        	<p><label for="workflow">Assigned to</label></p>
-	        	<p><label for="privacy">Workflow</label></p>
-	        </div>
-        	<div class="half-block left">
-	        	<p><a id="<%=project.pId%>" href="#"><%=project.projectName%></a></p>
-		        <p><%=assignedto.uname%></p>
-		        <p><%=workflow.name%></p>
-			</div>
-     	</div>
-	</form>
+    <form class="form" data-id="<%=_id%>">
+        <h2><%=summary%></h2>
+        <div class="half-block left">
+            <div class="half-block left">
+                <p>
+                    <label for="projectmanager">Project</label>
+                </p>
+                <p>
+                    <label for="workflow">Assigned to</label>
+                </p>
+                <p>
+                    <label for="privacy">Workflow</label>
+                </p>
+            </div>
+            <div class="half-block left">
+                <p><a id="<%=project.pId%>" href="#"><%=project.projectName%></a></p>
+                <p><%=assignedto.uname%></p>
+                <p><%=workflow.name%></p>
+            </div>
+        </div>
+    </form>
 </div>
 
