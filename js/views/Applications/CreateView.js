@@ -102,7 +102,6 @@ define([
                 var proposedSalary = $.trim($("#proposedSalary").val());
                 var tags = $.trim($("#tags").val()).split(',');
                 var otherInfo = $("#otherInfo").val();
-                console.log(otherInfo);
 
                 applicationModel.save({
                     subject: subject,

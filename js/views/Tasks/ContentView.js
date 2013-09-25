@@ -23,10 +23,9 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             this.workflowsCollection.bind('reset', _.bind(this.render, this));
             this.projectsCollection = new ProjectsCollection();
             this.projectsCollection.bind('reset', _.bind(this.render, this));
-            console.log(this.projectsCollection);
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
-            this.render();
+            //this.render();
 
             $(window).resize(function () {
                 if (this.resizeTO) clearTimeout(this.resizeTO);
@@ -45,7 +44,8 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             "click .checkbox": "checked",
             "click .foldUnfold": "openDropDown",
             "click .fold": "foldUnfoldColumn",
-            "click .form a": "gotoProjectForm"
+            "click .form a": "gotoProjectForm",
+            "click .breadcrumb a, #Cancel span, #Done span": "changeWorkflow",
         },
 
         gotoProjectForm: function (e) {
@@ -145,6 +145,21 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                             var currentModel = models[itemIndex];
                             currentModel.set({ deadline: currentModel.get('deadline').split('T')[0].replace(/-/g, '/') }, { silent: true });
                             this.$el.html(_.template(TasksFormTemplate, currentModel.toJSON()));
+
+                            var workflows = this.workflowsCollection.models;
+                            var that = this;
+                            _.each(workflows, function (workflow, index) {
+                                if (index < workflows.length - 2) {
+                                    $(".breadcrumb").append("<li data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><a class='applicationWorkflowLabel'>" + workflow.get('name') + "</a></li>");
+                                }
+                            });
+
+                            _.each(workflows, function (workflow, i) {
+                                var breadcrumb = this.$(".breadcrumb li").eq(i);
+                                if (currentModel.get("workflow").name === breadcrumb.data("name")) {
+                                    breadcrumb.find("a").addClass("active");
+                                }
+                            }, this);
                         }
 
                         break;
@@ -192,10 +207,56 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                     });
                     column.find(".counter").html(parseInt(column.find(".counter").html()) + 1);
                     column.find(".remaining span").html(parseInt(column.find(".remaining span").html()) + (model.get("estimated") - model.get("loged")));
-                    //that.collection.trigger('reset');
                 }
             }).disableSelection();
             return this;
+        },
+
+        changeWorkflow: function (e) {
+            var hash = LocalStorage.getFromLocalStorage('hash'),
+                   uid = LocalStorage.getFromLocalStorage('uid'),
+                   mid = 39;
+            var model = {};
+            var name = '', status = '';
+            if ($(e.target).hasClass("applicationWorkflowLabel")) {
+                var breadcrumb = $(e.target).closest('li');
+                var a = breadcrumb.siblings().find("a");
+                if (a.hasClass("active")) {
+                    a.removeClass("active");
+                }
+                breadcrumb.find("a").addClass("active");
+                name = breadcrumb.data("name");
+                status = breadcrumb.data("status");
+            }
+            else {
+                var workflow = {};
+                if ($(e.target).closest("button").attr("id")=="Cancel") {
+                     workflow = this.workflowsCollection.models[this.workflowsCollection.models.length - 1];
+                }
+                else {
+                    workflow = this.workflowsCollection.models[this.workflowsCollection.models.length - 2];
+                }
+                name = workflow.get('name');
+                status = workflow.get('status');
+            }
+            model = this.collection.get($(e.target).closest(".formHeader").siblings().find("form").data("id"));
+            var ob = {
+                workflow: {
+                    name: name,
+                    status: status
+                }
+            };
+
+            model.set(ob);
+            model.save({}, {
+                headers: {
+                    uid: uid,
+                    hash: hash,
+                    mid: mid
+                }
+
+            });
+
         },
 
         openDropDown: function (e) {

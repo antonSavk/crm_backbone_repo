@@ -41,13 +41,8 @@ function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, Applicat
             "click .checkbox": "checked",
             "click .foldUnfold": "openDropDown",
             "click .fold": "foldUnfoldColumn",
-            "click .form a": "gotoProjectForm"
-        },
-
-        gotoProjectForm: function (e) {
-            e.preventDefault();
-            var itemIndex = this.projectsCollection.indexOf(this.projectsCollection.get($(e.target).closest("a").attr("id"))) + 1;
-            window.location.hash = "#home/content-Applications/form/" + itemIndex;
+            "click .breadcrumb a, #refuse": "changeWorkflow",
+            "click #hire": "isEmployee"
         },
 
         render: function () {
@@ -65,7 +60,7 @@ function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, Applicat
                         var workflows = this.workflowsCollection.models;
 
                         _.each(workflows, function (workflow, index) {
-                            $("<div class='column' id='applicationColumn' data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><div class='columnNameDiv'><h2 class='columnName'>" + workflow.get('name') + "</h2></div></div>").appendTo(".kanban");
+                            $("<div class='column applicationColumn' data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><div class='columnNameDiv'><h2 class='columnName'>" + workflow.get('name') + "</h2></div></div>").appendTo(".kanban");
                         });
 
                         $(".column").last().addClass("lastColumn");
@@ -122,6 +117,21 @@ function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, Applicat
                             var currentModel = this.collection.models[itemIndex];
                             currentModel.set({ nextAction: currentModel.get("nextAction").split('T')[0].replace(/-/g, '/') });
                             this.$el.html(_.template(ApplicationsFormTemplate, currentModel.toJSON()));
+
+                            var workflows = this.workflowsCollection.models;
+
+                            _.each(workflows, function (workflow, index) {
+                                if (index < workflows.length - 1) {
+                                    $(".breadcrumb").append("<li data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><a class='applicationWorkflowLabel'>" + workflow.get('name') + "</a></li>");
+                                }
+                            });
+
+                            _.each(workflows, function (workflow, i) {
+                                var breadcrumb = this.$(".breadcrumb li").eq(i);
+                                if (currentModel.get("workflow").name === breadcrumb.data("name")) {
+                                    breadcrumb.find("a").addClass("active");
+                                }
+                            }, this);
                         }
 
                         break;
@@ -161,10 +171,67 @@ function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, Applicat
 
                     });
                     column.find(".counter").html(parseInt(column.find(".counter").html()) + 1);
-                    that.collection.trigger('reset');
                 }
             }).disableSelection();
             return this;
+        },
+
+        changeWorkflow: function (e) {
+            var hash = LocalStorage.getFromLocalStorage('hash'),
+                   uid = LocalStorage.getFromLocalStorage('uid'),
+                   mid = 39;
+            var model = {};
+            var name = '', status = '';
+            if ($(e.target).hasClass("applicationWorkflowLabel")) {
+                var breadcrumb = $(e.target).closest('li');
+                var a = breadcrumb.siblings().find("a");
+                if (a.hasClass("active")) {
+                    a.removeClass("active");
+                }
+                breadcrumb.find("a").addClass("active");
+                name = breadcrumb.data("name");
+                status = breadcrumb.data("status");
+            }
+            else {
+                var workflow = this.workflowsCollection.models[this.workflowsCollection.models.length - 1];
+                console.log(workflow);
+                name = workflow.get('name');
+                status = workflow.get('status');
+            }
+            model = this.collection.get($(e.target).closest(".formHeader").siblings().find("form").data("id"));
+            var ob = {
+                workflow: {
+                    name: name,
+                    status: status
+                }
+            };
+
+            model.set(ob);
+            model.save({}, {
+                headers: {
+                    uid: uid,
+                    hash: hash,
+                    mid: mid
+                }
+
+            });
+
+        },
+
+        isEmployee: function (e) {
+            var hash = LocalStorage.getFromLocalStorage('hash'),
+                   uid = LocalStorage.getFromLocalStorage('uid'),
+                   mid = 39;
+            var model = this.collection.get($(e.target).closest(".formHeader").siblings().find("form").data("id"));
+            model.set({ isEmployee: true });
+            model.save({}, {
+                headers: {
+                    uid: uid,
+                    hash: hash,
+                    mid: mid
+                }
+
+            });
         },
 
         openDropDown: function (e) {
@@ -182,14 +249,14 @@ function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, Applicat
             var column = $(e.target).closest(".column");
             if (column.hasClass("rotate")) {
                 column.attr('style', '');
-                column.find(".application, .remaining").show();
+                column.find(".application").show();
                 column.find(".dropDownMenu").hide();
                 column.find(".columnNameDiv");
                 column.removeClass("rotate");
                 column.find(".counter, .foldUnfold img").attr('style', '');;
             } else {
                 column.css('max-width', '40px');
-                column.find(".application, .dropDownMenu, .remaining").hide();
+                column.find(".application, .dropDownMenu").hide();
                 column.addClass("rotate");
                 column.find(".columnNameDiv").removeClass("selected");
                 column.find(".counter, .foldUnfold img").css({ 'position': 'relative', 'right': '6px', 'top': '-12px' });
