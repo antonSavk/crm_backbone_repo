@@ -81,37 +81,36 @@ define([
                 		uname: val.innerHTML
                 	});
                 });
-                
-                
+
+
                 projectModel.save({
-                	projectname: projectname,
-                	customer: {
-                	    id: customer._id,
-                	    type: customer.type,
-                	    name: customer.name.last + ' ' + customer.name.first
-                	},
-                	projectmanager: {
-                	    uid: projectmanager._id,
-                	    uname: projectmanager.name.last + ' ' + projectmanager.name.first
-                	},
-                	workflow: {
-                	    name: workflow.name,
-                	    status: workflow.status
-                	},
-                	teams: {
-                		users: users
-                	}
-                },
-                {
-                	headers: {
-            			uid: uid,
-            			hash: hash,
-            			mid: mid
-            		}
-                });
-                                
+                        projectname: projectname,
+                        customer: {
+                            id: customer._id,
+                            type: customer.type,
+                            name: customer.name.last + ' ' + customer.name.first
+                        },
+                        projectmanager: {
+                            uid: projectmanager._id,
+                            uname: projectmanager.name.last + ' ' + projectmanager.name.first
+                        },
+                        workflow: {
+                            name: workflow.name,
+                            status: workflow.status
+                        },
+                        teams: {
+                            users: users
+                        }
+                    },
+                    {
+                        headers: {
+                            uid: uid,
+                            hash: hash,
+                            mid: mid
+                        }
+                    });
+                               
                 Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
-                
             },
 
             render: function () {

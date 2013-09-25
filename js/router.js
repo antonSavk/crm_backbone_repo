@@ -83,7 +83,7 @@ define([
                         url += "/" + itemIndex;
                     }
 
-                    Backbone.history.navigate(url);
+                    Backbone.history.navigate(url, {replace: true});
                     var contentView = new ContentView({ collection: contentCollection });
                     var topBarView = new TopBarView({ actionType: "Content" });
 
