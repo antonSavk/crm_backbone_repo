@@ -9,22 +9,27 @@ define([
         var CustomersCollection = Backbone.Collection.extend({
             model: CustomerModel,
             url: function(){
-            	var hash = Localstorage.getFromLocalStorage('hash'),
-                	uid = Localstorage.getFromLocalStorage('uid'),
-                	mid = 39,
-                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/Customer?uid=" + uid + "&hash=" + hash + "&mid=" + mid;
+            	var url = "http://" + App.Server.ip + ":" + App.Server.port + "/Customer";
 
                 return url;
             },
 
 
-            initialize: function () {
-                
+            initialize: function() {
+
                 console.log("Customer Collection Init");
-                
+                var hash = Localstorage.getFromLocalStorage('hash'),
+                    uid = Localstorage.getFromLocalStorage('uid'),
+                    mid = 39;
+
                 this.fetch({
+                    data: $.param({
+                        uid: uid,
+                        hash: hash,
+                        mid: mid
+                    }),
                     type: 'GET',
-                    reset:true,
+                    reset: true,
                     success: this.fetchSuccess,
                     error: this.fetchError
                 });

@@ -116,38 +116,59 @@ define(['libs/date.format'], function (dateformat) {
                 case 'Tasks':
                     App.currentViewType = "kanban";
                     break;
+                case 'Applications':
+                    App.currentViewType = "kanban";
+                    break;
                 case 'Profiles':
+                    App.currentViewType = "list";
+                    break;
+                case 'Departments':
+                    App.currentViewType = "list";
+                    break;
+                case 'Users':
                     App.currentViewType = "list";
                     break;
                 case 'JobPositions':
                     App.currentViewType = "list";
-                    break;                    
+                    break;
                 default:
                     App.currentViewType = "thumbnails";
                     break;
                 }
             } else {
-                App.currentViewType = "thumbnails"
+                App.currentViewType = "thumbnails";
             }
 
-    	    return App.currentViewType;
+            return App.currentViewType;
         } else {
             if (option && !App.ownContentType) {
                 switch (option.contentType) {
-                    case 'Tasks': App.currentViewType = "kanban";
-                        break;
-                    case 'Profiles': App.currentViewType = "list";
-                        break;
-                    case 'JobPositions': App.currentViewType = "list";
-                        break;
-
-                    default: App.currentViewType = "thumbnails";
-                        break;
+                case 'Tasks':
+                    App.currentViewType = "kanban";
+                    break;
+                case 'Applications':
+                    App.currentViewType = "kanban";
+                    break;
+                case 'Profiles':
+                    App.currentViewType = "list";
+                    break;
+                case 'Departments':
+                    App.currentViewType = "list";
+                    break;
+                case 'Users':
+                    App.currentViewType = "list";
+                    break;
+                case 'JobPositions':
+                    App.currentViewType = "list";
+                    break;
+                default:
+                    App.currentViewType = "thumbnails";
+                    break;
                 }
             }
-    	}	
-    	
-    	var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"];
+        }
+
+        var viewVariants = ["kanban", "list", "form", "thumbnails", "gantt"];
 
         if ($.inArray(App.currentViewType, viewVariants) == -1) {
             App.currentViewType = "thumbnails";

@@ -9,18 +9,22 @@ define([
         var AccountsDdCollection = Backbone.Collection.extend({
         	model: AccountModel,
             url: function(){
-            	var hash = Localstorage.getFromLocalStorage('hash'),
-                	uid = Localstorage.getFromLocalStorage('uid'),
-                	mid = 39,
-                	url = "http://" + App.Server.ip + ":" + App.Server.port + "/getAccountsForDd?uid="+uid+"&hash="+hash+"&mid="+mid;
+            	var url = "http://" + App.Server.ip + ":" + App.Server.port + "/getAccountsForDd";
                 return url;
             },
 
             initialize: function(){
                 console.log("AccountsForDd Collection Init");
-                
+                var hash = Localstorage.getFromLocalStorage('hash'),
+                    uid = Localstorage.getFromLocalStorage('uid'),
+                    mid = 39;
 
                 this.fetch({
+                    data: $.param({
+                        uid: uid,
+                        hash: hash,
+                        mid: mid
+                    }),
                     type: 'GET',
                     reset:true,
                     success: this.fetchSuccess,
