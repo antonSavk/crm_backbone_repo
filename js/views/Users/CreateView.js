@@ -11,7 +11,7 @@ define([
         var UsersCreateView = Backbone.View.extend({
             el: "#content-holder",
             template: _.template(CreateUserTemplate),
-
+            contentType: "Users",
             initialize: function () {
                 this.usersCollection = new UsersCollection();
                 this.usersCollection.bind('reset', _.bind(this.render, this));
