@@ -16,7 +16,8 @@ define([
             events:{
                 "submit #createProfileForm": "submitForm"
             },
-            submitForm: function(event){
+            submitForm: function (event) {
+                var self = this;
                 event.preventDefault();
                 var hash = LocalStorage.getFromLocalStorage('hash'),
                     uid = LocalStorage.getFromLocalStorage('uid'),
@@ -28,14 +29,20 @@ define([
                 });
                 if(this.model.isNew()){
                     this.model.save(null,{
-                        headers:{
+                        headers: {
                             uid: uid,
                             hash: hash,
                             mid: mid
+                        },
+                        wait: true,
+                        success: function (model) {
+                            Backbone.history.navigate("home/content-" + self.contentType, { trigger: true });
+                        },
+                        error: function () {
+                            Backbone.history.navigate("home", { trigger: true });
                         }
                     });
                 }
-                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
             },
             render: function () {
                 this.$el.html(this.template(this.model.toJSON()));

@@ -13,31 +13,32 @@ define([
             template: _.template(CreateTemplate),
 
             initialize: function (options) {
-               this.companiesCollection = new CompaniesCollection();
-               this.companiesCollection.bind('reset', _.bind(this.render,this));
-               this.personsCollection = options.collection;
+                this.companiesCollection = new CompaniesCollection();
+                this.companiesCollection.bind('reset', _.bind(this.render, this));
+                this.personsCollection = options.collection;
 
 
-               this.bind('reset', _.bind(this.render, this));
-               this.render();
+                this.bind('reset', _.bind(this.render, this));
+                this.render();
             },
 
 
-            saveItem: function(){
-            	var hash = LocalStorage.getFromLocalStorage('hash'),
+            saveItem: function () {
+                var self = this;
+                var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
 
                 var data = {
-                    name:{
-                      first:$('#firstName').val(),
-                      last:$('#lastName').val()
+                    name: {
+                        first: $('#firstName').val(),
+                        last: $('#lastName').val()
                     },
-                    company:{
+                    company: {
                         id: $('#companiesDd option:selected').val(),
                         name: $('#companiesDd option:selected').text()
                     },
-                    address:{
+                    address: {
                         street1: $('#addressInput').val(),
                         street2: $('#additional').val(),
                         city: $('#cityInput').val(),
@@ -52,8 +53,8 @@ define([
                         mobile: $('#mobileInput').val(),
                         fax: $('#faxInput').val()
                     },
-                    email:$('#emailInput').val(),
-                    salesPurchases:{
+                    email: $('#emailInput').val(),
+                    salesPurchases: {
                         isCustomer: $('#isCustomerInput').is(':checked'),
                         isSupplier: $('#isSupplierInput').is(':checked'),
                         active: $('#isActiveInput').is('checked')
@@ -62,19 +63,25 @@ define([
                 };
 
                 var model = new PersonModel();
-                model.save(data,{
-                    headers:{
+                model.save(data, {
+                    headers: {
                         uid: uid,
                         hash: hash,
                         mid: mid
+                    },
+                    wait: true,
+                    success: function (model) {
+                        Backbone.history.navigate("home/content-" + self.contentType, { trigger: true });
+                    },
+                    error: function () {
+                        Backbone.history.navigate("home", { trigger: true });
                     }
                 });
-                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
-                
+
             },
 
             render: function () {
-                this.$el.html(this.template({companiesCollection:this.companiesCollection}));
+                this.$el.html(this.template({ companiesCollection: this.companiesCollection }));
                 return this;
             }
 

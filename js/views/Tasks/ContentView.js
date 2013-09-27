@@ -45,7 +45,7 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             "click .foldUnfold": "openDropDown",
             "click .fold": "foldUnfoldColumn",
             "click .form a": "gotoProjectForm",
-            "click .breadcrumb a, #Cancel span, #Done span": "changeWorkflow",
+            "click .breadcrumb a, #Cancel span, #Done span": "changeWorkflow"
         },
 
         gotoProjectForm: function (e) {

@@ -31,6 +31,7 @@ define([
             },
 
             submit: function (event) {
+                var self = this;
                 event.preventDefault();
                 var hash = LocalStorage.getFromLocalStorage('hash'),
                     uid = LocalStorage.getFromLocalStorage('uid'),
@@ -53,10 +54,17 @@ define([
                 }, {validate:true, confirmPass:$('#confirmpassword').val()});
                 this.model.save(null,
                     {
-                        headers:{
+                        headers: {
                             uid: uid,
                             hash: hash,
                             mid: mid
+                        }, 
+                        wait: true, 
+                        success: function (model) {
+                            Backbone.history.navigate("home/content-" + self.contentType, { trigger: true });
+                        },
+                        error: function () {
+                            Backbone.history.navigate("home", { trigger: true });
                         },
                         confirmPass:$('#confirmpassword').val()
                     });

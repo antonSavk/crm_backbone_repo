@@ -28,13 +28,13 @@ define([
                 		mid: mid
                 	}),
                     type: 'GET',
-                    reset:true,
+                    reset: true,
                     success: this.fetchSuccess,
                     error: this.fetchError
                 });
             },
 
-            parse:true,
+            parse: true,
 
             parse: function(response){
                 //console.log('parse Projects');

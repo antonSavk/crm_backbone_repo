@@ -49,6 +49,7 @@
             },
 
             saveItem: function () {
+                var self = this;
                 var itemIndex = Custom.getCurrentII() - 1;
 
                 if (itemIndex != -1) {
@@ -187,9 +188,15 @@
                             uid: uid,
                             hash: hash,
                             mid: mid
+                        },
+                        wait: true,
+                        success: function (model) {
+                            Backbone.history.navigate("home/content-" + self.contentType, { trigger: true });
+                        },
+                        error: function () {
+                            Backbone.history.navigate("home", { trigger: true });
                         }
                     });
-                    Backbone.history.navigate("home/content-" + this.contentType, { trigger: true });
                 }
             },
 

@@ -21,7 +21,8 @@ define([
                 this._modelBinder.unbind();
             },
 
-            saveItem: function(){
+            saveItem: function () {
+                var self = this;
             	var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
@@ -68,10 +69,15 @@ define([
                             uid: uid,
                             hash: hash,
                             mid: mid
+                        },
+                        wait: true,
+                        success: function (model) {
+                            Backbone.history.navigate("home/content-" + self.contentType, { trigger: true });
+                        },
+                        error: function () {
+                            Backbone.history.navigate("home", { trigger: true });
                         }
                     });
-                                 
-                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
                 
             },
 

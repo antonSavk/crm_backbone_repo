@@ -22,8 +22,8 @@ define([
                this.customersDdCollection.bind('reset', _.bind(this.render, this));
                this.workflowsDdCollection = new WorkflowsCollection({id: 'project'});
                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
-               this.bind('reset', _.bind(this.render, this));
                this.projectsCollection = options.collection;
+               this.projectsCollection.bind('reset', _.bind(this.render, this));
                this.render();
             },
 
@@ -32,6 +32,8 @@ define([
             },
 
             saveItem: function () {
+
+                var self = this;
               
             	var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
@@ -107,10 +109,15 @@ define([
                             uid: uid,
                             hash: hash,
                             mid: mid
+                        }, 
+                        wait: true, 
+                        success: function (model) {
+                            Backbone.history.navigate("home/content-" + self.contentType, { trigger: true });
+                        },
+                        error: function () {
+                            Backbone.history.navigate("home", { trigger: true });
                         }
                     });
-                               
-                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
             },
 
             render: function () {

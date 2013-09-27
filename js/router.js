@@ -82,8 +82,7 @@ define([
                     if (viewType === "form" && (!hash || hash.length == 24)) {
                         url += "/" + itemIndex;
                     }
-
-                    Backbone.history.navigate(url, {replace: true});
+                    
                     var contentView = new ContentView({ collection: contentCollection });
                     var topBarView = new TopBarView({ actionType: "Content" });
 
@@ -91,6 +90,8 @@ define([
 
                     this.changeView(contentView);
                     this.changeTopBarView(topBarView);
+                    
+                    Backbone.history.navigate(url, { replace: true });
                 }
 
             });
@@ -134,7 +135,7 @@ define([
                         url += "/" + itemIndex;
                     }
 
-                    Backbone.history.navigate(url);
+                    Backbone.history.navigate(url, { replace: true });
 
                     var topBarView = new TopBarView({ actionType: action }),
                         actionView = new ActionView({ collection: contentCollection });
