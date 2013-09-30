@@ -1,17 +1,16 @@
 define([
     'text!templates/Projects/list/ListTemplate.html',
     'text!templates/Projects/form/FormTemplate.html',
-    'collections/Projects/ProjectsCollection',
     'views/Projects/list/ListItemView',
     'views/Projects/thumbnails/ThumbnailsItemView',
     'custom',
-    'localstorage'
+    'localstorage',
+    "GanttChart"
 ],
-function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, ThumbnailsItemView, Custom, LocalStorage) {
+function (ListTemplate, FormTemplate, ListItemView, ThumbnailsItemView, Custom, LocalStorage,GanttChart) {
     var ContentView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
-            console.log('Init Projects View');
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
             this.render();
@@ -23,17 +22,18 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
 
         render: function () {
             Custom.setCurrentCL(this.collection.models.length);
-            console.log('Render Projects View');
             var viewType = Custom.getCurrentVT();
             switch (viewType) {
                 case "list":
                     {
+                        this.$el.html('');
                         this.$el.html(_.template(ListTemplate));
-                        var table = this.$el.find('table > tbody');
-
-                        this.collection.each(function (model) {
-                            table.append(new ListItemView({ model: model }).render().el);
-                        });
+                        if(this.collection.length > 0){
+                            var table = this.$el.find('table > tbody');
+                            this.collection.each(function (model) {
+                                table.append(new ListItemView({ model: model }).render().el);
+                            });
+                        }
 
                         $('#check_all').click(function () {
                             var c = this.checked;
@@ -44,10 +44,14 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
                 case "thumbnails":
                     {
                         this.$el.html('');
-                        var holder = this.$el;
-                        this.collection.each(function (model) {
-                            $(holder).append(new ThumbnailsItemView({ model: model }).render().el);
-                        });
+                        if(this.collection.length > 0){
+                            var holder = this.$el;
+                            this.collection.each(function (model) {
+                                $(holder).append(new ThumbnailsItemView({ model: model }).render().el);
+                            });
+                        } else{
+                            this.$el.html('<h2>No projects found</h2>');
+                        }
                         break;
                     }
                 case "form":
@@ -59,7 +63,7 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
                         }
 
                         if (itemIndex == -1) {
-                            this.$el.html();
+                            this.$el.html('<h2>No projects found</h2>');
                         } else {
                             var currentModel = this.collection.models[itemIndex];
                             this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
@@ -69,13 +73,11 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
                     }
                 case "gantt":
                     {
+                        this.$el.html('');
                         console.log('render gantt');
-                        if (this.collection) {
-                            var collection = this.collection.toJSON();
-                            var ganttChart = Custom.createGanttChart(collection, false);
-                            this.$el.html('<div style="width:1180px; height:550px; position:relative;" id="GanttDiv"></div>');
-                            ganttChart.create("GanttDiv");
-                        }
+                        this.$el.html('<div style=" height:570px; position:relative;" id="GanttDiv"></div>');
+                        GanttChart.create("GanttDiv");
+                        GanttChart.parseProjects(this.collection);
                         break;
                     }
             }

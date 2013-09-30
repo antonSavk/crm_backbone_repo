@@ -16,7 +16,7 @@ define(function () {
                 }
             }
         },
-        validate:function(attrs, options){
+        validate: function(attrs, options){
             if(attrs.upass != options.confirmPass)
             {
                 alert('Passwords do not match!');

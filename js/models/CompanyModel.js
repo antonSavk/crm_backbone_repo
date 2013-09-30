@@ -19,7 +19,7 @@
             cphones: {
                 phone: '',
                 mobile: '',
-                fax: '',
+                fax: ''
             },
             cinternalNotes: '',
             csalesPurchases: {

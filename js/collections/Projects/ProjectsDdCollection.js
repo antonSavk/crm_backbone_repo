@@ -18,7 +18,6 @@
 
 
             initialize: function () {
-                console.log("ProjectForDd Collection Init");
                 this.fetch({
                     type: 'GET',
                     reset: true,
@@ -34,13 +33,8 @@
             },
 
             fetchSuccess: function (collection, response) {
-                console.log("ProjectsForDd fetchSuccess");
-                /*if (options.success) {
-                    options.success(result);
-                }*/
             },
             fetchError: function (error) {
-                console.log('ProjectsForDd fetchError' + error);
             }
 
 

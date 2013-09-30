@@ -218,27 +218,6 @@ define(['libs/date.format'], function (dateformat) {
     	
     	return length;
     };
-
-    var convertProjectsForGantt = function (data) {
-        var projects = [];
-        data.forEach(function (project) {
-            projects.push({
-                'id':project._id || project.id,
-                'projectname':project.projectname,
-                'projectmanager':project.projectmanager.uname || 'No name',
-                'customer':project.customer || 'Unknown',
-                'StartDate': new Date(project.info.StartDate),
-                'EndDate': new Date(),
-                'plannedtime': calculateHours(new Date(project.info.StartDate), new Date()),
-                'timespent': calculateHours(new Date(project.info.StartDate), new Date()),
-                'progress': '%',
-                'status': 'In Progress',
-                'taskCount': project.task.tasks.length
-            });
-        });
-        return projects;
-    };
-
     var calculateHours = function (startDate, endDate) {
         var hours = 0;
         if (!startDate || !endDate) {
@@ -256,25 +235,101 @@ define(['libs/date.format'], function (dateformat) {
         return hours;
     };
 
-    var convertTasksForGantt = function (data) {
-        var tasks = [];
-        data.forEach(function (project) {
-            if (project.task.tasks.length > 0) {
-                project.task.tasks.forEach(function (task) {
-                    tasks.push({
-                        'summary': task.summary,
-                        'projectname': project.projectname || 'Unknown project',
-                        'assignedto': task.assignedto.uname || 'Unknown name',
-                        'stage': 'Unknown Stage',
-                        'StartDate': dateFormat(new Date(task.extrainfo.StartDate), "dd/mm/yy hh:mm:ss"),
-                        'EndDate': dateFormat(new Date(task.extrainfo.EndDate), "dd/mm/yy hh:mm:ss"),
-                        'progress': 'Unknown progress'
-                    });
-                });
-            }
-
+    var getProjectsCollectionMinDate = function(jsonProjectsArray){
+        var minDate;
+        var dateArray = $.map(jsonProjectsArray,function(val){
+            return val.StartDate;
         });
-        return tasks;
+        minDate = findMinDate(dateArray);
+    }
+
+    var convertProjectsCollectionForGantt = function (collection) {
+        var anyProjectHasTasks = false;
+        var duration;
+        var jsonCollection;
+        collection.length > 0 ? jsonCollection = collection.toJSON() : jsonCollection = [];
+        for(i = 0; i < jsonCollection.length; i++){
+            if(jsonCollection[i].task.tasks.length>0)
+            {
+                anyProjectHasTasks = true;
+                duration += jsonCollection[i].estimated;
+            }
+        }
+        //if we have no projects with tasks then exit
+        if(!anyProjectHasTasks)
+            return {
+                data : []
+            };
+
+        //else add parent holder for projects "Gantt View"
+        var projects = [];
+        var minDate;
+        (jsonCollection && jsonCollection.length > 0 && jsonCollection[0].info.StartDate) ?
+            minDate = dateFormat(new Date(jsonCollection[0].info.StartDate), "dd-mm-yyyy") :
+            minDate = dateFormat(new Date(), "dd/mm-yyyy");
+
+        projects.push({
+            'id': 1,
+            'text':"Gantt View",
+            'start_date': minDate,
+            'duration': duration,
+            'progress': 0,
+            'open': true
+        });
+
+        if(jsonCollection.length > 0){
+            jsonCollection.forEach(function (project) {
+                if(project.task.tasks.length > 0){
+                    projects.push({
+                        'id':project._id || project.id,
+                        'text':project.projectname,
+                        'start_date': dateFormat(new Date(jsonCollection[0].info.StartDate), "dd-mm-yyyy"),
+                        'duration': project.estimated,
+                        'progress': project.progress / 100,
+                        'open': true,
+                        'parent':1
+                    });
+                }
+            });
+        }
+
+        return {
+            data: projects
+        };
+    };
+
+    var convertTasksCollectionForGantt = function (collection) {
+        var jsonCollection;
+        collection.length > 0 ? jsonCollection = collection.toJSON() : jsonCollection = [];
+        var projects = [];
+        for(var i = 0; i < jsonCollection.length; i++){
+            if(jsonCollection[i].task.tasks.length > 0){
+                projects.push({
+                    'id': jsonCollection[i]._id || jsonCollection[i].id,
+                    'text': jsonCollection[i].projectname,
+                    'start_date': dateFormat(new Date(jsonCollection[i].info.StartDate), "dd-mm-yyyy"),
+                    'duration': jsonCollection[i].estimated,
+                    'progress': jsonCollection[i].progress/100,
+                    'open': true
+                });
+
+                for(j = 0, len = jsonCollection[i].task.tasks.length; j < len; j++){
+                    var task = jsonCollection[i].task.tasks[j];
+                    projects.push({
+                        'id': task.id || task._id,
+                        'text': task.summary,
+                        'start_date': dateFormat(new Date(task.extrainfo.StartDate), "dd-mm-yyyy"),
+                        'duration': task.estimated,
+                        'progress': task.progress,
+                        'parent': jsonCollection[i].id || jsonCollection[i]._id
+                    });
+                }
+            }
+        }
+
+        return {
+            data: projects
+        };
     };
 
     function applyDefaultSettings(chartControl) {
@@ -286,75 +341,19 @@ define(['libs/date.format'], function (dateformat) {
         chartControl.showDescProject(true, 'n,d');
     }
 
-    function createGanttChart(data, withTasks) {
-        var ganttChartControl = new GanttChart();
-        applyDefaultSettings(ganttChartControl);
-        var projectArray = [];
-        //create gantt chart from projects and descending tasks
-        if (withTasks) {
-            projectArray = convertTasksForGantt(data);
-            projectArray.forEach(function (project) {
-                if (project.task.tasks.length > 0) {
-                    //get the 'Date' portion of a Date object(without time)
-                    var startDate = new Date(project.info.StartDate);
-                    var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
-                    project.task.tasks.forEach(function (task) {
-                        var hourCount = calculateHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
-                        var percentCompleted = Math.floor(Math.random() * 100 + 1);
-                        var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
-                        newProject.addTask(parentTask);
-                    });
-                    ganttChartControl.addProject(newProject);
-                }
 
-            });
-        }
-        //create gantt chart from only projects
-        else {
-            var newProject = createProjectForGantt(data);
-            ganttChartControl.showDescProject(false, 'n,d');
-            ganttChartControl.addProject(newProject);
-        }
-
-        return ganttChartControl;
-    };
-
-
-    function createProjectForGantt(data) {
-        var projectArray = convertProjectsForGantt(data);
-        //get date array
-        var arr = $.map(projectArray, function (val) {
-            return val.StartDate;
-        });
-        // and find the minimum date
-        var date = findMinDate(arr);
-
-        var newProject = new GanttProjectInfo(1, 'Guntt View', date);
-        projectArray.forEach(function (project) {
-            var hourCount = calculateHours(project.StartDate, project.EndDate);
-            var percentCompleted = Math.floor(Math.random() * 100 + 1);
-            var parentTask = new GanttTaskInfo(project.id, project.projectname, project.StartDate, hourCount, percentCompleted, "");
-            newProject.addTask(parentTask);
-        });
-        return newProject;
-    }
 
     function findMinDate(dateArray) {
         return _.min(dateArray);
-        /*var minDate = dateArray[0];
-        dateArray.forEach(function(date){
-            if(minDate>date){
-                minDate = date;
-            }
-        });
-        return new Date(minDate);*/
     }
     
 	return {
-        createGanttChart: createGanttChart,
+        convertTasksCollectionForGantt:convertTasksCollectionForGantt,
+        convertProjectsCollectionForGantt:convertProjectsCollectionForGantt,
+
         calculateHours: calculateHours,
-        convertTasksForGantt: convertTasksForGantt,
-        convertProjectsForGantt: convertProjectsForGantt,
+
+
 		runApplication: runApplication,
 		changeItemIndex: changeItemIndex,
 		changeContentViewType: changeContentViewType,

@@ -10,6 +10,7 @@ define([
 
         var UsersCreateView = Backbone.View.extend({
             el: "#content-holder",
+            contentType: "Users",
             template: _.template(CreateUserTemplate),
             contentType: "Users",
             initialize: function () {
@@ -19,6 +20,7 @@ define([
                 this.profilesCollection.bind('reset', _.bind(this.render, this));
                 this.companiesCollection = new CompaniesCollection();
                 this.companiesCollection.bind('reset', _.bind(this.render, this));
+                this.model = new UserModel();
                 this.render();
             },
 
@@ -68,10 +70,11 @@ define([
                         },
                         confirmPass:$('#confirmpassword').val()
                     });
+                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
 
             },
             render: function () {
-                this.$el.html(this.template({ usersCollection: this.usersCollection, companiesCollection: this.companiesCollection, profilesCollection:this.profilesCollection }));
+                this.$el.html(this.template({ model:this.model.toJSON(), usersCollection: this.usersCollection, companiesCollection: this.companiesCollection, profilesCollection:this.profilesCollection }));
                 return this;
             }
         });

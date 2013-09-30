@@ -59,6 +59,10 @@ function (UserListTemplate, UserFormTemplate, UsersCollection, UsersItemView, Cu
 	                this.collection.each(function(model){
 	                    table.append(new UsersItemView({ model: model }).render().el);
 	                });
+
+                    $('#check_all').on('click',function(){
+                        $(':checkbox').prop('checked', this.checked);
+                    });
 					break;
             	}
                 case "form":

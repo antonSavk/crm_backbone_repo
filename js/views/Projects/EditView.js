@@ -23,8 +23,6 @@ define([
                this.accountsDdCollection.bind('reset', _.bind(this.render, this));
                this.customersDdCollection.bind('reset', _.bind(this.render, this));
                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
-               
-               this.render();
             },
 
             saveItem: function () {

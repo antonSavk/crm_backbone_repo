@@ -10,10 +10,11 @@ define([
     'views/Tasks/thumbnails/ThumbnailsItemView',
     'views/Tasks/kanban/KanbanItemView',
     "localstorage",
-    'custom'
+    'custom',
+    "GanttChart"
 ],
 
-function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, TasksCollection, WorkflowsCollection, ProjectsCollection, TasksListItemView, TasksThumbnailsItemView, TasksKanbanItemView, LocalStorage, Custom) {
+function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, TasksCollection, WorkflowsCollection, ProjectsCollection, TasksListItemView, TasksThumbnailsItemView, TasksKanbanItemView, LocalStorage, Custom, GanttChart) {
     var TasksView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
@@ -101,32 +102,37 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                     }
                 case "list":
                     {
+                        this.$el.html('');
                         this.$el.html(_.template(TasksListTemplate));
-                        var table = this.$el.find('table > tbody');
-
-                        _.each(models, function (model) {
-                            table.append(new TasksListItemView({ model: model }).render().el);
-                        }, this);
+                        if(models.length > 0){
+                            var table = this.$el.find('table > tbody');
+                            _.each(models, function (model) {
+                                table.append(new TasksListItemView({ model: model }).render().el);
+                            }, this);
+                        }
 
                         $('#check_all').click(function () {
                             var c = this.checked;
-
                             $(':checkbox').prop('checked', c);
                         });
-
                         break;
                     }
                 case "thumbnails":
                     {
                         this.$el.html('');
-                        var holder = this.$el;
-                        _.each(models, function (model) {
-                            $(holder).append(new TasksThumbnailsItemView({ model: model }).render().el);
-                        }, this);
+                        if(models.length > 0){
+                            var holder = this.$el;
+                            _.each(models, function (model) {
+                                $(holder).append(new TasksThumbnailsItemView({ model: model }).render().el);
+                            }, this);
+                        } else {
+                            this.$el.html('<h2>No tasks found</h2>');
+                        }
                         break;
                     }
                 case "form":
                     {
+                        this.$el.html('');
                         var itemIndex = Custom.getCurrentII() - 1;
                         if (itemIndex > models.length - 1) {
                             itemIndex = models.length - 1;
@@ -140,10 +146,10 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                         }
 
                         if (itemIndex == -1) {
-                            this.$el.html();
+                            this.$el.html('<h2>No tasks found</h2>');
                         } else {
                             var currentModel = models[itemIndex];
-                            currentModel.set({ deadline: currentModel.get('deadline').split('T')[0].replace(/-/g, '/') }, { silent: true });
+                            //currentModel.set({ deadline: currentModel.get('deadline').split('T')[0].replace(/-/g, '/') }, { silent: true });
                             this.$el.html(_.template(TasksFormTemplate, currentModel.toJSON()));
 
                             var workflows = this.workflowsCollection.models;
@@ -167,7 +173,11 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
 
                 case "gantt":
                     {
+                        this.$el.html('');
                         console.log('render gantt');
+                        this.$el.html('<div style="height:570px; position:relative;" id="GanttDiv"></div>');
+                        GanttChart.create("GanttDiv");
+                        GanttChart.parseTasks(this.projectsCollection);
                         break;
                     }
             }

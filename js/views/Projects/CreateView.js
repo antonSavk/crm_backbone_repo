@@ -22,18 +22,16 @@ define([
                this.customersDdCollection.bind('reset', _.bind(this.render, this));
                this.workflowsDdCollection = new WorkflowsCollection({id: 'project'});
                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
+               this.bind('reset', _.bind(this.render, this));
                this.projectsCollection = options.collection;
                this.projectsCollection.bind('reset', _.bind(this.render, this));
                this.render();
             },
 
             close: function(){
-                this._modelBinder.unbind();
             },
 
             saveItem: function () {
-
-                var self = this;
               
             	var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
@@ -42,40 +40,16 @@ define([
             	var projectModel = new ProjectModel();
             	
                 var projectname = $("#projectName").val();
-                if ($.trim(projectname) == "")
-                {
-                	projectname = "New Project";
-                }
-                
+
                 var idCustomer = $(this.el).find("#customerDd option:selected").val();
-                var customer = this.customersDdCollection.get(idCustomer);
-                
-                if (!customer)
-                {
-                	customer = null;
-                }
-                else
-                {
-                	customer = customer.toJSON(); 
-                }
-                var idManager = $(this.el).find("#managerDd option:selected").val();
-                var projectmanager = this.accountDdCollection.get(idManager);
-                if (!projectmanager)
-                {
-                	projectmanager = null;
-                }else
-                {
-                	projectmanager = projectmanager.toJSON(); 
-                }
-                var idWorkflow = $(this.el).find("#workflowDd option:selected").val();
-                var workflow = this.workflowsDdCollection.get(idWorkflow);
-                if (!workflow)
-                {
-                	workflow = null;
-                }else
-                {
-                	workflow = workflow.toJSON(); 
-                }
+                var customer = this.customersDdCollection.get(idCustomer).toJSON();
+
+                var idManager = $("#managerDd option:selected").val();
+                var projectmanager = this.accountDdCollection.get(idManager).toJSON();
+
+                var idWorkflow = $("#workflowDd option:selected").val();
+                var workflow = this.workflowsDdCollection.get(idWorkflow).toJSON();
+
                 var $userNodes = $("#usereditDd option:selected"), users = [];
                 $userNodes.each(function(key, val){
                 	users.push({
@@ -83,41 +57,37 @@ define([
                 		uname: val.innerHTML
                 	});
                 });
-
-
+                
+                
                 projectModel.save({
-                        projectname: projectname,
-                        customer: {
-                            id: customer._id,
-                            type: customer.type,
-                            name: customer.name.last + ' ' + customer.name.first
-                        },
-                        projectmanager: {
-                            uid: projectmanager._id,
-                            uname: projectmanager.name.last + ' ' + projectmanager.name.first
-                        },
-                        workflow: {
-                            name: workflow.name,
-                            status: workflow.status
-                        },
-                        teams: {
-                            users: users
-                        }
-                    },
-                    {
-                        headers: {
-                            uid: uid,
-                            hash: hash,
-                            mid: mid
-                        }, 
-                        wait: true, 
-                        success: function (model) {
-                            Backbone.history.navigate("home/content-" + self.contentType, { trigger: true });
-                        },
-                        error: function () {
-                            Backbone.history.navigate("home", { trigger: true });
-                        }
-                    });
+                	projectname: $("#projectName").val(),
+                	customer: {
+                	    id: customer._id,
+                	    type: customer.type,
+                	    name: customer.name.last + ' ' + customer.name.first
+                	},
+                	projectmanager: {
+                	    uid: projectmanager._id,
+                	    uname: projectmanager.name.last + ' ' + projectmanager.name.first
+                	},
+                	workflow: {
+                	    name: workflow.name,
+                	    status: workflow.status
+                	},
+                	teams: {
+                		users: users
+                	}
+                },
+                {
+                	headers: {
+            			uid: uid,
+            			hash: hash,
+            			mid: mid
+            		}
+                });
+                                
+                Backbone.history.navigate("home/content-"+this.contentType, {trigger:true});
+                
             },
 
             render: function () {

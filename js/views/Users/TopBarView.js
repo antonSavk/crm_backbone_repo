@@ -42,6 +42,10 @@ define([
                 						  : $("ul.changeContentIndex").hide() && $("#top-bar-editBtn").hide();
                
                 return this;
+            },
+            discardEvent: function (event) {
+                event.preventDefault();
+                Backbone.history.navigate("home/content-" + this.contentType, { trigger: true });
             }
 
         });

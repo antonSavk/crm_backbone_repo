@@ -3,7 +3,7 @@ define(function () {
         idAttribute: "_id",
 
         defaults: {
-            projectname: 'emptyProject',
+            projectname: 'Project1',
             task: {
                 avaliable: false,
                 tasks: []
@@ -23,8 +23,8 @@ define(function () {
                 Teams: []
             },
             info: {
-                StartDate: Date.now,
-                EndDate: Date.now,
+                StartDate: new Date(),
+                EndDate:  new Date(),
                 sequence: 0 ,
                 parent: null
             },
