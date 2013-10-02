@@ -18,7 +18,6 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
     var TasksView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
-            console.log('Init Tasks View');
             var that = this;
             this.workflowsCollection = new WorkflowsCollection({ id: 'task' });
             this.workflowsCollection.bind('reset', _.bind(this.render, this));
@@ -58,7 +57,6 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
         render: function () {
             var that = this;
             Custom.setCurrentCL(this.collection.models.length);
-            console.log('Render Tasks View');
             var viewType = Custom.getCurrentVT();
             var hash = LocalStorage.getFromLocalStorage('hash'),
         			uid = LocalStorage.getFromLocalStorage('uid'),
@@ -173,9 +171,8 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
 
                 case "gantt":
                     {
-                        this.$el.html('');
-                        console.log('render gantt');
-                        this.$el.html('<div style="height:570px; position:relative;" id="GanttDiv"></div>');
+                        //gantt.clearAll();
+                        this.$el.html('<div style=" height:570px; position:relative;"  id="GanttDiv"></div>');
                         GanttChart.create("GanttDiv");
                         GanttChart.parseTasks(this.projectsCollection);
                         break;
@@ -288,7 +285,7 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                 column.find(".dropDownMenu").hide();
                 column.find(".columnNameDiv");
                 column.removeClass("rotate");
-                column.find(".counter, .foldUnfold img").attr('style', '');;
+                column.find(".counter, .foldUnfold img").attr('style', '');
             } else {
                 column.css('max-width', '40px');
                 column.find(".task, .dropDownMenu, .remaining").hide();
@@ -304,6 +301,10 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                 $("#top-bar-deleteBtn").show();
             else
                 $("#top-bar-deleteBtn").hide();
+        },
+
+        deleteSingleItem: function(){
+
         },
 
         deleteItems: function () {

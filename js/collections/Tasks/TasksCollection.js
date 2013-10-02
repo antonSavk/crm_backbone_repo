@@ -13,10 +13,7 @@ define([
                 return url;
             },
 
-
             initialize: function () {
-                console.log("Task Collection Init");
-
                 var hash = Localstorage.getFromLocalStorage('hash'),
                    uid = Localstorage.getFromLocalStorage('uid'),
                    mid = 39;
@@ -37,25 +34,13 @@ define([
             parse: true,
 
             parse: function(response){
-            	console.log('parse Tasks');
-                //$.each(response.data, function(index,val){
-                //    response.data[index]["id"] = response.data[index]["_id"];
-                //    delete response.data[index]["_id"];
-                //});
                 return response.data;
             },
 
             fetchSuccess: function (collection, response) {
-                console.log("Tasks fetchSuccess");
-                /*if (options.success) {
-                    options.success(result);
-                }*/
             },
             fetchError: function (error) {
-
             }
-
-
         });
 
         return TasksCollection;

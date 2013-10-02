@@ -245,14 +245,14 @@ define(['libs/date.format'], function (dateformat) {
 
     var convertProjectsCollectionForGantt = function (collection) {
         var anyProjectHasTasks = false;
-        var duration;
+        var duration = 0;
         var jsonCollection;
         collection.length > 0 ? jsonCollection = collection.toJSON() : jsonCollection = [];
         for(i = 0; i < jsonCollection.length; i++){
             if(jsonCollection[i].task.tasks.length>0)
             {
                 anyProjectHasTasks = true;
-                duration += jsonCollection[i].estimated;
+                duration += parseInt(jsonCollection[i].estimated);
             }
         }
         //if we have no projects with tasks then exit

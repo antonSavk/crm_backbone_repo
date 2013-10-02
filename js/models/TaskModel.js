@@ -12,7 +12,7 @@ define(function () {
                 uid: '00000',
                 uname: 'emptyUser'
             },
-            deadline: Date.now,
+            deadline: new Date(),
             tags: [],
             description: '',
             extrainfo: {
@@ -22,8 +22,8 @@ define(function () {
                     id: '',
                     name: ''
                 },
-                StartDate: Date.now,
-                EndDate: Date.now
+                StartDate: new Date(),
+                EndDate: new Date()
             },
             workflow: {
                 name: 'Analysis',

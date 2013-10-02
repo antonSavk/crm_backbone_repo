@@ -73,8 +73,7 @@ function (ListTemplate, FormTemplate, ListItemView, ThumbnailsItemView, Custom, 
                     }
                 case "gantt":
                     {
-                        this.$el.html('');
-                        console.log('render gantt');
+                        //gantt.clearAll();
                         this.$el.html('<div style=" height:570px; position:relative;" id="GanttDiv"></div>');
                         GanttChart.create("GanttDiv");
                         GanttChart.parseProjects(this.collection);
