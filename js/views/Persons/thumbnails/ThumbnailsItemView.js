@@ -9,6 +9,16 @@ define([
                 this.render();
             },
 
+            events: {
+                "click": "gotoForm"
+            },
+
+            gotoForm: function (e) {
+                App.ownContentType = true;
+                var itemIndex = $(e.target).data("index") + 1;
+                window.location.hash = "#home/content-Persons/form/" + itemIndex;
+            },
+
             template: _.template(ThumbnailsItemTemplate),
 
             render: function(){

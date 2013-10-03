@@ -213,10 +213,10 @@
                 }
                 else {
                     var currentModel = this.tasksCollection.models[itemIndex];
-                    var extrainfo = currentModel.get('extrainfo');
-                    extrainfo['StartDate'] = this.ISODateToDate(currentModel.get('extrainfo').StartDate);
-                    extrainfo['EndDate'] = this.ISODateToDate(currentModel.get('extrainfo').EndDate);
-                    currentModel.set({ deadline: this.ISODateToDate(currentModel.get('deadline')), extrainfo: extrainfo }, { silent: true });
+                    //var extrainfo = currentModel.get('extrainfo');
+                    //extrainfo['StartDate'] = this.ISODateToDate(currentModel.get('extrainfo').StartDate);
+                    //extrainfo['EndDate'] = this.ISODateToDate(currentModel.get('extrainfo').EndDate);
+                    //currentModel.set({ deadline: this.ISODateToDate(currentModel.get('deadline')), extrainfo: extrainfo }, { silent: true });
                     this.$el.html(_.template(EditTemplate, {
                         model: currentModel.toJSON(), projectsDdCollection: this.projectsDdCollection, accountsDdCollection: this.accountsDdCollection,
                         customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection, priorityCollection: this.priorityCollection

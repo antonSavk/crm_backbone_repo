@@ -74,7 +74,6 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             switch (viewType) {
                 case "kanban":
                     {
-                       
                         var workflows = this.workflowsCollection.models;
                         this.$el.html(_.template(TasksKanbanTemplate));
                         _.each(workflows, function (workflow, index) {
@@ -147,6 +146,7 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                             this.$el.html('<h2>No tasks found</h2>');
                         } else {
                             var currentModel = models[itemIndex];
+                            currentModel.on('change', this.render, this);
                             //currentModel.set({ deadline: currentModel.get('deadline').split('T')[0].replace(/-/g, '/') }, { silent: true });
                             this.$el.html(_.template(TasksFormTemplate, currentModel.toJSON()));
 

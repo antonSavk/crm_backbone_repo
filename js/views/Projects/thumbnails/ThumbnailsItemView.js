@@ -17,7 +17,7 @@ define([
             gotoForm: function (e) {
                 App.ownContentType = true;
                 var itemIndex = $(e.target).data("index") + 1;
-                window.location.hash = "#home/content-Projects/form/" + itemIndex;
+                window.location.hash = "#home/content-Tasks/kanban/" + this.model.get("_id");
             },
 
             template: _.template(ThumbnailsItemTemplate),

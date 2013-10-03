@@ -47,6 +47,7 @@ define([
                 mid = 39;
                 var that = this;
                 var model = that.collection.get($(e.target).closest(".opportunity").attr("id"));
+                var revenue = model.get("expectedRevenue").value;
                 this.$("#delete").closest(".opportunity").fadeToggle(300, function () {
                     model.destroy(
                         {
@@ -61,6 +62,7 @@ define([
                 });
                 var column = this.$el.closest(".column");
                 column.find(".counter").html(parseInt(column.find(".counter").html()) - 1);
+                column.find(".revenue span").html(parseInt(column.find(".revenue span").html()) - revenue);
                 this.collection.trigger('reset');
             },
 

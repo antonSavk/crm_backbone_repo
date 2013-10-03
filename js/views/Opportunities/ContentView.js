@@ -78,16 +78,16 @@ function (jqueryui, ListTemplate, FormTemplate, KanbanTemplate, OpportunitiesCol
 
                         _.each(workflows, function (workflow, i) {
                             var counter = 0,
-                                remaining = 0;
+                                revenue = 0;
                             var column = this.$(".column").eq(i);
                             _.each(this.collection.models, function (model) {
                                 if (model.get("workflow").name === column.data("name")) {
                                     column.append(new KanbanItemView({ model: model }).render().el);
                                     counter++;
-                                    remaining += model.get("estimated") - model.get("loged");
+                                    revenue += model.get("expectedRevenue").value;
                                 }
                             }, this);
-                            column.find(".columnNameDiv").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul>");
+                            column.find(".columnNameDiv").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul><p class='revenue'>Expected Revenues: <span>" + revenue + "</span></p>");
                         }, this);
                         break;
                     }
@@ -170,6 +170,7 @@ function (jqueryui, ListTemplate, FormTemplate, KanbanTemplate, OpportunitiesCol
                     var column = ui.item.closest(".column");
                     var model = that.collection.get(ui.item.attr("id"));
                     column.find(".counter").html(parseInt(column.find(".counter").html()) - 1);
+                    column.find(".revenue span").html(parseInt(column.find(".revenue span").html()) - (model.get("expectedRevenue").value));
                 },
                 stop: function (event, ui) {
                     var model = that.collection.get(ui.item.attr("id"));
@@ -191,6 +192,7 @@ function (jqueryui, ListTemplate, FormTemplate, KanbanTemplate, OpportunitiesCol
 
                     });
                     column.find(".counter").html(parseInt(column.find(".counter").html()) + 1);
+                    column.find(".revenue span").html(parseInt(column.find(".revenue span").html()) + (model.get("expectedRevenue").value));
                 }
             }).disableSelection();
             return this;
@@ -287,14 +289,14 @@ function (jqueryui, ListTemplate, FormTemplate, KanbanTemplate, OpportunitiesCol
             var column = $(e.target).closest(".column");
             if (column.hasClass("rotate")) {
                 column.attr('style', '');
-                column.find(".opportunity").show();
+                column.find(".opportunity, .revenue").show();
                 column.find(".dropDownMenu").hide();
                 column.find(".columnNameDiv");
                 column.removeClass("rotate");
                 column.find(".counter, .foldUnfold img").attr('style', '');;
             } else {
                 column.css('max-width', '40px');
-                column.find(".opportunity, .dropDownMenu").hide();
+                column.find(".opportunity, .dropDownMenu, .revenue").hide();
                 column.addClass("rotate");
                 column.find(".columnNameDiv").removeClass("selected");
                 column.find(".counter, .foldUnfold img").css({ 'position': 'relative', 'right': '6px', 'top': '-12px' });
