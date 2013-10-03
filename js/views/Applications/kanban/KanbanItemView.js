@@ -47,7 +47,6 @@ define([
                 mid = 39;
                 var that = this;
                 var model = that.collection.get($(e.target).closest(".application").attr("id"));
-                //var remaining = model.get("estimated") - model.get("loged");
                 this.$("#delete").closest(".application").fadeToggle(300, function () {
                     model.destroy(
                         {
@@ -62,7 +61,6 @@ define([
                 });
                 var column = this.$el.closest(".column");
                 column.find(".counter").html(parseInt(column.find(".counter").html()) - 1);
-                //column.find(".remaining span").html(parseInt(column.find(".remaining span").html()) - remaining);
                 this.collection.trigger('reset');
             },
 
@@ -92,27 +90,10 @@ define([
                 this.$(".colorPicker a").closest(".application-header").css('background-color', color).closest(".application").css('border-color', color);
             },
 
-            //isLater: function(str1, str2) {
-            //    return new Date(str1) > new Date(str2);
-            //},
-
-            //changeDeadlineColor: function() {
-            //    if ((this.$el.attr("id") == this.model.get('id'))) {
-            //        this.$(".deadline").css({ 'color': '#E74C3C' });
-            //    }
-            //},
-
             render: function() {
                 var index = this.model.collection.indexOf(this.model);
                 var todayString = new Date().format("yyyy-mm-dd");
-                //if (this.model.get('deadline')) {
-                //    var deadlineString = this.model.get('deadline').split('T')[0];
-                //    this.model.set({ deadline: deadlineString.replace(/-/g, '/') }, { silent: true });
-                //}
                 this.$el.html(this.template(this.model.toJSON()));
-                //if (this.isLater(todayString, deadlineString)) {
-                //    this.changeDeadlineColor();
-                //}
                 this.changeColor(this.model.get('color'));
                 this.$el.attr("data-index", index);
                 return this;

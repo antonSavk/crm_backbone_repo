@@ -24,10 +24,10 @@ define([
                 this.jobPositionsCollection = new JobPositionsCollection();
                 this.jobPositionsCollection.bind('reset', _.bind(this.render, this));
                 this.accountsDdCollection = new AccountsDdCollection();
-                this.accountsDdCollection.bind('reset', _.bind(this.render, this));
+                this.accountsDdCollection.bind('reset',  _.bind(this.render, this));
                 this.bind('reset', _.bind(this.render, this));
                 this.employeesCollection = options.collection;
-                this.render();
+                //this.render();
             },
 
             events: {
@@ -56,7 +56,12 @@ define([
 
                 var employeeModel = new EmployeeModel();
 
-                var name = $.trim($("#name").val());
+                var first = $.trim($("#first").val());
+                var last = $.trim($("#last").val());
+                var name = {
+                    first: first,
+                    last: last
+                };
 
                 var waddress = {};
                 $("p").find(".waddress").each(function () {
@@ -133,7 +138,9 @@ define([
                     dateBirth = new Date(Date.parse(dateBirthSt)).toISOString();
                 }
 
-                if ($("#active:checked")) var active = true;
+                var active;
+                if ($("#active").is(":checked")) { console.log("true"); active = true; }
+                else { active = false; }
 
                 employeeModel.save({
                     name: name,

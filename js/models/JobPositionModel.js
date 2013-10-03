@@ -13,7 +13,11 @@
                 name: ""
             },
             description: "",
-            requirements: ""
+            requirements: "",
+            workflow: {
+                name: 'No Recruitment',
+                status: 'New' 
+            }
         },
 
         urlRoot: function () {

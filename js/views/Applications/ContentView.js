@@ -6,13 +6,12 @@ define([
     'collections/Applications/ApplicationsCollection',
     'collections/Workflows/WorkflowsCollection',
     'views/Applications/list/ListItemView',
-    'views/Applications/thumbnails/ThumbnailsItemView',
     'views/Applications/kanban/KanbanItemView',
     "localstorage",
     'custom'
 ],
 
-function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, ApplicationsKanbanTemplate, ApplicationsCollection, WorkflowsCollection, ApplicationsListItemView, ApplicationsThumbnailsItemView, ApplicationsKanbanItemView, LocalStorage, Custom) {
+function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, ApplicationsKanbanTemplate, ApplicationsCollection, WorkflowsCollection, ApplicationsListItemView, ApplicationsKanbanItemView, LocalStorage, Custom) {
     var ApplicationsView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
@@ -76,7 +75,7 @@ function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, Applicat
                                     remaining += model.get("estimated") - model.get("loged");
                                 }
                             }, this);
-                            column.find("div").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul>");
+                            column.find(".columnNameDiv").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul>");
                         }, this);
                         break;
                     }

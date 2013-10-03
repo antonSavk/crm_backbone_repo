@@ -2,7 +2,7 @@ define([
     'text!templates/Profiles/TopBarTemplate.html',
     'custom'
 ],
-    function (TopBarTemplate,Custom) {
+    function (TopBarTemplate, Custom) {
         var TopBarView = Backbone.View.extend({
             el:'#top-bar',
             contentType: "Profiles",

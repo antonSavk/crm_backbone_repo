@@ -4,11 +4,13 @@ define([
     "collections/Employees/EmployeesCollection",
     "collections/JobPositions/JobPositionsCollection",
     "collections/Departments/DepartmentsCollection",
+    "collections/Degrees/DegreesCollection",
+    "collections/SourceOfApplicants/SourceOfApplicantsCollection",
     "models/ApplicationModel",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, ApplicationsCollection, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, ApplicationModel, LocalStorage, Custom) {
+    function (CreateTemplate, ApplicationsCollection, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, DegreesCollection, SourceOfApplicantsCollection, ApplicationModel, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -22,6 +24,10 @@ define([
                 this.jobPositionsCollection.bind('reset', _.bind(this.render, this));
                 this.departmentsCollection = new DepartmentsCollection();
                 this.departmentsCollection.bind('reset', _.bind(this.render, this));
+                this.degreesCollection = new DegreesCollection();
+                this.degreesCollection.bind('reset', _.bind(this.render, this));
+                this.sourceOfApplicantsCollection = new SourceOfApplicantsCollection();
+                this.sourceOfApplicantsCollection.bind('reset', _.bind(this.render, this));
                 this.bind('reset', _.bind(this.render, this));
                 this.applicationsCollection = options.collection;
                 this.render();
@@ -54,13 +60,24 @@ define([
                 var applicationModel = new ApplicationModel();
 
                 var subject = $.trim($("#subject").val());
-                var name = $.trim($("#name").val());
+                var first = $.trim($("#first").val());
+                var last = $.trim($("#last").val());
+                var name = {
+                    first: first,
+                    last: last
+                };
                 var wemail = $.trim($("#wemail").val());
                 var phone = $.trim($("#phone").val());
                 var mobile = $.trim($("#mobile").val());
                 var wphones = {
                     phone: phone,
                     mobile: mobile
+                };
+
+                var degreeId = this.$("#degree option:selected").val();
+                var degree = {
+                    id: degreeId,
+                    name: degreeId
                 };
 
                 var relatedUser = {};
@@ -77,9 +94,11 @@ define([
                     nextAction = new Date(Date.parse(nextActionSt)).toISOString();
                 }
 
-                var source = {};
-                var sourceName = $.trim($("#source").val());
-                source.name = sourceName;
+                var sourceId = this.$("#source option:selected").val();
+                var source = {
+                    id: sourceId,
+                    name: sourceId
+                };
 
                 var referredBy = $.trim($("#referredBy").val());
 
@@ -109,6 +128,7 @@ define([
                     name: name,
                     wemail: wemail,
                     wphones: wphones,
+                    degree: degree,
                     relatedUser: relatedUser,
                     nextAction: nextAction,
                     source: source,
@@ -137,7 +157,7 @@ define([
             },
 
             render: function () {
-                this.$el.html(this.template({ employeesCollection: this.employeesCollection, jobPositionsCollection: this.jobPositionsCollection, departmentsCollection: this.departmentsCollection }));
+                this.$el.html(this.template({ employeesCollection: this.employeesCollection, jobPositionsCollection: this.jobPositionsCollection, departmentsCollection: this.departmentsCollection, degreesCollection: this.degreesCollection, sourceOfApplicantsCollection: this.sourceOfApplicantsCollection }));
                 return this;
             }
 

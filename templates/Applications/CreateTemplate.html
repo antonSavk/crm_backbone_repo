@@ -8,8 +8,9 @@
             </p>
 
             <p>
-                <label for="name">Applicant's Name </label>
-                <input type="text" id="name" />
+                <label for="name">Name</label>
+                <input type="text" class="name" id="first" placeholder="First" required />
+                <input type="text" class="name" id="last" placeholder="Last" required />
             </p>
 
             <p>
@@ -25,6 +26,16 @@
             <p>
                 <label for="mobile">Mobile </label>
                 <input type="text" id="mobile" />
+            </p>
+
+            <p>
+                <label for="degree">Degree </label>
+                <select id="degree">
+                    <option selected="selected" value="0">Select...</option>
+                    <% degreesCollection.each(function(option){ %>
+                    <option value="<%= option.get('_id') %>"><%= option.get('name')%></option>
+                    <% }); %>
+                </select>
             </p>
 
             <p>
@@ -44,7 +55,12 @@
 
             <p>
                 <label for="source">Source </label>
-                <input type="text" id="source" />
+                <select id="source">
+                    <option selected="selected" value="0">Select...</option>
+                    <% sourceOfApplicantsCollection.each(function(option){ %>
+                    <option value="<%= option.get('_id') %>"><%= option.get('name')%></option>
+                    <% }); %>
+                </select>
             </p>
 
             <p>

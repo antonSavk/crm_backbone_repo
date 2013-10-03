@@ -1,6 +1,6 @@
 <div class="form-holder">
     <form class="form" id="employeeForm">
-        <h2><%=name%></h2>
+        <h2><%=name.first%> <%=name.last%></h2>
         <p>
             <label>Tags</label>
             <span><%=tags%></span>
@@ -17,6 +17,24 @@
                 </ul>
             </div>
             <div class="tab">
+                <p>
+                    <label>Work Address </label>
+                    <span>
+                        <%=waddress.street%>
+                    </span>
+                    <span>
+                        <%=waddress.city%>
+                    </span>
+                    <span>
+                        <%=waddress.state%>
+                    </span>
+                    <span>
+                        <%=waddress.zip%>
+                    </span>
+                    <span>
+                        <%=waddress.country%>
+                    </span>
+                </p>
                 <p>
                     <label>Work Email </label>
                     <span>
@@ -92,6 +110,21 @@
                 <h2>Contact Information</h2>
                 <p>
                     <label>Home Address </label>
+                    <span>
+                        <%=homeAddress.street%>
+                    </span>
+                    <span>
+                        <%=homeAddress.city%>
+                    </span>
+                    <span>
+                        <%=homeAddress.state%>
+                    </span>
+                    <span>
+                        <%=homeAddress.zip%>
+                    </span>
+                    <span>
+                        <%=homeAddress.country%>
+                    </span>
                 </p>
                 <h2>Birth</h2>
                 <p>

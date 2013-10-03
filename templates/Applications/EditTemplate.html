@@ -8,8 +8,10 @@
             </p>
 
             <p>
-                <label for="name">Applicant's Name </label>
-                <input type="text" id="name" value="<%=model.name%>" />
+                <label for="name">First Name</label>
+                <input type="text" class="title-input name" id="first" value="<%=model.name.first%>" />
+                <label for="name">Last Name</label>
+                <input type="text" class="title-input name" id="last" value="<%=model.name.last%>" />
             </p>
 
             <p>
@@ -27,6 +29,16 @@
                 <input type="text" id="mobile" value="<%=model.wphones.mobile%>"/>
             </p>
 
+             <p>
+                <label for="degree">Degree </label>
+                <select id="degree">
+                    <option selected="selected" value="0">Select...</option>
+                    <% degreesCollection.each(function(option){ %>
+                    <option value="<%= option.get('_id') %>" <%=(option.get('_id')==model.degree.id)?'selected="selected"':''%>><%= option.get('name')%></option>
+                    <% }); %>
+                </select>
+            </p>
+
             <p>
                 <label for="relatedUser">Responsible </label>
                 <select id="relatedUser">
@@ -42,9 +54,14 @@
                 <input type="text" id="nextAction" value="<%=model.nextAction%>"/>
             </p>
 
-            <p>
+             <p>
                 <label for="source">Source </label>
-                <input type="text" id="source" value="<%=model.source.name%>"/>
+                <select id="source">
+                    <option selected="selected" value="0">Select...</option>
+                    <% sourceOfApplicantsCollection.each(function(option){ %>
+                    <option value="<%= option.get('_id') %>" <%=(option.get('_id')==model.source.id)?'selected="selected"':''%>><%= option.get('name')%></option>
+                    <% }); %>
+                </select>
             </p>
 
             <p>

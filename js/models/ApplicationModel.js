@@ -5,12 +5,19 @@
         defaults: {
             isEmployee: false,
             subject: '',
-            name: '',
+            name: {
+                first: 'New',
+                last: 'Application'
+            },
             tags: [],
             wemail: '',
             wphones: {
                 mobile: '',
                 phone: ''
+            },
+            degree: {
+                id: '',
+                name:''
             },
             relatedUser: {
                 id: '',

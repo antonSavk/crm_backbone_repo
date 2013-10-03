@@ -54,7 +54,12 @@ define([
         			uid = LocalStorage.getFromLocalStorage('uid'),
         			mid = 39;
 
-                    var name = $.trim($("#name").val());
+                    var first = $.trim($("#first").val());
+                    var last = $.trim($("#last").val());
+                    var name = {
+                        first: first,
+                        last: last
+                    };
 
                     var waddress = {};
                     $("p").find(".waddress").each(function () {
@@ -132,7 +137,9 @@ define([
                         dateBirth = new Date(Date.parse(dateBirthSt)).toISOString();
                     }
 
-                    if ($("#active:checked")) var active = true;
+                    var active;
+                    if ($("#active").is(":checked")) { console.log("true"); active = true; }
+                    else { active = false; }
 
                     currentModel.set({
                         name: name,

@@ -2,23 +2,27 @@ define([
     'text!templates/JobPositions/list/ListTemplate.html',
     'text!templates/JobPositions/form/FormTemplate.html',
     'collections/JobPositions/JobPositionsCollection',
+    'collections/Workflows/WorkflowsCollection',
     'views/JobPositions/list/ListItemView',
     'custom',
     'localstorage'
 
 ],
-function (ListTemplate, FormTemplate, JobPositionsCollection, ListItemView, Custom, LocalStorage) {
+function (ListTemplate, FormTemplate, JobPositionsCollection, WorkflowsCollection, ListItemView, Custom, LocalStorage) {
     var ContentView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
             console.log('Init JobPositions View');
+            this.workflowsCollection = new WorkflowsCollection({ id: 'jobposition' });
+            this.workflowsCollection.bind('reset', _.bind(this.render, this));
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
-            this.render();
+            //this.render();
         },
 
         events: {
-            "click .checkbox": "checked"
+            "click .checkbox": "checked",
+            "click .breadcrumb a": "changeWorkflow"
         },
 
         render: function () {
@@ -54,13 +58,54 @@ function (ListTemplate, FormTemplate, JobPositionsCollection, ListItemView, Cust
                         } else {
                             var currentModel = this.collection.models[itemIndex];
                             this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
-                        }
+                            var workflows = this.workflowsCollection.models;
 
+                            _.each(workflows, function (workflow, index) {
+                                $(".breadcrumb").append("<li data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><a class='applicationWorkflowLabel'>" + workflow.get('name') + "</a></li>");
+                            });
+
+                            _.each(workflows, function (workflow, i) {
+                                var breadcrumb = this.$(".breadcrumb li").eq(i);
+                                if (currentModel.get("workflow").name === breadcrumb.data("name")) {
+                                    breadcrumb.find("a").addClass("active");
+                                }
+                            }, this);
+                        }
                         break;
                     }
             }
 
             return this;
+
+        },
+
+        changeWorkflow: function (e) {
+            var hash = LocalStorage.getFromLocalStorage('hash'),
+                   uid = LocalStorage.getFromLocalStorage('uid'),
+                   mid = 39;
+            var breadcrumb = $(e.target).closest('li');
+            var a = breadcrumb.siblings().find("a");
+            if (a.hasClass("active")) {
+                a.removeClass("active");
+            }
+            breadcrumb.find("a").addClass("active");
+            var model = this.collection.get($(e.target).closest(".formHeader").siblings().find("form").data("id"));
+            var ob = {
+                workflow: {
+                    name: breadcrumb.data("name"),
+                    status: breadcrumb.data("status")
+                }
+            };
+
+            model.set(ob);
+            model.save({}, {
+                headers: {
+                    uid: uid,
+                    hash: hash,
+                    mid: mid
+                }
+
+            });
 
         },
 

@@ -678,6 +678,28 @@ input, textarea, select {
     .topbarBtnHolder;
 }
 
+#template-switcher > span {
+    display: none;
+    position: absolute;
+    top: 40px;
+
+    &#twoButtons {
+        right: 146px;
+    }
+
+    &#threeButtons {
+        right: 170px;
+    }
+
+    &#fourButtons {
+        right: 194px;
+    }
+
+    &#fiveButtons {
+        right: 218px;
+    }
+}
+
 .input-title {
     font-size: 26px;
     background: #CEDAE7;
@@ -815,7 +837,7 @@ button {
     }
 }
 
-#employeeForm #tabList, #createEmployeeForm #tabList, #editEmployeeForm #tabList {
+#employeeForm #tabList, #createEmployeeForm #tabList, #editEmployeeForm #tabList, #leadForm #tabList {
     li {
         float: left;
         margin: -24px 2px 5px 0;
@@ -849,6 +871,10 @@ button {
         padding: 4px;
         border: none;
     }
+}
+
+#leadForm #tabs div:first-of-type {
+    margin-top: 50px;
 }
 // kanban styles
 .kanban {
@@ -949,7 +975,8 @@ button {
 }
 
 .task,
-.application {
+.application,
+.opportunity {
     word-wrap: break-word;
     margin: 5px auto;
     width: 95%;
@@ -968,7 +995,8 @@ button {
 }
 
 .task-header,
-.application-header {
+.application-header,
+.opportunity-header {
     padding: 1px 0 4px 4px;
     background-color: @taskBorderColor;
     color: #fff;
@@ -986,7 +1014,8 @@ button {
 }
 
 .task-content,
-.application-content {
+.application-content,
+.opportunity-content {
     padding: 2px 3px 4px 4px;
 
     p {
@@ -1022,8 +1051,10 @@ button {
 
 .task:hover .dropDown img,
 .application:hover .dropDown img,
+.opportunity:hover .dropDown img,
 .task .selected img,
-.application .selected img {
+.application .selected img,
+.opportunity .selected img {
     display: block;
     cursor: pointer;
 }
@@ -1220,33 +1251,33 @@ button {
 
     >button {
         margin: 7px 1px;
-        background-color: #c02c2c;
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#df3f3f), to(#a21a1a));
-        background-image: -webkit-linear-gradient(top, #df3f3f, #a21a1a);
-        background-image: -moz-linear-gradient(top, #df3f3f, #a21a1a);
-        background-image: -ms-linear-gradient(top, #df3f3f, #a21a1a);
-        background-image: -o-linear-gradient(top, #df3f3f, #a21a1a);
-        background-image: linear-gradient(to bottom, #df3f3f, #a21a1a);
-        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
-        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
 
-        &:first-of-type {
+        &:first-of-type, &:last-of-type {
             margin-left: 9px;
         }
+    }
+}
 
-        &:hover {
-            background-color: #c63939;
-            background-image: -webkit-gradient(linear, left top, left bottom, from(#e25858), to(#ab1b1b));
-            background-image: -webkit-linear-gradient(top, #e25858, #ab1b1b);
-            background-image: -moz-linear-gradient(top, #e25858, #ab1b1b);
-            background-image: -ms-linear-gradient(top, #e25858, #ab1b1b);
-            background-image: -o-linear-gradient(top, #e25858, #ab1b1b);
-            background-image: linear-gradient(to bottom, #e25858, #ab1b1b);
-        }
+button.red, a.red {
+    background-color: #c02c2c;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#df3f3f), to(#a21a1a));
+    background-image: -webkit-linear-gradient(top, #df3f3f, #a21a1a);
+    background-image: -moz-linear-gradient(top, #df3f3f, #a21a1a);
+    background-image: -ms-linear-gradient(top, #df3f3f, #a21a1a);
+    background-image: -o-linear-gradient(top, #df3f3f, #a21a1a);
+    background-image: linear-gradient(to bottom, #df3f3f, #a21a1a);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+    color: white;
 
-        >span {
-            color: white;
-        }
+    &:hover {
+        background-color: #c63939;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#e25858), to(#ab1b1b));
+        background-image: -webkit-linear-gradient(top, #e25858, #ab1b1b);
+        background-image: -moz-linear-gradient(top, #e25858, #ab1b1b);
+        background-image: -ms-linear-gradient(top, #e25858, #ab1b1b);
+        background-image: -o-linear-gradient(top, #e25858, #ab1b1b);
+        background-image: linear-gradient(to bottom, #e25858, #ab1b1b);
     }
 }

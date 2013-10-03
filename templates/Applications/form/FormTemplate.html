@@ -1,14 +1,13 @@
 <div class="formHeader">
-    <button id="hire"><span>Hire & Create Employee</span></button>
-    <button id="refuse"><span>Refuse</span></button>
+    <button class="red" id="hire"><span>Hire & Create Employee</span></button>
+    <button class="red" id="refuse"><span>Refuse</span></button>
     <ul class="breadcrumb">
     </ul>
 </div>
 <div class="form-holder">
     <form class="form" id="applicationForm" data-id="<%=_id%>">
         <h2><%=subject%></h2>
-        <h2><%=name%></h2>
-
+        <h2><%=name.first%> <%=name.last%></h2>
         <p>
             <label>Email</label>
             <span><%=wemail%></span>
@@ -20,6 +19,10 @@
         <p>
             <label>Mobile</label>
             <span><%=wphones.mobile%></span>
+        </p>
+        <p>
+            <label>Degree</label>
+            <span><%=degree.name%></span>
         </p>
         <h3>Job</h3>
         <p>
@@ -52,7 +55,6 @@
             <span><%=referredBy%></span>
         </p>
         <h3>Contract</h3>
-
         <p>
             <label>Expected Salary</label>
             <span><%=expectedSalary%></span>

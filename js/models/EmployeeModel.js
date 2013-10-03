@@ -4,7 +4,10 @@
 
         defaults: {
             isEmployee: true,
-            name: '',
+            name: {
+                first: 'New',
+                last: 'Employee'
+            },
             tags: [],
             waddress: {
                 street: '',

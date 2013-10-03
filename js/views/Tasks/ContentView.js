@@ -74,9 +74,9 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
             switch (viewType) {
                 case "kanban":
                     {
-                        this.$el.html(_.template(TasksKanbanTemplate));
+                       
                         var workflows = this.workflowsCollection.models;
-
+                        this.$el.html(_.template(TasksKanbanTemplate));
                         _.each(workflows, function (workflow, index) {
                             $("<div class='column' data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><div class='columnNameDiv'><h2 class='columnName'>" + workflow.get('name') + "</h2></div></div>").appendTo(".kanban");
                         });
@@ -94,7 +94,7 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
                                     remaining += model.get("estimated") - model.get("loged");
                                 }
                             }, this);
-                            column.find("div").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul><p class='remaining'>Remaining time: <span>" + remaining + "</span></p>");
+                            column.find(".columnNameDiv").append("<p class='counter'>" + counter + "</p><a class='foldUnfold' href='#'><img hidden='hidden' src='./images/downCircleBlack.png'/></a><ul hidden='hidden' class='dropDownMenu'></ul><p class='remaining'>Remaining time: <span>" + remaining + "</span></p>");
                         }, this);
                         break;
                     }

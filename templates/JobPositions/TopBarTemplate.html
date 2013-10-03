@@ -1,6 +1,6 @@
 <h3><%=contentType%></h3>
 <div id="createBtnHolder">
-    <a href="#home/action-<%=contentType%>/Create" class="btn"  id="top-bar-createBtn">Create</a>
+    <a href="#home/action-<%=contentType%>/Create" class="btn red"  id="top-bar-createBtn">Create</a>
     <a href="#home/action-<%=contentType%>/Edit" class="btn"  id="top-bar-editBtn">Edit</a>
     <a href="#" class="btn"  id="top-bar-deleteBtn">Delete</a>
 </div>
@@ -9,6 +9,7 @@
 </div>
 
 <div id="template-switcher" class="right">
+    <span id="twoButtons"><%=itemIndex%>/<%=collectionLength%></span>
     <ul class="btn-list changeContentIndex">
         <li><a href="#" class="icon2 icon-btn dark" data-shift="left" id="leftBtn">(</a></li>
         <li><a href="#" class="icon2 icon-btn dark" data-shift="right" id="rightBtn">)</a></li>

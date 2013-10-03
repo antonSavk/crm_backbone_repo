@@ -1,8 +1,9 @@
 define([
     'text!templates/JobPositions/TopBarTemplate.html',
+    'collections/JobPositions/JobPositionsCollection',
     'custom'
 ],
-    function (ContentTopBarTemplate, Custom) {
+    function (ContentTopBarTemplate, JobPositionsCollection, Custom) {
         var TopBarView = Backbone.View.extend({
             el:'#top-bar',
             contentType: "Job Positions",
@@ -25,13 +26,17 @@ define([
             	this.actionType = options.actionType;
             	if (this.actionType !== "Content")
             	    Custom.setCurrentVT("form");
-                this.render();
+            	this.collection = new JobPositionsCollection();
+            	this.collection.bind('reset', _.bind(this.render, this));
+                //this.render();
             },
 
             render: function(){
-            	var viewType = Custom.getCurrentVT();
+                var viewType = Custom.getCurrentVT();
+                var collectionLength = this.collection.length;
+                var itemIndex = Custom.getCurrentII();
             	
-                this.$el.html(this.template({viewType: viewType, contentType: this.contentType}));
+                this.$el.html(this.template({ viewType: viewType, contentType: this.contentType, collectionLength: collectionLength, itemIndex: itemIndex }));
                 
                 if (this.actionType == "Content")
                 {
@@ -52,10 +57,12 @@ define([
                 	$("ul.changeContentIndex").show();
                 	$("#top-bar-editBtn").show();
                 	$("#top-bar-deleteBtn").show();
+                	$("#template-switcher>span").show();
                 }else
                 if ((viewType == "form") && (this.actionType === "Edit"))
                 {
-                	$("ul.changeContentIndex").show();
+                    $("ul.changeContentIndex").show();
+                    $("#template-switcher>span").show();
                 }
                 
                 return this;

@@ -4,10 +4,12 @@
     "collections/Employees/EmployeesCollection",
     "collections/JobPositions/JobPositionsCollection",
     "collections/Departments/DepartmentsCollection",
+    "collections/Degrees/DegreesCollection",
+    "collections/SourceOfApplicants/SourceOfApplicantsCollection",
     "localstorage",
     "custom"
 ],
-    function (EditTemplate, ApplicationsCollection, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, LocalStorage, Custom) {
+    function (EditTemplate, ApplicationsCollection, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, DegreesCollection, SourceOfApplicantsCollection, LocalStorage, Custom) {
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
@@ -20,6 +22,10 @@
                 this.jobPositionsCollection.bind('reset', _.bind(this.render, this));
                 this.departmentsCollection = new DepartmentsCollection();
                 this.departmentsCollection.bind('reset', _.bind(this.render, this));
+                this.degreesCollection = new DegreesCollection();
+                this.degreesCollection.bind('reset', _.bind(this.render, this));
+                this.sourceOfApplicantsCollection = new SourceOfApplicantsCollection();
+                this.sourceOfApplicantsCollection.bind('reset', _.bind(this.render, this));
                 this.applicationsCollection = options.collection;
                 this.applicationsCollection.bind('reset', _.bind(this.render, this));
                 this.render();
@@ -60,6 +66,12 @@
                         mobile: mobile
                     };
 
+                    var degreeId = this.$("#degree option:selected").val();
+                    var degree = {
+                        id: degreeId,
+                        name: degreeId
+                    };
+
                     var relatedUser = {};
                     var relatedUserId = this.$("#relatedUser option:selected").val();
                     var objRelatedUser = this.employeesCollection.get(relatedUserId);
@@ -74,9 +86,11 @@
                         nextAction = new Date(Date.parse(nextActionSt)).toISOString();
                     }
 
-                    var source = {};
-                    var sourceName = $.trim($("#source").val());
-                    source.name = sourceName;
+                    var sourceId = this.$("#source option:selected").val();
+                    var source = {
+                        id: sourceId,
+                        name: sourceId
+                    };
 
                     var referredBy = $.trim($("#referredBy").val());
 
@@ -106,6 +120,7 @@
                         name: name,
                         wemail: wemail,
                         wphones: wphones,
+                        degree: degree,
                         relatedUser: relatedUser,
                         nextAction: nextAction,
                         source: source,
@@ -148,7 +163,7 @@
                 else {
                     var currentModel = this.applicationsCollection.models[itemIndex];
                     currentModel.set({ nextAction: this.ISODateToDate(currentModel.get('nextAction')) }, { silent: true });
-                    this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON(), employeesCollection: this.employeesCollection, jobPositionsCollection: this.jobPositionsCollection, departmentsCollection: this.departmentsCollection }));
+                    this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON(), employeesCollection: this.employeesCollection, jobPositionsCollection: this.jobPositionsCollection, departmentsCollection: this.departmentsCollection, degreesCollection: this.degreesCollection, sourceOfApplicantsCollection: this.sourceOfApplicantsCollection }));
                 }
                 return this;
             }

@@ -12,7 +12,7 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
     var ContentView = Backbone.View.extend({
         el: '#content-holder',
         initialize: function (options) {
-            console.log('Init Projects View');
+            console.log('Init Employees View');
             this.collection = options.collection;
             this.collection.bind('reset', _.bind(this.render, this));
             this.render();
@@ -35,7 +35,7 @@ function (ListTemplate, FormTemplate, ProjectsCollection, ListItemView, Thumbnai
 
         render: function () {
             Custom.setCurrentCL(this.collection.models.length);
-            console.log('Render Projects View');
+            console.log('Render Employees View');
             var viewType = Custom.getCurrentVT();
             switch (viewType) {
                 case "list":

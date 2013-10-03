@@ -2,8 +2,12 @@
     <form method="post" action="" id="editEmployeeForm" class="form">
         <fieldset>
             <p>
-                <label for="name">Name</label>
-                <input type="text" class="title-input blueback" name="name" id="name" value="<%=model.name%>" required />
+                <label for="name">First Name</label>
+                <input type="text" class="title-input blueback name" id="first" value="<%=model.name.first%>" required />
+            </p>
+            <p>
+                <label for="name">Last Name</label>
+                <input type="text" class="title-input blueback name" id="last" value="<%=model.name.last%>" required />
             </p>
             <p>
                 <label for="tags">Tags</label>

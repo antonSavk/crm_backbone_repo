@@ -1,8 +1,9 @@
 define([
     'text!templates/Users/TopBarTemplate.html',
+    'collections/Users/UsersCollection',
     'custom'
 ],
-    function (TopBarTemplate, Custom) {
+    function (TopBarTemplate, UsersCollection, Custom) {
         var TopBarView = Backbone.View.extend({
             el:'#top-bar',
             contentType: "Users",
@@ -25,7 +26,9 @@ define([
                 this.actionType = options.actionType;
                 if (this.actionType !== "Content")
                     Custom.setCurrentVT("form");
-                this.render();
+                this.collection = new UsersCollection();
+                this.collection.bind('reset', _.bind(this.render, this));
+                //this.render();
             },
 
             deleteEvent: function (event) {
@@ -35,10 +38,12 @@ define([
             },
 
             render: function(){
-            	var viewType = Custom.getCurrentVT();
-                this.$el.html(this.template({viewType: viewType}));
+                var viewType = Custom.getCurrentVT();
+                var collectionLength = this.collection.length;
+                var itemIndex = Custom.getCurrentII();
+                this.$el.html(this.template({ viewType: viewType, collectionLength: collectionLength, itemIndex: itemIndex }));
                 
-                (viewType == "form") ? $("ul.changeContentIndex").show() && $("#top-bar-editBtn").show() 
+                (viewType == "form") ? $("ul.changeContentIndex").show() && $("#top-bar-editBtn").show() && $("#template-switcher>span").show() 
                 						  : $("ul.changeContentIndex").hide() && $("#top-bar-editBtn").hide();
                
                 return this;
