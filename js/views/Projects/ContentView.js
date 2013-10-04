@@ -70,6 +70,7 @@ function (ListTemplate, FormTemplate, WorkflowsCollection, ListItemView, Thumbna
                             this.$el.html('<h2>No projects found</h2>');
                         } else {
                             var currentModel = this.collection.models[itemIndex];
+                            currentModel.on('change', this.render, this);
                             this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
                             var workflows = this.workflowsCollection.models;
 

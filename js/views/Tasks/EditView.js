@@ -35,7 +35,56 @@
             },
 
             events: {
-                "click #tabList a": "switchTab"
+                "click #tabList a": "switchTab",
+                "click .breadcrumb a, #Cancel span, #Done span": "changeWorkflow"
+            },
+
+            changeWorkflow: function (e) {
+                var hash = LocalStorage.getFromLocalStorage('hash'),
+                       uid = LocalStorage.getFromLocalStorage('uid'),
+                       mid = 39;
+                var model = {};
+                var name = '', status = '';
+                if ($(e.target).hasClass("applicationWorkflowLabel")) {
+                    var breadcrumb = $(e.target).closest('li');
+                    var a = breadcrumb.siblings().find("a");
+                    if (a.hasClass("active")) {
+                        a.removeClass("active");
+                    }
+                    breadcrumb.find("a").addClass("active");
+                    name = breadcrumb.data("name");
+                    status = breadcrumb.data("status");
+                }
+                else {
+                    var workflow = {};
+                    var length = this.workflowsDdCollection.models.length;
+                    if ($(e.target).closest("button").attr("id") == "Cancel") {
+                        workflow = this.workflowsDdCollection.models[length - 1];
+                    }
+                    else {
+                        workflow = this.workflowsDdCollection.models[length - 2];
+                    }
+                    name = workflow.get('name');
+                    status = workflow.get('status');
+                }
+                model = this.collection.get($(e.target).closest(".formHeader").siblings().find("form").data("id"));
+                var ob = {
+                    workflow: {
+                        name: name,
+                        status: status
+                    }
+                };
+
+                model.set(ob);
+                model.save({}, {
+                    headers: {
+                        uid: uid,
+                        hash: hash,
+                        mid: mid
+                    }
+
+                });
+
             },
 
             switchTab: function (e) {
@@ -213,6 +262,7 @@
                 }
                 else {
                     var currentModel = this.tasksCollection.models[itemIndex];
+                    currentModel.on('change', this.render, this);
                     //var extrainfo = currentModel.get('extrainfo');
                     //extrainfo['StartDate'] = this.ISODateToDate(currentModel.get('extrainfo').StartDate);
                     //extrainfo['EndDate'] = this.ISODateToDate(currentModel.get('extrainfo').EndDate);
@@ -221,6 +271,21 @@
                         model: currentModel.toJSON(), projectsDdCollection: this.projectsDdCollection, accountsDdCollection: this.accountsDdCollection,
                         customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection, priorityCollection: this.priorityCollection
                     }));
+                   
+                    var workflows = this.workflowsDdCollection.models;
+                    var that = this;
+                    _.each(workflows, function (workflow, index) {
+                        if (index < workflows.length - 2) {
+                            $(".breadcrumb").append("<li data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><a class='applicationWorkflowLabel'>" + workflow.get('name') + "</a></li>");
+                        }
+                    });
+
+                    _.each(workflows, function (workflow, i) {
+                        var breadcrumb = this.$(".breadcrumb li").eq(i);
+                        if (currentModel.get("workflow").name === breadcrumb.data("name")) {
+                            breadcrumb.find("a").addClass("active");
+                        }
+                    }, this);
                 }
                 return this;
             }

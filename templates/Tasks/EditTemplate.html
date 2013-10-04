@@ -1,8 +1,15 @@
-﻿<div class="form-holder">
-
-
-
-    <form method="post" action="" id="createTaskForm" class="form">
+﻿<div class="formHeader">
+    <button class="red" id="Done">
+        <span>Done</span>
+    </button>
+    <button class="red" id="Cancel">
+        <span>Cancel Task</span>
+    </button>
+    <ul class="breadcrumb">
+    </ul>
+</div>
+<div class="form-holder">
+    <form method="post" action="" id="createTaskForm" class="form" data-id="<%=model._id%>">
             <p>
             	<input type="text" name="summary" class="input-title blueback" id="summary" value="<%=model.summary%>" required />
            	</p>

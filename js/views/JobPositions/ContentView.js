@@ -57,6 +57,7 @@ function (ListTemplate, FormTemplate, JobPositionsCollection, WorkflowsCollectio
                             this.$el.html();
                         } else {
                             var currentModel = this.collection.models[itemIndex];
+                            currentModel.on('change', this.render, this);
                             this.$el.html(_.template(FormTemplate, currentModel.toJSON()));
                             var workflows = this.workflowsCollection.models;
 

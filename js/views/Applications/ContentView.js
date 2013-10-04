@@ -114,7 +114,6 @@ function (jqueryui, ApplicationsListTemplate, ApplicationsFormTemplate, Applicat
                             this.$el.html();
                         } else {
                             var currentModel = this.collection.models[itemIndex];
-                            currentModel.set({ nextAction: currentModel.get("nextAction").split('T')[0].replace(/-/g, '/') });
                             this.$el.html(_.template(ApplicationsFormTemplate, currentModel.toJSON()));
 
                             var workflows = this.workflowsCollection.models;

@@ -25,6 +25,40 @@ define([
                this.workflowsDdCollection.bind('reset', _.bind(this.render, this));
             },
 
+            events: {
+                "click .breadcrumb a": "changeWorkflow"
+            },
+
+            changeWorkflow: function (e) {
+                var hash = LocalStorage.getFromLocalStorage('hash'),
+                       uid = LocalStorage.getFromLocalStorage('uid'),
+                       mid = 39;
+                var breadcrumb = $(e.target).closest('li');
+                var a = breadcrumb.siblings().find("a");
+                if (a.hasClass("active")) {
+                    a.removeClass("active");
+                }
+                breadcrumb.find("a").addClass("active");
+                var model = this.collection.get($(e.target).closest(".formHeader").siblings().find("form").data("id"));
+                var ob = {
+                    workflow: {
+                        name: breadcrumb.data("name"),
+                        status: breadcrumb.data("status")
+                    }
+                };
+
+                model.set(ob);
+                model.save({}, {
+                    headers: {
+                        uid: uid,
+                        hash: hash,
+                        mid: mid
+                    }
+
+                });
+
+            },
+
             saveItem: function () {
                 var self = this;
             	var itemIndex = Custom.getCurrentII() - 1;
@@ -120,9 +154,22 @@ define([
         			this.$el.html();
         		}else
         		{
-        			var currentModel = this.projectsCollection.models[itemIndex];
+            	    var currentModel = this.projectsCollection.models[itemIndex];
+            	    currentModel.on('change', this.render, this);
         			this.$el.html(_.template(EditTemplate, {model: currentModel.toJSON(), accountsDdCollection: this.accountsDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection}));
-        		}
+        			var workflows = this.workflowsDdCollection.models;
+
+        			_.each(workflows, function (workflow, index) {
+        			    $(".breadcrumb").append("<li data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><a class='applicationWorkflowLabel'>" + workflow.get('name') + "</a></li>");
+        			});
+
+        			_.each(workflows, function (workflow, i) {
+        			    var breadcrumb = this.$(".breadcrumb li").eq(i);
+        			    if (currentModel.get("workflow").name === breadcrumb.data("name")) {
+        			        breadcrumb.find("a").addClass("active");
+        			    }
+        			}, this);
+            	}
             	
                 return this;
             }

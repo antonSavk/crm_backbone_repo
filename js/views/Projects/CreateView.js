@@ -1,14 +1,13 @@
 define([
     "text!templates/Projects/CreateTemplate.html",
     "collections/Customers/AccountsDdCollection",
-    "collections/Projects/ProjectsCollection",
     "collections/Customers/CustomersCollection",
     "collections/Workflows/WorkflowsCollection",
     "models/ProjectModel",
     "localstorage",
     "custom"
 ],
-    function (CreateTemplate, AccountsDdCollection, ProjectsCollection, CustomersCollection, WorkflowsCollection, ProjectModel, LocalStorage, Custom) {
+    function (CreateTemplate, AccountsDdCollection, CustomersCollection, WorkflowsCollection, ProjectModel, LocalStorage, Custom) {
 
         var CreateView = Backbone.View.extend({
             el: "#content-holder",
@@ -92,7 +91,6 @@ define([
 
             render: function () {
                 this.$el.html(this.template({accountDdCollection:this.accountDdCollection, customersDdCollection: this.customersDdCollection, workflowsDdCollection: this.workflowsDdCollection}));
-
                 return this;
             }
 

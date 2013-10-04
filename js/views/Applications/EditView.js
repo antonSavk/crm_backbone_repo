@@ -6,10 +6,11 @@
     "collections/Departments/DepartmentsCollection",
     "collections/Degrees/DegreesCollection",
     "collections/SourceOfApplicants/SourceOfApplicantsCollection",
+    "collections/Workflows/WorkflowsCollection",
     "localstorage",
     "custom"
 ],
-    function (EditTemplate, ApplicationsCollection, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, DegreesCollection, SourceOfApplicantsCollection, LocalStorage, Custom) {
+    function (EditTemplate, ApplicationsCollection, EmployeesCollection, JobPositionsCollection, DepartmentsCollection, DegreesCollection, SourceOfApplicantsCollection, WorkflowsCollection, LocalStorage, Custom) {
 
         var EditView = Backbone.View.extend({
             el: "#content-holder",
@@ -26,13 +27,58 @@
                 this.degreesCollection.bind('reset', _.bind(this.render, this));
                 this.sourceOfApplicantsCollection = new SourceOfApplicantsCollection();
                 this.sourceOfApplicantsCollection.bind('reset', _.bind(this.render, this));
+                this.workflowsCollection = new WorkflowsCollection({ id: 'application' });
+                this.workflowsCollection.bind('reset', _.bind(this.render, this));
                 this.applicationsCollection = options.collection;
                 this.applicationsCollection.bind('reset', _.bind(this.render, this));
-                this.render();
+                //this.render();
             },
 
             events: {
-                "click #tabList a": "switchTab"
+                "click #tabList a": "switchTab",
+                "click .breadcrumb a, #refuse": "changeWorkflow"
+            },
+
+            changeWorkflow: function (e) {
+                var hash = LocalStorage.getFromLocalStorage('hash'),
+                       uid = LocalStorage.getFromLocalStorage('uid'),
+                       mid = 39;
+                var model = {};
+                var name = '', status = '';
+                if ($(e.target).hasClass("applicationWorkflowLabel")) {
+                    var breadcrumb = $(e.target).closest('li');
+                    var a = breadcrumb.siblings().find("a");
+                    if (a.hasClass("active")) {
+                        a.removeClass("active");
+                    }
+                    breadcrumb.find("a").addClass("active");
+                    name = breadcrumb.data("name");
+                    status = breadcrumb.data("status");
+                }
+                else {
+                    var workflow = this.workflowsCollection.models[this.workflowsCollection.models.length - 1];
+                    console.log(workflow);
+                    name = workflow.get('name');
+                    status = workflow.get('status');
+                }
+                model = this.collection.get($(e.target).closest(".formHeader").siblings().find("form").data("id"));
+                var ob = {
+                    workflow: {
+                        name: name,
+                        status: status
+                    }
+                };
+
+                model.set(ob);
+                model.save({}, {
+                    headers: {
+                        uid: uid,
+                        hash: hash,
+                        mid: mid
+                    }
+
+                });
+
             },
 
             switchTab: function (e) {
@@ -57,7 +103,12 @@
         			mid = 39;
 
                     var subject = $.trim($("#subject").val());
-                    var name = $.trim($("#name").val());
+                    var first = $.trim($("#first").val());
+                    var last = $.trim($("#last").val());
+                    var name = {
+                        first: first,
+                        last: last
+                    };
                     var wemail = $.trim($("#wemail").val());
                     var phone = $.trim($("#phone").val());
                     var mobile = $.trim($("#mobile").val());
@@ -162,8 +213,22 @@
                 }
                 else {
                     var currentModel = this.applicationsCollection.models[itemIndex];
-                    currentModel.set({ nextAction: this.ISODateToDate(currentModel.get('nextAction')) }, { silent: true });
+                    //currentModel.on('change', this.render, this);
                     this.$el.html(_.template(EditTemplate, { model: currentModel.toJSON(), employeesCollection: this.employeesCollection, jobPositionsCollection: this.jobPositionsCollection, departmentsCollection: this.departmentsCollection, degreesCollection: this.degreesCollection, sourceOfApplicantsCollection: this.sourceOfApplicantsCollection }));
+                    var workflows = this.workflowsCollection.models;
+
+                    _.each(workflows, function (workflow, index) {
+                        if (index < workflows.length - 1) {
+                            $(".breadcrumb").append("<li data-index='" + index + "' data-status='" + workflow.get('status') + "' data-name='" + workflow.get('name') + "' data-id='" + workflow.get('_id') + "'><a class='applicationWorkflowLabel'>" + workflow.get('name') + "</a></li>");
+                        }
+                    });
+
+                    _.each(workflows, function (workflow, i) {
+                        var breadcrumb = this.$(".breadcrumb li").eq(i);
+                        if (currentModel.get("workflow").name === breadcrumb.data("name")) {
+                            breadcrumb.find("a").addClass("active");
+                        }
+                    }, this);
                 }
                 return this;
             }

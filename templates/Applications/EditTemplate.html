@@ -1,6 +1,12 @@
-﻿<div class="form-holder">
+﻿<div class="formHeader">
+    <button class="red" id="hire"><span>Hire & Create Employee</span></button>
+    <button class="red" id="refuse"><span>Refuse</span></button>
+    <ul class="breadcrumb">
+    </ul>
+</div>
+<div class="form-holder">
 
-    <form method="post" action="" id="createApplicationForm" class="form">
+    <form method="post" action="" id="createApplicationForm" class="form" data-id="<%=model._id%>">
         <fieldset>
             <p>
                 <label for="subject">Subject </label>
