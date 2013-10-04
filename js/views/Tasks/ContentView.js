@@ -171,10 +171,12 @@ function (jqueryui, TasksListTemplate, TasksFormTemplate, TasksKanbanTemplate, T
 
                 case "gantt":
                     {
-                        //gantt.clearAll();
-                        this.$el.html('<div style=" height:570px; position:relative;"  id="GanttDiv"></div>');
-                        GanttChart.create("GanttDiv");
-                        GanttChart.parseTasks(this.projectsCollection);
+                        if(this.projectsCollection.length > 0){
+                            this.$el.html('');
+                            this.$el.html('<div style=" height:570px;"  id="GanttDiv"></div>');
+                            GanttChart.create("GanttDiv");
+                            GanttChart.parseTasks(this.projectsCollection);
+                        }
                         break;
                     }
             }

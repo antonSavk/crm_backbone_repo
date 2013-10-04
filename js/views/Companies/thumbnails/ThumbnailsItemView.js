@@ -3,7 +3,8 @@ define([
 ],
     function (ThumbnailsItemTemplate) {
         var ThumbnailsItemView = Backbone.View.extend({
-            tagName:"tr",
+            tagName:"div",
+            className: "thumbnail",
 
             initialize: function(){
                 this.render();

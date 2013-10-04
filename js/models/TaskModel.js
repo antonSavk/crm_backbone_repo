@@ -17,6 +17,7 @@ define(function () {
             description: '',
             extrainfo: {
                 priority: 'Medium',
+                duration: null,
                 sequence: 0,
                 customer: {
                     id: '',

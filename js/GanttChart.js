@@ -8,7 +8,7 @@ define([
 
 ],function(Custom, ProjectModel, TaskModel,ProjectsCollection,TasksCollection, LocalStorage){
 
-    var tasksCollection, projectsCollection, eventId;
+    var tasksCollection, projectsCollection, updateEventId, deleteEventId, changeEventId;
 
     var create = function(chartContainerId){
         loadDefaultOptions();
@@ -16,10 +16,63 @@ define([
         gantt.clearAll();
         tasksCollection = new TasksCollection();
         projectsCollection = new ProjectsCollection();
+
         if(!gantt.checkEvent("onAfterTaskUpdate")){
-            eventId = gantt.attachEvent("onAfterTaskUpdate", onTaskUpdateHandler);
+            updateEventId = gantt.attachEvent("onAfterTaskUpdate", onTaskUpdateHandler);
+        }
+        if(!gantt.checkEvent("onAfterTaskDelete")){
+            deleteEventId = gantt.attachEvent("onAfterTaskDelete", onTaskDeleteHandler);
+        }
+        if(!gantt.checkEvent("onBeforeTaskChanged")){
+            changeEventId = gantt.attachEvent("onBeforeTaskChanged", onTaskChangeHandler);
         }
     };
+
+    var onTaskChangeHandler = function(id, mode, task){
+        if(task.parent){
+
+        }
+    }
+
+    var onTaskDeleteHandler = function(id, item){
+        if(item.parent){
+            if(item.parent == 1){
+                return;
+            }
+            var taskToDelete = tasksCollection.get(id);
+            if(taskToDelete)
+                deleteTask(taskToDelete);
+        } else{
+            var projectToDelete = projectsCollection.get(id);
+            if(projectToDelete){
+                deleteProject(projectToDelete);
+            }
+        }
+    }
+
+    var deleteTask = function(task){
+        var hash = LocalStorage.getFromLocalStorage('hash'),
+            uid = LocalStorage.getFromLocalStorage('uid'),
+            mid = 39;
+        task.destroy({
+            headers:{
+                uid: uid,
+                hash: hash,
+                mid: mid
+            }});
+    }
+
+    var deleteProject = function(project){
+        var hash = LocalStorage.getFromLocalStorage('hash'),
+            uid = LocalStorage.getFromLocalStorage('uid'),
+            mid = 39;
+        project.destroy({
+            headers:{
+                uid: uid,
+                hash: hash,
+                mid: mid
+            }});
+    }
 
     var onTaskUpdateHandler = function(id,item){
         var updatedTask = gantt.getTask(id);
@@ -85,6 +138,24 @@ define([
         gantt.config.scale_unit = "day";
         gantt.config.step = 1;
         gantt.config.date_scale = "%M, %d";
+        gantt.config.scale_height = 25;
+
+
+        gantt.config.columns = [
+            {name:"text", label: "Task Name", tree:true, width:'*'},
+            {name:"progress", label: "Progress", width:80, align:'center', template:function(item){
+                if(item.progress >= 1)
+                    return "Completed";
+                if(item.progress == 0)
+                    return "Not started";
+                return Math.round(item.progress*100) + "%";
+            }},
+            {name:"assigned", label: "Assigned to", align: "center", width: 100, template:function(item){
+                if(!item.assignedto)
+                    return "Nobody";
+                return item.assignedto;
+            }}
+        ];
         gantt.templates.scale_cell_class = function(date){
             if(date.getDay() == 0 || date.getDay() == 6){
                 return "weekend";

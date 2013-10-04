@@ -302,13 +302,14 @@ define(['libs/date.format'], function (dateformat) {
         var jsonCollection;
         collection.length > 0 ? jsonCollection = collection.toJSON() : jsonCollection = [];
         var projects = [];
+
         for(var i = 0; i < jsonCollection.length; i++){
             if(jsonCollection[i].task.tasks.length > 0){
                 projects.push({
                     'id': jsonCollection[i]._id || jsonCollection[i].id,
                     'text': jsonCollection[i].projectname,
-                    'start_date': dateFormat(new Date(jsonCollection[i].info.StartDate), "dd-mm-yyyy"),
-                    'duration': jsonCollection[i].estimated,
+                    'start_date': new Date(jsonCollection[i].info.StartDate),
+                    'duration': jsonCollection[i].info.duration,
                     'progress': jsonCollection[i].progress/100,
                     'open': true
                 });
@@ -318,9 +319,10 @@ define(['libs/date.format'], function (dateformat) {
                     projects.push({
                         'id': task.id || task._id,
                         'text': task.summary,
-                        'start_date': dateFormat(new Date(task.extrainfo.StartDate), "dd-mm-yyyy"),
+                        'start_date': new Date(task.extrainfo.StartDate),
                         'duration': task.estimated,
-                        'progress': task.progress,
+                        'progress': task.progress/100,
+                        'assignedto': task.assignedto.uname,
                         'parent': jsonCollection[i].id || jsonCollection[i]._id
                     });
                 }

@@ -90,7 +90,7 @@ function (ListTemplate, FormTemplate, WorkflowsCollection, ListItemView, Thumbna
                     }
                 case "gantt":
                     {
-                        //gantt.clearAll();
+                        this.$el.html('');
                         this.$el.html('<div style=" height:570px; position:relative;" id="GanttDiv"></div>');
                         GanttChart.create("GanttDiv");
                         GanttChart.parseProjects(this.collection);
